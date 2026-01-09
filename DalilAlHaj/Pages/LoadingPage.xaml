@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:DalilAlHaj.Resources.Localization"
+             x:Class="DalilAlHaj.Pages.LoadingPage"
+             BackgroundColor="{AppThemeBinding Light=#2C3E50, Dark=#1C1C1E}">
+
+    <Grid>
+        <VerticalStackLayout 
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            Spacing="20">
+            
+            <!-- Kaaba Icon -->
+            <Image Source="kaaba_icon.svg"
+                   WidthRequest="200"
+                   HeightRequest="200"
+                   HorizontalOptions="Center" />
+            
+            <!-- Title -->
+            <Label x:Name="TitleLabel"
+                   Text="{x:Static res:AppResources.AppTitle}"
+                   FontSize="48"
+                   FontAttributes="Bold"
+                   TextColor="#FFD700"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+            
+            <!-- Subtitle -->
+            <Label x:Name="SubtitleLabel"
+                   Text="{x:Static res:AppResources.AppSubtitle}"
+                   FontSize="28"
+                   TextColor="#ECF0F1"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+            
+            <!-- Loading indicator -->
+            <ActivityIndicator IsRunning="True"
+                             Color="#FFD700"
+                             WidthRequest="40"
+                             HeightRequest="40"
+                             Margin="0,20,0,0" />
+            
+        </VerticalStackLayout>
+        
+        <!-- Copyright Footer -->
+        <Label Text="{x:Static res:AppResources.Copyright}"
+               FontSize="18"
+               TextColor="#95A5A6"
+               VerticalOptions="End"
+               HorizontalOptions="Center"
+               Margin="0,0,0,30" />
+    </Grid>
+
+</ContentPage>

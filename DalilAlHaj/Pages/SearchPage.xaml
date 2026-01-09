@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:DalilAlHaj.Resources.Localization"
+             x:Class="DalilAlHaj.Pages.SearchPage"
+             Title="{x:Static res:AppResources.SearchTitle}"
+             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <!-- Search Bar -->
+        <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#2C2C2E}" 
+                StrokeShape="RoundRectangle 25"
+                Padding="5"
+                StrokeThickness="0"
+                Margin="0,0,0,0">
+            <SearchBar x:Name="SearchInput"
+                       Placeholder="{x:Static res:AppResources.SearchPlaceholder}"
+                       SearchButtonPressed="OnSearchClicked"
+                       TextChanged="OnSearchTextChanged" />
+        </Border>
+
+        <!-- Results -->
+        <Label x:Name="ResultsLabel" 
+               Text="{x:Static res:AppResources.SearchPrompt}" 
+               FontSize="16"
+               TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+               Margin="10,10,0,0" />
+
+        <CollectionView x:Name="ResultsCollection"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="{AppThemeBinding Light=White, Dark=#2C2C2E}"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="15"
+                            Margin="0,5"
+                            StrokeThickness="0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnResultTapped" 
+                                                  CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                        
+                        <VerticalStackLayout Spacing="8">
+                            <HorizontalStackLayout Spacing="10">
+                                <Label Text="{Binding Icon}" 
+                                       FontSize="20" />
+                                <Label Text="{Binding CategoryName}" 
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="#3498DB" />
+                            </HorizontalStackLayout>
+                            
+                            <Label Text="{Binding SubCategoryName}" 
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}" />
+                            
+                            <Label Text="{Binding ContentPreview}" 
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#AEAEB2}"
+                                   LineBreakMode="TailTruncation"
+                                   MaxLines="2" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+</ContentPage>

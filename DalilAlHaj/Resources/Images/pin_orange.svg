@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="44" viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- Shadow -->
+    <ellipse cx="16" cy="42" rx="8" ry="2" fill="#000000" opacity="0.3"/>
+    <!-- Pin body -->
+    <path d="M16 0C9.4 0 4 5.4 4 12c0 8 12 28 12 28s12-20 12-28c0-6.6-5.4-12-12-12z" 
+          fill="#F39C12" stroke="#FFFFFF" stroke-width="2"/>
+    <!-- Inner circle -->
+    <circle cx="16" cy="12" r="5" fill="#FFFFFF" opacity="0.9"/>
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
+  <!-- Kaaba Icon (scaled and centered) - NO BACKGROUND -->
+  <g transform="translate(128, 90) scale(3.5)">
+    <g fill="#3e4347">
+      <path d="M14.5 62L2 49.5V2l12.5 12.5z"/>
+      <path d="M14.5 14.5H62V62H14.5z"/>
+      <path d="M62 14.5H14.5L2 2h47.5z"/>
+    </g>
+    <path d="M15.5 12H56l-7.5-7.5H8l7.5 7.5z" fill="#e8e8e8"/>
+    <path fill="#b2c1c0" d="M10.5 7l5 5h36.7l-5-5z"/>
+    <path fill="#dbb471" d="M14.5 29.5H62v5H14.5z"/>
+    <path opacity=".33" fill="#b2c1c0" d="M14.5 62L2 49.5V2l12.5 12.5z"/>
+    <path fill="#fbbf67" d="M14.5 34.5L2 22v-5l12.5 12.5z"/>
+    <g fill="#dbb471">
+      <path d="M39.5 37h13.8v5H39.5z"/>
+      <path d="M59.5 37H62v5h-2.5z"/>
+      <path d="M14.5 37H17v5h-2.5z"/>
+    </g>
+    <path fill="#fbbf67" d="M13.2 35.8v5l1.3 1.2v-5z"/>
+    <g fill="#e8e8e8">
+      <path d="M33.2 44.5H62v10H33.2z"/>
+      <path d="M14.5 44.5h8.8v10h-8.8z"/>
+    </g>
+    <path fill="#dbb471" d="M14.5 54.5H62V62H14.5z"/>
+    <path opacity=".5" fill="#3e4347" d="M14.5 54.5H62V62H14.5z"/>
+    <path fill="#dbb471" d="M14.5 62L2 49.5V42l12.5 12.5z"/>
+    <path fill="#ffce31" d="M23.2 42h10v17.5h-10z"/>
+    <g fill="#f2b200">
+      <path d="M23.2 58.2h10v1.2h-10z"/>
+      <path d="M32 37h1.2v22.5H32z"/>
+    </g>
+    <path fill="#dbb471" d="M23.2 37v17.5h4.3l.7-5l.8 5h4.2V37z"/>
+  </g>
+</svg>

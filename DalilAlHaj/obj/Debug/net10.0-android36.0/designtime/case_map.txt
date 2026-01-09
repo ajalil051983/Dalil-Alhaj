@@ -1,0 +1,6 @@
+images\dotnet_bot;images\dotnet_bot
+raw\aboutassets;raw\AboutAssets
+raw\categories;raw\categories
+raw\categories-en;raw\categories-en
+raw\categories-fr;raw\categories-fr
+raw\guide;raw\guide

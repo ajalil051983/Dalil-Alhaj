@@ -1,0 +1,6 @@
+<api>
+  <acw-types partial-assembly-name="ExoPlayer.SmoothStreaming" module-name="ExoPlayer.SmoothStreaming.dll">
+    <type assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Smoothstreaming.ISsChunkSource, ExoPlayer.SmoothStreaming, Version=2.19.1.0, Culture=neutral, PublicKeyToken=null" compat-jni-name="com.google.android.exoplayer2.source.smoothstreaming.SsChunkSource" java-key="com.google.android.exoplayer2.source.smoothstreaming.SsChunkSource" managed-key="Com.Google.Android.Exoplayer2.Source.Smoothstreaming.ISsChunkSource" partial-assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Smoothstreaming.ISsChunkSource, ExoPlayer.SmoothStreaming" />
+    <type assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Smoothstreaming.ISsChunkSource+IFactory, ExoPlayer.SmoothStreaming, Version=2.19.1.0, Culture=neutral, PublicKeyToken=null" compat-jni-name="com.google.android.exoplayer2.source.smoothstreaming.SsChunkSource$Factory" java-key="com.google.android.exoplayer2.source.smoothstreaming.SsChunkSource$Factory" managed-key="Com.Google.Android.Exoplayer2.Source.Smoothstreaming.ISsChunkSource.IFactory" partial-assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Smoothstreaming.ISsChunkSource+IFactory, ExoPlayer.SmoothStreaming" />
+  </acw-types>
+</api>

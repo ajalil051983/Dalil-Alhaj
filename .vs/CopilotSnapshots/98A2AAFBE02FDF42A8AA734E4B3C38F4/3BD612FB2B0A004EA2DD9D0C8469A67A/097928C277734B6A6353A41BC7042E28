@@ -1,0 +1,360 @@
+﻿using Mapsui;
+using Mapsui.Extensions;
+using Mapsui.Layers;
+using Mapsui.Nts;
+using Mapsui.Projections;
+using Mapsui.Styles;
+using Mapsui.Tiling;
+using Mapsui.UI.Maui;
+using Mapsui.Widgets;
+using NetTopologySuite.Geometries;
+using SkiaSharp;
+
+namespace DalilAlHaj.Pages
+{
+    public partial class MapPage : ContentPage
+    {
+        private ILayer? userLocationLayer;
+        private static SKTypeface? arabicTypeface;
+
+        public MapPage()
+        {
+            InitializeComponent();
+            FlowDirection = Services.LocalizationService.GetFlowDirection();
+            LoadArabicFont();
+            InitializeMap();
+            RequestLocationPermissionAndShowUserLocation();
+        }
+
+        private void LoadArabicFont()
+        {
+            try
+            {
+                // Try to load a system font that supports Arabic
+                // Common Arabic fonts: "Arial", "Tahoma", "Segoe UI", "Droid Arabic Naskh"
+                arabicTypeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold);
+                
+                // Fallback to default if Arial doesn't work
+                if (arabicTypeface == null)
+                {
+                    arabicTypeface = SKTypeface.FromFamilyName("Tahoma", SKFontStyle.Bold);
+                }
+                
+                System.Diagnostics.Debug.WriteLine($"Arabic font loaded: {arabicTypeface?.FamilyName ?? "Default"}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Font loading error: {ex.Message}");
+                // Use default font as fallback
+            }
+        }
+
+        private void InitializeMap()
+        {
+            // Create the map
+            var map = new Mapsui.Map();
+
+            // Add OpenStreetMap tile layer (no API key required!)
+            map.Layers.Add(OpenStreetMap.CreateTileLayer());
+
+            // Add Hajj route line layer
+            var routeLayer = CreateRouteLayer();
+            map.Layers.Add(routeLayer);
+
+            // Add Hajj location pins
+            var pinLayer = CreatePinLayer();
+            map.Layers.Add(pinLayer);
+
+            // Hide attribution widgets (top-left and bottom-right info boxes)
+            map.Widgets.Clear();
+
+            // Assign map to control
+            HajjMapControl.Map = map;
+
+            // Center on Kaaba after map is loaded
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await Task.Delay(500); // Wait for map to initialize
+                var kaabaLocation = SphericalMercator.FromLonLat(39.8262, 21.4225);
+                var mPoint = new MPoint(kaabaLocation.x, kaabaLocation.y);
+                HajjMapControl.Map?.Navigator.CenterOn(mPoint);
+                HajjMapControl.Map?.Navigator.ZoomTo(12); // Zoom level
+            });
+        }
+
+        private MemoryLayer CreateRouteLayer()
+        {
+            // Define Hajj route sequence (Kaaba -> Mina -> Arafat -> Muzdalifah -> Mina -> Kaaba)
+            var routePoints = new[]
+            {
+                new { Lat = 21.4225, Lon = 39.8262 }, // Kaaba
+                new { Lat = 21.4219, Lon = 39.8926 }, // Mina
+                new { Lat = 21.3547, Lon = 39.9839 }, // Arafat
+                new { Lat = 21.4069, Lon = 39.9375 }, // Muzdalifah
+                new { Lat = 21.4219, Lon = 39.8926 }, // Mina (return)
+                new { Lat = 21.4225, Lon = 39.8262 }  // Kaaba (return for Tawaf)
+            };
+
+            // Convert to map coordinates
+            var coordinates = routePoints
+                .Select(p => SphericalMercator.FromLonLat(p.Lon, p.Lat))
+                .Select(coord => new Coordinate(coord.x, coord.y))
+                .ToArray();
+
+            // Create line string
+            var lineString = new LineString(coordinates);
+
+            // Create feature
+            var feature = new GeometryFeature
+            {
+                Geometry = lineString
+            };
+
+            // Create line style with dashed pattern for direction indication
+            feature.Styles.Add(new VectorStyle
+            {
+                Line = new Pen(Mapsui.Styles.Color.FromString("#E74C3C"), 5)
+                {
+                    PenStyle = PenStyle.Solid,
+                    PenStrokeCap = PenStrokeCap.Round
+                }
+            });
+
+            // Create memory layer
+            var layer = new MemoryLayer
+            {
+                Name = "Hajj Route",
+                Features = new[] { feature },
+                Style = null
+            };
+
+            return layer;
+        }
+
+        private MemoryLayer CreatePinLayer()
+        {
+            var features = new List<IFeature>();
+
+            // Define Hajj locations with colors for pins
+            var locations = new[]
+            {
+                new { Name = DalilAlHaj.Resources.Localization.AppResources.Kaaba, Lat = 21.4225, Lon = 39.8262, Color = "#E74C3C", Size = 2.0 },
+                new { Name = DalilAlHaj.Resources.Localization.AppResources.Arafat, Lat = 21.3547, Lon = 39.9839, Color = "#3498DB", Size = 1.8 },
+                new { Name = DalilAlHaj.Resources.Localization.AppResources.Muzdalifah, Lat = 21.4069, Lon = 39.9375, Color = "#9B59B6", Size = 1.8 },
+                new { Name = DalilAlHaj.Resources.Localization.AppResources.Mina, Lat = 21.413052539985806, Lon = 39.89021580688235, Color = "#27AE60", Size = 1.8 },
+                new { Name = DalilAlHaj.Resources.Localization.AppResources.SafaMarwa, Lat = 21.4233, Lon = 39.8266, Color = "#F39C12", Size = 1.6 }
+            };
+
+            foreach (var location in locations)
+            {
+                // Convert lat/lon to map coordinates
+                var point = SphericalMercator.FromLonLat(location.Lon, location.Lat);
+                
+                // Create feature using PointFeature
+                var feature = new PointFeature(point.ToMPoint());
+                
+                // Add label data
+                feature["name"] = location.Name;
+                feature["color"] = location.Color;
+
+                // Create custom colored pin using triangle + circle
+                // Bottom triangle (pin point)
+                feature.Styles.Add(new SymbolStyle
+                {
+                    SymbolScale = location.Size,
+                    Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromString(location.Color)),
+                    Outline = new Pen(Mapsui.Styles.Color.White, 4),
+                    SymbolType = SymbolType.Triangle,
+                    SymbolRotation = 180,
+                    Offset = new Offset(0, 20)
+                });
+
+                // Top circle (pin head)
+                feature.Styles.Add(new SymbolStyle
+                {
+                    SymbolScale = location.Size * 0.8,
+                    Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromString(location.Color)),
+                    Outline = new Pen(Mapsui.Styles.Color.White, 4),
+                    SymbolType = SymbolType.Ellipse,
+                    Offset = new Offset(0, -15)
+                });
+
+                // Inner white circle
+                feature.Styles.Add(new SymbolStyle
+                {
+                    SymbolScale = location.Size * 0.4,
+                    Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromArgb(240, 255, 255, 255)),
+                    SymbolType = SymbolType.Ellipse,
+                    Offset = new Offset(0, -15)
+                });
+
+                // Add label style for each feature
+                var labelStyle = new LabelStyle
+                {
+                    Text = location.Name,
+                    BackColor = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromArgb(245, 255, 255, 255)),
+                    ForeColor = Mapsui.Styles.Color.Black,
+                    BorderColor = Mapsui.Styles.Color.FromString(location.Color),
+                    Halo = new Pen(Mapsui.Styles.Color.White, 3),
+                    Font = new Mapsui.Styles.Font 
+                    { 
+                        FontFamily = "Arial", // Use Arial which supports Arabic
+                        Size = 15, 
+                        Bold = true 
+                    },
+                    Offset = new Offset(0, -60), // Offset above the pin
+                    HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center
+                };
+
+                feature.Styles.Add(labelStyle);
+                features.Add(feature);
+            }
+
+            // Create memory layer without layer-wide style
+            var layer = new MemoryLayer
+            {
+                Name = "Hajj Locations",
+                Features = features,
+                Style = null // No layer-wide style, each feature has its own colored style
+            };
+
+            return layer;
+        }
+
+        private static IStyle CreatePinImageStyle()
+        {
+            // This method is kept for reference but not used
+            var imageSource = "embedded://Mapsui.Resources.Images.pin.svg";
+            var bitmapHeight = 176;
+            
+            return new ImageStyle 
+            { 
+                Image = imageSource, 
+                SymbolScale = 0.25, 
+                Offset = new Offset(0, bitmapHeight * 0.5)
+            };
+        }
+
+        private async void RequestLocationPermissionAndShowUserLocation()
+        {
+            try
+            {
+                var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+                
+                if (status != PermissionStatus.Granted)
+                {
+                    status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    await ShowUserLocation();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Location permission error: {ex.Message}");
+            }
+        }
+
+        private async Task ShowUserLocation()
+        {
+            try
+            {
+                var location = await Geolocation.GetLocationAsync(new GeolocationRequest
+                {
+                    DesiredAccuracy = GeolocationAccuracy.Medium,
+                    Timeout = TimeSpan.FromSeconds(10)
+                });
+
+                if (location != null)
+                {
+                    // Remove existing user location layer if any
+                    if (userLocationLayer != null && HajjMapControl.Map?.Layers.Contains(userLocationLayer) == true)
+                    {
+                        HajjMapControl.Map.Layers.Remove(userLocationLayer);
+                    }
+
+                    // Create user location layer
+                    userLocationLayer = CreateUserLocationLayer(location.Latitude, location.Longitude);
+                    HajjMapControl.Map?.Layers.Add(userLocationLayer);
+
+                    // Refresh map
+                    HajjMapControl.Map?.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Location error: {ex.Message}");
+            }
+        }
+
+        private MemoryLayer CreateUserLocationLayer(double lat, double lon)
+        {
+            // Convert lat/lon to map coordinates
+            var point = SphericalMercator.FromLonLat(lon, lat);
+
+            // Create feature using PointFeature for consistency
+            var feature = new PointFeature(point.ToMPoint());
+
+            // Create a distinctive marker for current location using custom pin style
+            // Bottom triangle (pin point) - Blue
+            feature.Styles.Add(new SymbolStyle
+            {
+                SymbolScale = 2.2,
+                Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromString("#2196F3")), // Material Blue
+                Outline = new Pen(Mapsui.Styles.Color.White, 5),
+                SymbolType = SymbolType.Triangle,
+                SymbolRotation = 180,
+                Offset = new Offset(0, 22)
+            });
+
+            // Top circle (pin head) - Blue
+            feature.Styles.Add(new SymbolStyle
+            {
+                SymbolScale = 1.8,
+                Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromString("#2196F3")),
+                Outline = new Pen(Mapsui.Styles.Color.White, 5),
+                SymbolType = SymbolType.Ellipse,
+                Offset = new Offset(0, -18)
+            });
+
+            // Inner pulsing circle (animated effect)
+            feature.Styles.Add(new SymbolStyle
+            {
+                SymbolScale = 0.8,
+                Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.White),
+                SymbolType = SymbolType.Ellipse,
+                Offset = new Offset(0, -18)
+            });
+
+            // Add label with Arabic font support
+            feature.Styles.Add(new LabelStyle
+            {
+                Text = DalilAlHaj.Resources.Localization.AppResources.YourLocation,
+                BackColor = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromArgb(245, 33, 150, 243)), // Blue background
+                ForeColor = Mapsui.Styles.Color.White,
+                BorderColor = Mapsui.Styles.Color.White,
+                Halo = new Pen(Mapsui.Styles.Color.White, 3),
+                Font = new Mapsui.Styles.Font 
+                { 
+                    FontFamily = "Arial", // Use Arial which supports Arabic
+                    Size = 15, 
+                    Bold = true 
+                },
+                Offset = new Offset(0, -65), // Offset above the pin
+                HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Center
+            });
+
+            // Create memory layer
+            var layer = new MemoryLayer
+            {
+                Name = "User Location",
+                Features = new[] { feature },
+                Style = null // Individual feature styling
+            };
+
+            return layer;
+        }
+    }
+}

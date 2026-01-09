@@ -1,0 +1,12 @@
+<api type="debug" assembly-name="Xamarin.Google.Guava.FailureAccess" mvid="0742714d4ee147c090045f58853edcbc">
+  <java-to-managed>
+    <entry java-name="com/google/common/util/concurrent/internal/InternalFutureFailureAccess" managed-name="Google.Common.Util.Concurrent.Internal.InternalFutureFailureAccess, Xamarin.Google.Guava.FailureAccess" managed-type-token-id="33554439" />
+    <entry java-name="com/google/common/util/concurrent/internal/InternalFutureFailureAccess" managed-name="Google.Common.Util.Concurrent.Internal.InternalFutureFailureAccessInvoker, Xamarin.Google.Guava.FailureAccess" managed-type-token-id="33554440" />
+    <entry java-name="com/google/common/util/concurrent/internal/InternalFutures" managed-name="Google.Common.Util.Concurrent.Internal.InternalFutures, Xamarin.Google.Guava.FailureAccess" managed-type-token-id="33554441" />
+  </java-to-managed>
+  <managed-to-java>
+    <entry java-name="com/google/common/util/concurrent/internal/InternalFutureFailureAccess" managed-name="Google.Common.Util.Concurrent.Internal.InternalFutureFailureAccess, Xamarin.Google.Guava.FailureAccess" managed-type-token-id="33554439" />
+    <entry java-name="com/google/common/util/concurrent/internal/InternalFutureFailureAccess" managed-name="Google.Common.Util.Concurrent.Internal.InternalFutureFailureAccessInvoker, Xamarin.Google.Guava.FailureAccess" managed-type-token-id="33554440" />
+    <entry java-name="com/google/common/util/concurrent/internal/InternalFutures" managed-name="Google.Common.Util.Concurrent.Internal.InternalFutures, Xamarin.Google.Guava.FailureAccess" managed-type-token-id="33554441" />
+  </managed-to-java>
+</api>

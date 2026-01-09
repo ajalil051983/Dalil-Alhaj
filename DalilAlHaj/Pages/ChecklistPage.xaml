@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:DalilAlHaj.Resources.Localization"
+             x:Class="DalilAlHaj.Pages.ChecklistPage"
+             Title="{x:Static res:AppResources.Checklist}"
+             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="ItemBackgroundLight">White</Color>
+            <Color x:Key="ItemBackgroundDark">#2C2C2E</Color>
+            <Color x:Key="TitleColorLight">#2C3E50</Color>
+            <Color x:Key="TitleColorDark">#F5F5F5</Color>
+            <Color x:Key="DescColorLight">#7F8C8D</Color>
+            <Color x:Key="DescColorDark">#AEAEB2</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!-- Remove ScrollView wrapper to enable CollectionView virtualization -->
+    <CollectionView x:Name="ChecklistCollection" 
+                    SelectionMode="None">
+        <CollectionView.Header>
+            <VerticalStackLayout Padding="20,20,20,10" Spacing="15">
+                <!-- Header with reduced shadow complexity -->
+                <Border BackgroundColor="#27AE60"
+                        StrokeShape="RoundRectangle 15"
+                        Padding="20"
+                        StrokeThickness="0">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.15" Radius="8" Offset="0,2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{x:Static res:AppResources.ChecklistTitle}" 
+                               FontSize="24" 
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="ProgressLabel"
+                               Text="" 
+                               FontSize="16"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        
+                        <!-- Progress Bar -->
+                        <ProgressBar x:Name="MainProgressBar"
+                                     Progress="0"
+                                     ProgressColor="White"
+                                     HeightRequest="10"
+                                     Margin="0,5,0,0" />
+                        
+                        <Label x:Name="PercentageLabel"
+                               Text="0%"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </CollectionView.Header>
+        
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <!-- Simplified layout hierarchy -->
+                <Border BackgroundColor="{AppThemeBinding Light={StaticResource ItemBackgroundLight}, Dark={StaticResource ItemBackgroundDark}}"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="15"
+                        Margin="20,5"
+                        StrokeThickness="0">
+                    <!-- Reduced shadow for better performance -->
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.08" Radius="4" Offset="0,1" />
+                    </Border.Shadow>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                        <CheckBox IsChecked="{Binding IsCompleted}"
+                                  CheckedChanged="OnCheckChanged"
+                                  Color="#27AE60"
+                                  VerticalOptions="Center"
+                                  Grid.Column="0" />
+                        
+                        <!-- Flattened layout -->
+                        <VerticalStackLayout Spacing="5" Grid.Column="1">
+                            <Label Text="{Binding Title}" 
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource TitleColorLight}, Dark={StaticResource TitleColorDark}}" />
+                            <Label Text="{Binding Description}" 
+                                   FontSize="14"
+                                   LineBreakMode="WordWrap"
+                                   TextColor="{AppThemeBinding Light={StaticResource DescColorLight}, Dark={StaticResource DescColorDark}}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+        
+        <CollectionView.Footer>
+            <BoxView HeightRequest="20" Color="Transparent" />
+        </CollectionView.Footer>
+    </CollectionView>
+
+</ContentPage>

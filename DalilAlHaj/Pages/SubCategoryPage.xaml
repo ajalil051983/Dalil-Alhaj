@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:DalilAlHaj.Resources.Localization"
+             x:Class="DalilAlHaj.Pages.SubCategoryPage"
+             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Category Header -->
+            <Border x:Name="HeaderFrame"
+                    Stroke="#BDC3C7"
+                    StrokeThickness="1"
+                    Background="{AppThemeBinding Light=#2C3E50, Dark=#1E1E1E}"
+                    Margin="0"
+                    Padding="20"
+                    StrokeShape="RoundRectangle 15">
+                <HorizontalStackLayout Spacing="15">
+                    <Label x:Name="CategoryIcon" 
+                           FontSize="40"
+                           VerticalOptions="Center" />
+                    <Label x:Name="CategoryTitle" 
+                           FontSize="24" 
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           TextColor="White" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Categories Grid (2 columns) -->
+            <Label x:Name="TopicsLabel"
+                   Text="{x:Static res:AppResources.Topics}" 
+                   FontSize="20" 
+                   FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                   Margin="0,10,0,10" />
+
+            <CollectionView x:Name="SubCategoriesCollection"
+                            SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" 
+                                     Span="2" 
+                                     HorizontalItemSpacing="15"
+                                     VerticalItemSpacing="15" />
+                </CollectionView.ItemsLayout>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="#BDC3C7"
+                                StrokeThickness="1"
+                                Background="{AppThemeBinding Light=White, Dark=#2C2C2E}"
+                                Margin="0"
+                                Padding="20"
+                                StrokeShape="RoundRectangle 15">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSubCategoryTapped" 
+                                                      CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            
+                            <VerticalStackLayout Spacing="10"
+                                                 HeightRequest="120">
+                                <Label Text="{Binding Icon}" 
+                                       FontSize="32"
+                                       HorizontalOptions="Center" />
+                                
+                                <Label Text="{Binding Name}" 
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center"
+                                       LineBreakMode="WordWrap" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

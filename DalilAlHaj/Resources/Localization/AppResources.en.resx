@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>Hajj Guide</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>According to Maliki School</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>🗺️ Map</value>
+  </data>
+  <data name="Checklist" xml:space="preserve">
+    <value>Checklist</value>
+  </data>
+  <data name="ChooseTopic" xml:space="preserve">
+    <value>Choose Topic:</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>⚙️ Settings</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ChooseLanguage" xml:space="preserve">
+    <value>Choose Language</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="RestartRequired" xml:space="preserve">
+    <value>Restart Required</value>
+  </data>
+  <data name="RestartMessage" xml:space="preserve">
+    <value>Please restart the app to apply the new language</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ChecklistTitle" xml:space="preserve">
+    <value>✅ Hajj Checklist</value>
+  </data>
+  <data name="CompletedOf" xml:space="preserve">
+    <value>{0} of {1} completed</value>
+  </data>
+  <data name="ChecklistItem1Title" xml:space="preserve">
+    <value>Learn Hajj rulings</value>
+  </data>
+  <data name="ChecklistItem1Desc" xml:space="preserve">
+    <value>Study pillars and obligations</value>
+  </data>
+  <data name="ChecklistItem2Title" xml:space="preserve">
+    <value>Repent and seek forgiveness</value>
+  </data>
+  <data name="ChecklistItem2Desc" xml:space="preserve">
+    <value>Sincere repentance and settle debts</value>
+  </data>
+  <data name="ChecklistItem3Title" xml:space="preserve">
+    <value>Prepare documents</value>
+  </data>
+  <data name="ChecklistItem3Desc" xml:space="preserve">
+    <value>Passport and Visa</value>
+  </data>
+  <data name="ChecklistItem4Title" xml:space="preserve">
+    <value>Prepare clothing</value>
+  </data>
+  <data name="ChecklistItem4Desc" xml:space="preserve">
+    <value>Ihram clothes and luggage</value>
+  </data>
+  <data name="ChecklistItem5Title" xml:space="preserve">
+    <value>Medicines and first aid</value>
+  </data>
+  <data name="ChecklistItem5Desc" xml:space="preserve">
+    <value>Necessary medicines and care supplies</value>
+  </data>
+  <data name="ChecklistItem6Title" xml:space="preserve">
+    <value>Ihram from miqat</value>
+  </data>
+  <data name="ChecklistItem6Desc" xml:space="preserve">
+    <value>Ghusl and wearing Ihram</value>
+  </data>
+  <data name="ChecklistItem7Title" xml:space="preserve">
+    <value>Enter Mecca and Tawaf</value>
+  </data>
+  <data name="ChecklistItem7Desc" xml:space="preserve">
+    <value>Arrival Tawaf and two Rak'ahs</value>
+  </data>
+  <data name="ChecklistItem8Title" xml:space="preserve">
+    <value>Sa'i between Safa and Marwah</value>
+  </data>
+  <data name="ChecklistItem8Desc" xml:space="preserve">
+    <value>Seven circuits</value>
+  </data>
+  <data name="ChecklistItem9Title" xml:space="preserve">
+    <value>Head to Mina</value>
+  </data>
+  <data name="ChecklistItem9Desc" xml:space="preserve">
+    <value>8th of Dhul-Hijjah</value>
+  </data>
+  <data name="ChecklistItem10Title" xml:space="preserve">
+    <value>Standing at Arafat</value>
+  </data>
+  <data name="ChecklistItem10Desc" xml:space="preserve">
+    <value>9th day - Greatest pillar</value>
+  </data>
+  <data name="ChecklistItem11Title" xml:space="preserve">
+    <value>Overnight in Muzdalifah</value>
+  </data>
+  <data name="ChecklistItem11Desc" xml:space="preserve">
+    <value>After sunset on Arafat day</value>
+  </data>
+  <data name="ChecklistItem12Title" xml:space="preserve">
+    <value>Stoning Jamrat al-Aqabah</value>
+  </data>
+  <data name="ChecklistItem12Desc" xml:space="preserve">
+    <value>Day of Eid</value>
+  </data>
+  <data name="ChecklistItem13Title" xml:space="preserve">
+    <value>Shaving or trimming</value>
+  </data>
+  <data name="ChecklistItem13Desc" xml:space="preserve">
+    <value>After stoning Aqabah</value>
+  </data>
+  <data name="ChecklistItem14Title" xml:space="preserve">
+    <value>Tawaf Al-Ifadah</value>
+  </data>
+  <data name="ChecklistItem14Desc" xml:space="preserve">
+    <value>Essential pillar of Hajj</value>
+  </data>
+  <data name="ChecklistItem15Title" xml:space="preserve">
+    <value>Stoning during Tashreeq</value>
+  </data>
+  <data name="ChecklistItem15Desc" xml:space="preserve">
+    <value>Days 11, 12, 13</value>
+  </data>
+  <data name="ChecklistItem16Title" xml:space="preserve">
+    <value>Farewell Tawaf</value>
+  </data>
+  <data name="ChecklistItem16Desc" xml:space="preserve">
+    <value>Before leaving Mecca</value>
+  </data>
+  <data name="SearchTitle" xml:space="preserve">
+    <value>🔍 Search</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>Search here...</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>No results found</value>
+  </data>
+  <data name="MapTitle" xml:space="preserve">
+    <value>Mecca Map</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content:</value>
+  </data>
+  <data name="Topics" xml:space="preserve">
+    <value>Topics:</value>
+  </data>
+  <data name="ListenToContent" xml:space="preserve">
+    <value>🔊 Listen to Content</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>▶️ Play</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>⏸️ Pause</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>🤍 Add to Favorites</value>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>❤️ Favorites</value>
+  </data>
+  <data name="AddedToFavorites" xml:space="preserve">
+    <value>Added to favorites</value>
+  </data>
+  <data name="RemovedFromFavorites" xml:space="preserve">
+    <value>Removed from favorites</value>
+  </data>
+  <data name="CopyText" xml:space="preserve">
+    <value>📋 Copy Text</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>📤 Share</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="TextCopied" xml:space="preserve">
+    <value>Text copied successfully</value>
+  </data>
+  <data name="CopyError" xml:space="preserve">
+    <value>Could not copy</value>
+  </data>
+  <data name="ShareError" xml:space="preserve">
+    <value>Could not share</value>
+  </data>
+  <data name="FromApp" xml:space="preserve">
+    <value>From: Hajj Guide</value>
+  </data>
+  <data name="MapRoute" xml:space="preserve">
+    <value>Route according to Maliki School</value>
+  </data>
+  <data name="YourLocation" xml:space="preserve">
+    <value>📍 Your Location</value>
+  </data>
+  <data name="Kaaba" xml:space="preserve">
+    <value>🕋 Kaaba</value>
+  </data>
+  <data name="Arafat" xml:space="preserve">
+    <value>⛰️ Mount Arafat</value>
+  </data>
+  <data name="Muzdalifah" xml:space="preserve">
+    <value>🌙 Muzdalifah</value>
+  </data>
+  <data name="Mina" xml:space="preserve">
+    <value>🏕️ Mina</value>
+  </data>
+  <data name="SafaMarwa" xml:space="preserve">
+    <value>🚶 Safa and Marwah</value>
+  </data>
+  <data name="SearchPrompt" xml:space="preserve">
+    <value>Type to search...</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results: {0}</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>Dark Mode</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+  <data name="FontSmall" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="FontMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="FontLarge" xml:space="preserve">
+    <value>Large</value>
+  </data>
+  <data name="FontExample" xml:space="preserve">
+    <value>This is an example of the selected font size</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version 1.0.0</value>
+  </data>
+  <data name="FontChanged" xml:space="preserve">
+    <value>Font size changed to</value>
+  </data>
+  <data name="LoadDataError" xml:space="preserve">
+    <value>Could not load data</value>
+  </data>
+  <data name="ChecklistTasks" xml:space="preserve">
+    <value>Checklist</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>© AbdeljalilElYasni 2025</value>
+  </data>
+</root>

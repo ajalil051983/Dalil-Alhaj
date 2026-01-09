@@ -1,0 +1,24 @@
+<api type="debug" assembly-name="ExoPlayer.Database" mvid="f09454fae67a4f428b9d6c8c9665c9d8">
+  <java-to-managed>
+    <entry java-name="com/google/android/exoplayer2/database/BuildConfig" managed-name="Com.Google.Android.Exoplayer2.Database.BuildConfig, ExoPlayer.Database" managed-type-token-id="33554442" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseIOException" managed-name="Com.Google.Android.Exoplayer2.Database.DatabaseIOException, ExoPlayer.Database" managed-type-token-id="33554443" />
+    <entry java-name="com/google/android/exoplayer2/database/DefaultDatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.DefaultDatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554444" />
+    <entry java-name="com/google/android/exoplayer2/database/ExoDatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.ExoDatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554446" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.DatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554447" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.IDatabaseProvider, ExoPlayer.Database" skip-in-java-to-managed="True" managed-type-token-id="33554448" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.IDatabaseProviderInvoker, ExoPlayer.Database" managed-type-token-id="33554449" />
+    <entry java-name="com/google/android/exoplayer2/database/StandaloneDatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.StandaloneDatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554451" />
+    <entry java-name="com/google/android/exoplayer2/database/VersionTable" managed-name="Com.Google.Android.Exoplayer2.Database.VersionTable, ExoPlayer.Database" managed-type-token-id="33554454" />
+  </java-to-managed>
+  <managed-to-java>
+    <entry java-name="com/google/android/exoplayer2/database/BuildConfig" managed-name="Com.Google.Android.Exoplayer2.Database.BuildConfig, ExoPlayer.Database" managed-type-token-id="33554442" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseIOException" managed-name="Com.Google.Android.Exoplayer2.Database.DatabaseIOException, ExoPlayer.Database" managed-type-token-id="33554443" />
+    <entry java-name="com/google/android/exoplayer2/database/DefaultDatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.DefaultDatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554444" />
+    <entry java-name="com/google/android/exoplayer2/database/ExoDatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.ExoDatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554446" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.DatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554447" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.IDatabaseProvider, ExoPlayer.Database" skip-in-java-to-managed="True" managed-type-token-id="33554448" />
+    <entry java-name="com/google/android/exoplayer2/database/DatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.IDatabaseProviderInvoker, ExoPlayer.Database" managed-type-token-id="33554449" />
+    <entry java-name="com/google/android/exoplayer2/database/StandaloneDatabaseProvider" managed-name="Com.Google.Android.Exoplayer2.Database.StandaloneDatabaseProvider, ExoPlayer.Database" managed-type-token-id="33554451" />
+    <entry java-name="com/google/android/exoplayer2/database/VersionTable" managed-name="Com.Google.Android.Exoplayer2.Database.VersionTable, ExoPlayer.Database" managed-type-token-id="33554454" />
+  </managed-to-java>
+</api>

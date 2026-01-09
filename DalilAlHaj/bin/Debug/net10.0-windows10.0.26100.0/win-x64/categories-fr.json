@@ -1,0 +1,218 @@
+[
+  {
+    "id": 1,
+    "nameFr": "Préparation au Hajj",
+    "icon": "✈️",
+    "color": "#3498DB",
+    "subcategories": [
+      {
+        "id": 101,
+        "nameFr": "Conditions du Hajj",
+        "icon": "✅",
+        "content": "Les conditions du Hajj se divisent en deux parties:\n1. Conditions de validité du Hajj\nL'Islam:\nLe Hajj n'est valide que pour le musulman.\n2. Conditions d'obligation du Hajj\nLe Hajj est obligatoire pour une personne si les conditions suivantes sont remplies:\nLa majorité:\nLe Hajj est obligatoire pour l'adulte.\nSi un mineur effectue le Hajj, celui-ci est valide mais ne le dispense pas de l'obligation du Hajj, et il devra l'accomplir à nouveau après la majorité.\nLa raison:\nLe Hajj est obligatoire pour la personne saine d'esprit.\nSi une personne aliénée effectue le Hajj, celui-ci est valide mais ne la dispense pas, et elle devra le rattraper après guérison.\nLa liberté:\nLe Hajj est obligatoire pour la personne libre; il n'est pas obligatoire pour l'esclave.\nLa capacité:\nC'est la capacité d'atteindre la Maison Sacrée:\nPhysiquement: La capacité de voyager à pied ou en véhicule.\nFinancièrement: Disposer de l'argent suffisant pour couvrir les dépenses du Hajj et les besoins de sa famille pendant et après le Hajj.\nEn sécurité: Que le chemin soit sûr pour la personne, les biens et la religion.\nSans difficulté excessive: Que le voyage ne soit pas accompagné de difficultés excessives.\nCondition spéciale pour les femmes:\nLa femme doit être accompagnée de son mari ou d'un mahram parmi ses proches qu'elle ne peut épouser.\nSi elle ne trouve pas de mahram mais trouve une compagnie sûre (de femmes ou d'hommes ou les deux), le Hajj devient obligatoire pour elle si elle en a la capacité.\nNote:\nSi ces conditions sont réunies pour une personne, le Hajj devient obligatoire une fois dans sa vie.\nSi l'une de ces conditions fait défaut, le Hajj n'est pas obligatoire pour cette personne."
+
+      },
+      {
+        "id": 102,
+        "nameFr": "Préparation et Équipement",
+        "icon": "🎒",
+        "content": "Préparation spirituelle et matérielle pour le Hajj:\n\nPréparation spirituelle:\n- Repentir sincère des péchés et des désobéissances\n- Payer les dettes et réparer les injustices\n- Demander pardon et multiplier les invocations\n- Apprendre les rites du Hajj avant le départ\n- Assister aux assemblées des savants\n\nPréparation matérielle:\n- Préparer les dépenses suffisantes pour le Hajj et pour la famille\n- S'assurer de la santé physique\n- Préparer les documents nécessaires (passeport, visa)\n- Emporter des vêtements appropriés et l'ihram\n- Préparer les médicaments nécessaires\n- Emporter un parapluie pour se protéger du soleil\n\nLe pèlerin doit être humble et avoir de bonnes manières."
+
+      },
+      {
+        "id": 103,
+        "nameFr": "Invocations et Rappels",
+        "icon": "🤲",
+        "content": "Il est recommandé de multiplier les invocations:\n\nInvocations de voyage:\n- «Au nom d'Allah, je place ma confiance en Allah»\n- «Ô Allah, je Te demande dans ce voyage la piété»\n- «Ô Allah, facilite-nous ce voyage»\n\nEn montant dans l'avion:\n- «Louange à Allah qui nous a soumis cela»\n\nLe pèlerin doit multiplier les prières sur le Prophète."
+
+      },
+      {
+        "id": 104,
+        "nameFr": "Ce qu'il faut emporter",
+        "icon": "🧳",
+        "content": "Le pèlerin doit emporter:\n\nDocuments:\n- Passeport valide\n- Permis de Hajj officiel\n- Carte d'identité\n- Photos supplémentaires\n\nFinances:\n- Argent suffisant\n- Cartes bancaires\n\nVêtements d'ihram:\n- Izar et Rida blancs (pour les hommes)\n- Vêtements de dessous blancs\n\nArticles d'hygiène:\n- Serviettes personnelles\n- Savon et shampooing\n- Brosse à dents\n- Coupe-ongles\n\nArticles médicaux:\n- Médicaments personnels\n- Analgésiques\n- Pansements\n\nAutres articles:\n- Parapluie\n- Petit sac\n- Téléphone portable\n- Petit Coran"
+
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nameFr": "Ihram et Miqat",
+    "icon": "🕋",
+    "color": "#27AE60",
+    "subcategories": [
+      {
+        "id": 201,
+        "nameFr": "Miqats Spatiaux",
+        "icon": "📍",
+        "content": "Les Miqats sont les lieux désignés pour l'ihram:\n\nLes cinq Miqats:\n1. Dhu al-Hulayfah: Pour les gens de Médine\n2. Al-Juhfah: Pour les gens du Levant et du Maghreb\n3. Qarn al-Manazil: Pour les gens du Najd\n4. Yalamlam: Pour les gens du Yémen\n5. Dhat Irq: Pour les gens d'Irak\n\nMiqats spéciaux:\n- Les Maghrébins: Rabigh\n- De Médine: Dhu al-Hulayfah\n- À l'intérieur des Miqats: de leur lieu\n\nLe pèlerin entre en ihram au Miqat qu'il traverse."
+
+      },
+      {
+        "id": 202,
+        "nameFr": "Comment Entrer en Ihram",
+        "icon": "👕",
+        "content": "Comment entrer en ihram étape par étape:\n\nAvant l'ihram:\n- Enlever les poils indésirables\n- Couper les ongles\n- Se laver comme le ghusl\n- Se parfumer (pas sur les vêtements d'ihram)\n\nVêtements d'ihram:\n- Homme: Izar et Rida blancs\n- Femme: Vêtements couvrants non provocants\n- Interdit: niqab et gants pour les femmes\n\nPrière d'ihram:\n- Prier deux rak'ahs\n- Lire al-Kafirun puis al-Ikhlas\n\nIntention:\n- Avoir l'intention dans son cœur\n- Dire: «Labbayk Allahumma Hajjan» ou «Labbayk Allahumma Umratan»\n- Commencer la Talbiyah\n\nIl est permis d'entrer en ihram avant le Miqat."
+
+      },
+      {
+        "id": 203,
+        "nameFr": "Interdictions de l'Ihram",
+        "icon": "🚫",
+        "content": "Interdictions pendant l'ihram:\n\nVêtements:\n- Porter des vêtements cousus (hommes)\n- Couvrir la tête (hommes)\n- Porter le niqab et les gants (femmes)\n\nParfum:\n- Utiliser du parfum\n- Parfumer les cheveux\n\nCheveux et ongles:\n- Raser les cheveux\n- Couper les ongles\n\nAutres interdictions:\n- Mariage\n- Rapports intimes\n- Chasse\n- Tuer les insectes nuisibles\n\nCelui qui commet une interdiction par ignorance n'est pas fautif."
+
+      },
+      {
+        "id": 204,
+        "nameFr": "La Talbiyah",
+        "icon": "📢",
+        "content": "La Talbiyah est le symbole du Hajj:\n\nFormule:\n«Labbayk Allahumma labbayk, labbayk la sharika laka labbayk, inna al-hamda wa an-ni'mata laka wal-mulk, la sharika lak»\n\nRègles:\n- Obligatoire une fois\n- Recommandé de la répéter\n- Les hommes élèvent leur voix\n- Les femmes la disent doucement\n\nMoments:\n- Commence après l'ihram\n- Continue en tout temps\n- Après les prières\n\nArrêt de la Talbiyah:\n- Ifrad et Qiran: à l'entrée du Haram\n- Tamattu': au début du Tawaf\n- Tous: après midi du jour d'Arafat\n\nCelui qui ne peut pas la dire n'est pas fautif."
+
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nameFr": "Piliers du Hajj",
+    "icon": "📿",
+    "color": "#E74C3C",
+    "subcategories": [
+      {
+        "id": 301,
+        "nameFr": "L'Ihram",
+        "icon": "🙏",
+        "content": "L'ihram est un pilier fondamental:\n\nDéfinition:\n- L'intention d'entrer dans les rites\n- Avec la Talbiyah ou le Takbir\n- Le contrat qui lie le pèlerin\n\nConditions de validité:\n- L'Islam\n- L'intention\n- La Talbiyah\n- Le Miqat\n\nTypes d'ihram:\n- Ifrad: Hajj seulement\n- Qiran: Hajj et Umrah ensemble\n- Tamattu': Umrah puis Hajj\n\nLe Tamattu' et Qiran nécessitent un sacrifice."
+
+      },
+      {
+        "id": 302,
+        "nameFr": "Station à Arafat",
+        "icon": "⛰️",
+        "content": "La station à Arafat est le plus grand pilier:\n\nStatut:\n- Pilier du Hajj\n- Sans elle, pas de Hajj\n\nTemps:\n- Commence à midi le 9 Dhul-Hijjah\n- Se termine à l'aube du jour du sacrifice\n- Minimum: un instant\n\nConditions:\n- Être dans le temps prescrit\n- Être dans les limites d'Arafat\n- Savoir qu'on est à Arafat\n- Avoir l'intention\n\nComment:\n- Se tenir n'importe où à Arafat\n- Faire face à la Qibla\n- Invoquer Allah\n- Multiplier la Talbiyah\n- Combiner Dhuhr et Asr\n\nCelui qui se tient à Arafat un instant a accompli le Hajj."
+
+      },
+      {
+        "id": 303,
+        "nameFr": "Tawaf al-Ifadah",
+        "icon": "🔄",
+        "content": "Le Tawaf al-Ifadah est un pilier:\n\nDéfinition:\n- Le Tawaf après Arafat\n- Aussi appelé Tawaf az-Ziyarah\n\nStatut:\n- Pilier du Hajj\n- Sans lui, pas de Hajj valide\n\nTemps:\n- Meilleur moment: jour du sacrifice\n- Permis: de l'aube du sacrifice à fin Dhul-Hijjah\n- Rattrapage: après avec sacrifice\n\nConditions:\n- Pureté rituelle\n- Couvrir l'awrah\n- Tourner autour de la Kaaba\n- Commencer à la Pierre Noire\n- Sept tours complets\n- Continuité\n\nComment:\n- Commencer à la Pierre Noire\n- Garder la Kaaba à gauche\n- Marcher rapidement les trois premiers tours (hommes)\n- Prier deux rak'ahs après"
+
+      },
+      {
+        "id": 304,
+        "nameFr": "Sa'i entre Safa et Marwah",
+        "icon": "🚶",
+        "content": "Le Sa'i est un pilier du Hajj:\n\nStatut:\n- Pilier du Hajj\n- Ne peut être compensé\n\nConditions:\n- Après un Tawaf valide\n- Commencer à Safa\n- Sept tours complets\n- Continuité\n- Dans le Mas'a habituel\n\nComment faire le Sa'i:\n- Monter sur Safa\n- Faire face à la Qibla\n- Faire du Takbir et invoquer\n- Descendre vers Marwah\n- Marcher rapidement entre les marqueurs verts (hommes)\n- Monter sur Marwah et invoquer\n- Retourner à Safa\n\nTours:\n- Safa à Marwah: un tour\n- Marwah à Safa: un tour\n- Commence à Safa, finit à Marwah\n\nLe Sa'i est valide aux étages supérieurs."
+
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nameFr": "Obligations du Hajj",
+    "icon": "✅",
+    "color": "#F39C12",
+    "subcategories": [
+      {
+        "id": 401,
+        "nameFr": "Nuit à Muzdalifah",
+        "icon": "🌙",
+        "content": "Passer la nuit à Muzdalifah est obligatoire:\n\nStatut:\n- Obligatoire selon les Malikites\n- Si omis: sacrifice requis\n- Dispensé en cas d'excuse\n\nTemps:\n- Après minuit jusqu'à l'aube\n- Les femmes et faibles peuvent partir après minuit\n\nActivités:\n- S'y arrêter brièvement\n- Combiner Maghrib et Isha\n- Raccourcir Isha\n- Ramasser les cailloux\n- Invoquer Allah\n\nSéjour:\n- Recommandé mais non obligatoire\n- Pas de sacrifice si omis\n\nPartir après la prière du Fajr avant l'aube."
+
+      },
+      {
+        "id": 402,
+        "nameFr": "Nuits à Mina",
+        "icon": "⛺",
+        "content": "Passer les nuits à Mina est obligatoire:\n\nStatut:\n- Obligatoire pour tous\n- Si omis: sacrifice requis\n\nNuits obligatoires:\n- Nuits du 11 et 12\n- Nuit du 13 si on reste\n- Deux nuits si on se hâte\n\nTemps:\n- Du coucher au lever du soleil\n- Suffisant: la majeure partie de la nuit\n- Sortie permise pour nécessité\n\nActivités:\n- Lapider les trois Jamarat après midi\n- Invoquer après la lapidation\n- Adorer Allah\n- Fraterniser avec les pèlerins\n\nOmission d'une ou plusieurs nuits: un sacrifice."
+
+      },
+      {
+        "id": 403,
+        "nameFr": "Lapidation des Jamarat",
+        "icon": "🎯",
+        "content": "La lapidation est obligatoire:\n\nJamarat:\n- Petite Jamrah\n- Moyenne Jamrah\n- Jamrat al-Aqabah (grande)\n\nJours:\n- Jour du sacrifice: Aqabah seulement (7 cailloux)\n- Jours de Tashriq: les trois (21 cailloux/jour)\n\nTemps:\n- Après midi\n- S'étend dans la nuit\n- Nuit permise pour excuse\n\nComment:\n- Lancer sept cailloux par Jamrah\n- Caillou par caillou avec Takbir\n- S'arrêter pour invoquer (petite et moyenne)\n- Ne pas s'arrêter après Aqabah\n\nConditions:\n- Avec des cailloux\n- Par soi-même si capable\n- Délégation permise pour incapable\n- Ordre: petite, moyenne, grande\n\nOmission: sacrifice requis."
+
+      },
+      {
+        "id": 404,
+        "nameFr": "Tawaf d'Adieu",
+        "icon": "👋",
+        "content": "Le Tawaf d'adieu est obligatoire:\n\nStatut:\n- Obligatoire selon les Malikites\n- Si omis: sacrifice requis\n- Dispensé pour femmes en menstrues\n\nTemps:\n- Après tous les rites\n- En quittant La Mecque\n- Dernier rite\n\nConditions:\n- Pureté rituelle\n- Couvrir l'awrah\n- Sept tours autour de la Kaaba\n- Continuité\n\nComment:\n- Comme Tawaf al-Ifadah\n- Pas de Ramal ni Idtiba\n- Prier deux rak'ahs après\n- Partir immédiatement\n\nAnnulé par:\n- Séjour prolongé après\n- Affaires mondaines longues\n- Pas annulé par achats courts\n\nInvoquer pour revenir à La Mecque."
+
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nameFr": "Erreurs Courantes",
+    "icon": "⚠️",
+    "color": "#9B59B6",
+    "subcategories": [
+      {
+        "id": 501,
+        "nameFr": "Erreurs dans l'Ihram",
+        "icon": "❌",
+        "content": "Erreurs courantes dans l'ihram:\n\nErreurs de Miqat:\n- Dépasser le Miqat sans ihram\n- Ihram avant le Miqat\n- Ne pas connaître le bon Miqat\n\nErreurs de vêtements:\n- Porter des vêtements cousus (hommes)\n- Couvrir la tête (hommes)\n- Porter niqab et gants (femmes)\n- Vêtements parfumés\n\nErreurs de parfum:\n- Utiliser du parfum après l'ihram\n- Parfumer les cheveux\n- Porter des vêtements parfumés\n\nErreurs d'intention:\n- Ne pas avoir d'intention\n- Prononcer l'intention à haute voix\n- Ne pas faire la Talbiyah\n\nAutres erreurs:\n- Raser ou couper les ongles\n- Mariage pendant l'ihram\n- Rapports avant la première sortie\n\nApprendre les règles de l'ihram avant."
+
+      },
+      {
+        "id": 502,
+        "nameFr": "Erreurs dans le Tawaf",
+        "icon": "🔁",
+        "content": "Erreurs courantes dans le Tawaf:\n\nErreurs de conditions:\n- Tawaf sans pureté\n- Awrah découvert\n- Tawaf dans le Hijr\n\nErreurs de début:\n- Commencer ailleurs qu'à la Pierre Noire\n- Ne pas toucher ou pointer la Pierre\n- Ne pas garder la Kaaba à gauche\n\nErreurs de tours:\n- Ne pas compléter sept tours\n- Douter du nombre\n- Dépasser sept tours\n\nErreurs de forme:\n- Ramal sur tous les tours\n- Idtiba hors Tawaf al-Qudum\n- Parler excessivement\n- Invocations collectives bruyantes\n\nErreurs des deux rak'ahs:\n- Omettre les deux rak'ahs\n- Prier ailleurs\n- Ne pas lire dedans\n\nErreurs de temps:\n- Retarder Tawaf al-Ifadah\n- Tawaf aux moments interdits\n\nApprendre la forme correcte du Tawaf."
+
+      },
+      {
+        "id": 503,
+        "nameFr": "Erreurs dans le Sa'i",
+        "icon": "🚷",
+        "content": "Erreurs courantes dans le Sa'i:\n\nErreurs de début:\n- Commencer à Marwah au lieu de Safa\n- Ne pas monter sur Safa et Marwah\n- Ne pas faire face à la Qibla\n\nErreurs de tours:\n- Ne pas compléter sept tours\n- Douter du nombre\n- Compter incorrectement\n\nErreurs de forme:\n- Omettre la course entre les marqueurs (hommes)\n- Courir au mauvais endroit\n- Monter sans excuse\n- Parler excessivement\n\nErreurs de temps:\n- Sa'i avant le Tawaf\n- Sa'i après Tawaf invalide\n- Pas de continuité\n\nErreurs d'invocations:\n- Invocations collectives\n- Voix forte gênante\n- Omettre les invocations prescrites\n\nApprendre la forme correcte du Sa'i."
+
+      },
+      {
+        "id": 504,
+        "nameFr": "Erreurs à Arafat",
+        "icon": "⛔",
+        "content": "Erreurs courantes à Arafat:\n\nErreurs de lieu:\n- Se tenir hors d'Arafat\n- Croire obligatoire de monter sur la Montagne\n- Se forcer vers des lieux spécifiques\n\nErreurs de temps:\n- Partir avant le coucher du soleil\n- Arriver après l'aube du sacrifice\n- Croire obligatoire jour et nuit\n\nErreurs de forme:\n- Jeûner le jour d'Arafat (pèlerin)\n- S'occuper d'affaires mondaines\n- Ne pas invoquer\n- Dormir tout le temps\n\nErreurs d'invocations:\n- Lever les mains de façon gênante\n- Invocations collectives\n- Seulement invocations prescrites\n- Ne pas invoquer pour les musulmans\n\nErreurs de prière:\n- Ne pas combiner Dhuhr et Asr\n- Prier au mauvais moment\n- Abandonner la prière en groupe\n\nSavoir que tout Arafat est station, meilleure invocation: jour d'Arafat."
+
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nameFr": "Invocations Prescrites",
+    "icon": "🤲",
+    "color": "#1ABC9C",
+    "subcategories": [
+      {
+        "id": 601,
+        "nameFr": "Invocation d'Entrée au Haram",
+        "icon": "🕌",
+        "content": "Invocation en entrant au Masjid al-Haram:\n\nEn entrant:\n- Entrer du pied droit\n- Dire: «Je cherche refuge auprès d'Allah»\n- Dire: «Au nom d'Allah, paix sur le Messager»\n- Dire: «Ô Allah, ouvre-moi les portes de Ta miséricorde»\n\nEn voyant la Kaaba:\n- Dire: «Ô Allah, Tu es la Paix»\n- Dire: «Ô Allah, augmente l'honneur de cette Maison»\n- Lever les mains et invoquer\n\nRecommandé: prier deux rak'ahs."
+
+      },
+      {
+        "id": 602,
+        "nameFr": "Invocations du Tawaf",
+        "icon": "🔄",
+        "content": "Invocations pour chaque tour:\n\nPremier tour:\n«Gloire à Allah, louange à Allah, il n'y a de dieu qu'Allah, Allah est le plus grand. Il n'y a de puissance ni de force qu'en Allah. Prière et paix sur le Messager d'Allah. Ô Allah, foi en Toi, croyance en Ton Livre, fidélité à Ton pacte, suite de la Sunnah de Ton Prophète Muhammad. Ô Allah, je Te demande le pardon, le bien-être permanent dans la religion, ce monde et l'au-delà, le succès au Paradis et la délivrance de l'Enfer»\n\nEntre les coins:\n«Notre Seigneur, donne-nous le bien ici-bas et dans l'au-delà, et protège-nous du châtiment du Feu»\n\nDeuxième tour:\n«Ô Allah, cette Maison est Ta Maison, le sanctuaire est Ton sanctuaire, la sécurité est Ta sécurité, le serviteur est Ton serviteur, et je suis Ton serviteur fils de Ton serviteur. Ceci est la station de celui qui cherche refuge en Toi contre le Feu. Protège notre chair et notre peau du Feu»\n\nTroisième tour:\n«Ô Allah, je cherche refuge en Toi contre le doute, l'association, la discorde, l'hypocrisie, les mauvaises manières et le mauvais retour dans les biens, la famille et les enfants»\n\nMultiplier le Tasbih, Tahmid, Tahlil et Takbir."
+
+      },
+      {
+        "id": 603,
+        "nameFr": "Invocations du Sa'i",
+        "icon": "🚶",
+        "content": "Invocations du Sa'i entre Safa et Marwah:\n\nSur Safa:\n- Monter et faire face à la Qibla\n- Dire trois fois: «Allah est le plus grand»\n- Dire: «Il n'y a de dieu qu'Allah seul sans associé, à Lui la royauté et la louange, Il est capable de toute chose»\n- Invoquer\n\nPremier tour:\n«Allah est le plus grand, Allah est le plus grand, Allah est le plus grand, louange à Allah. Allah est très grand, louange abondante à Allah, gloire à Allah matin et soir. Il n'y a de dieu qu'Allah seul, Il a accompli Sa promesse, secouru Son serviteur et vaincu les coalisés seul»\n\nEntre les marqueurs verts:\n- Marcher rapidement (hommes)\n- Dire: «Seigneur, pardonne et fais miséricorde, efface et sois généreux, passe sur ce que Tu sais, car Tu sais ce que nous ne savons pas, Tu es le Plus Puissant, le Plus Généreux»\n\nSur Marwah:\n- Faire comme sur Safa\n- Faire du Takbir, Tahlil et invoquer\n\nRépéter à chaque tour avec plus d'invocations."
+
+      },
+      {
+        "id": 604,
+        "nameFr": "Invocation du Jour d'Arafat",
+        "icon": "⛰️",
+        "content": "Invocation du jour d'Arafat:\n\nMeilleure invocation:\n- «Il n'y a de dieu qu'Allah seul sans associé, à Lui la royauté et la louange, Il est capable de toute chose»\n- Répéter souvent\n\nInvocations prescrites:\n«Ô Allah, à Toi la louange comme nous disons et mieux. Ô Allah, à Toi ma prière, mon sacrifice, ma vie et ma mort, vers Toi mon retour, à Toi Seigneur mon héritage. Ô Allah, je cherche refuge en Toi contre le châtiment de la tombe, les murmures de la poitrine et la confusion des affaires. Ô Allah, je cherche refuge en Toi contre le mal apporté par le vent»\n\nInvoquer:\n- Pour soi et ses parents\n- Pour sa famille\n- Pour les musulmans\n- Pour le pardon et le bien-être\n- Pour le Paradis\n- Pour accomplir les besoins\n\nRecommandé:\n- Lever les mains\n- Multiplier les demandes de pardon\n- Pleurer et être humble\n- Invoquer avec sincérité\n\nLe Prophète a dit: «La meilleure invocation est celle du jour d'Arafat»."
+
+      }
+    ]
+  }
+]

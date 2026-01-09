@@ -1,0 +1,524 @@
+using DalilAlHaj.Models;
+using DalilAlHaj.Services;
+using CommunityToolkit.Maui.Core.Primitives;
+using CommunityToolkit.Maui.Views;
+using DalilAlHaj.Messages;
+using CommunityToolkit.Mvvm.Messaging;
+using System.Diagnostics;
+
+namespace DalilAlHaj.Pages
+{
+    public partial class ContentDetailPage : ContentPage
+    {
+        private readonly Category category;
+        private readonly SubCategory subCategory;
+        private readonly FavoritesService favoritesService;
+        private bool isPlaying = false;
+        private bool isApplyingTheme = false;
+        private AppTheme? lastAppliedTheme = null;
+        private bool isMessengerRegistered = false;
+        private bool isDisposing = false;
+
+        public ContentDetailPage(Category category, SubCategory subCategory)
+        {
+            InitializeComponent();
+            FlowDirection = LocalizationService.GetFlowDirection();
+            this.category = category;
+            this.subCategory = subCategory;
+            this.favoritesService = new FavoritesService();
+            
+            Title = subCategory.Name;
+            LoadContent();
+        }
+
+        protected override void OnAppearing()
+        {
+            try
+            {
+                base.OnAppearing();
+                Debug.WriteLine($"[ContentDetailPage] OnAppearing called for: {subCategory.Name}");
+                
+                ApplyThemeColors();
+                
+                // Only register if not already registered
+                if (!isMessengerRegistered)
+                {
+                    Debug.WriteLine("[ContentDetailPage] Registering ThemeChangedMessage messenger");
+                    WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(this, async (recipient, message) =>
+                    {
+                        try
+                        {
+                            if (isDisposing) return;
+                            
+                            Debug.WriteLine("[ContentDetailPage] ThemeChangedMessage received");
+                            await MainThread.InvokeOnMainThreadAsync(() =>
+                            {
+                                if (!isDisposing)
+                                {
+                                    ApplyThemeColors();
+                                }
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"[ContentDetailPage] Error in ThemeChangedMessage handler: {ex.Message}");
+                            Debug.WriteLine($"[ContentDetailPage] Stack trace: {ex.StackTrace}");
+                        }
+                    });
+                    isMessengerRegistered = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnAppearing: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] Stack trace: {ex.StackTrace}");
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            try
+            {
+                isDisposing = true;
+                Debug.WriteLine($"[ContentDetailPage] OnDisappearing called for: {subCategory.Name}");
+                base.OnDisappearing();
+
+                // Stop and release audio to avoid background service/permission issues
+                try
+                {
+                    Debug.WriteLine("[ContentDetailPage] Starting audio cleanup");
+                    
+                    if (isPlaying)
+                    {
+                        try
+                        {
+                            if (AudioPlayer != null)
+                            {
+                                Debug.WriteLine("[ContentDetailPage] Pausing audio");
+                                AudioPlayer.Pause();
+                            }
+                        }
+                        catch (Exception pauseEx)
+                        {
+                            Debug.WriteLine($"[ContentDetailPage] Error pausing audio: {pauseEx.Message}");
+                        }
+                        isPlaying = false;
+                    }
+                    
+                    // Release resources
+                    if (AudioPlayer != null)
+                    {
+                        try
+                        {
+                            Debug.WriteLine("[ContentDetailPage] Clearing AudioPlayer state");
+                            // Give time for pause to complete
+                            System.Threading.Thread.Sleep(100);
+                        }
+                        catch { }
+
+                        try
+                        {
+                            Debug.WriteLine("[ContentDetailPage] Setting AudioPlayer.Source to null");
+                            AudioPlayer.Source = null;
+                        }
+                        catch (Exception sourceEx)
+                        {
+                            Debug.WriteLine($"[ContentDetailPage] Error clearing source: {sourceEx.Message}");
+                        }
+                    }
+                    Debug.WriteLine("[ContentDetailPage] Audio cleanup completed");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[ContentDetailPage] Error cleaning up audio: {ex.Message}");
+                    Debug.WriteLine($"[ContentDetailPage] Audio cleanup error stack trace: {ex.StackTrace}");
+                    Debug.WriteLine($"[ContentDetailPage] Audio cleanup error type: {ex.GetType().FullName}");
+                }
+
+                // Unregister messenger
+                if (isMessengerRegistered)
+                {
+                    try
+                    {
+                        Debug.WriteLine("[ContentDetailPage] Unregistering ThemeChangedMessage messenger");
+                        WeakReferenceMessenger.Default.Unregister<ThemeChangedMessage>(this);
+                        isMessengerRegistered = false;
+                        Debug.WriteLine("[ContentDetailPage] Messenger unregistered successfully");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"[ContentDetailPage] Error unregistering messenger: {ex.Message}");
+                        Debug.WriteLine($"[ContentDetailPage] Messenger unregister stack trace: {ex.StackTrace}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnDisappearing: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] Stack trace: {ex.StackTrace}");
+            }
+            finally
+            {
+                isDisposing = false;
+            }
+        }
+
+        private void ApplyThemeColors()
+        {
+            if (isApplyingTheme || isDisposing) return;
+
+            try
+            {
+                var currentTheme = Application.Current?.UserAppTheme ?? AppTheme.Unspecified;
+                var isDark = currentTheme == AppTheme.Dark;
+                var effectiveTheme = isDark ? AppTheme.Dark : AppTheme.Light;
+                
+                if (lastAppliedTheme == effectiveTheme) return;
+
+                try
+                {
+                    isApplyingTheme = true;
+                    lastAppliedTheme = effectiveTheme;
+                
+                    this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                
+                    // Update ContentLabel and ContentText directly
+                    if (ContentLabel != null)
+                    {
+                        ContentLabel.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                    }
+                
+                    if (ContentText != null)
+                    {
+                        ContentText.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#34495E");
+                    }
+                
+                    if (SubCategoryTitle != null)
+                    {
+                        SubCategoryTitle.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                    }
+                
+                    if (this.Content is ScrollView scrollView && 
+                        scrollView.Content is VerticalStackLayout stack)
+                    {
+                        UpdateLayoutColors(stack, isDark);
+                    }
+                }
+                finally
+                {
+                    isApplyingTheme = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in ApplyThemeColors: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] ApplyThemeColors stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private void UpdateLayoutColors(Layout layout, bool isDark)
+        {
+            try
+            {
+                foreach (var child in layout.Children)
+                {
+                    if (child is Border border)
+                    {
+                        border.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
+                        
+                        if (border.Content is Layout borderLayout)
+                        {
+                            UpdateLayoutColors(borderLayout, isDark);
+                        }
+                    }
+                    else if (child is Label label)
+                    {
+                        // Skip header labels
+                        if (label == CategoryIcon || label == CategoryTitle)
+                        {
+                            continue;
+                        }
+                        
+                        if (label.TextColor == Color.FromArgb("#2C3E50") || 
+                            label.TextColor == Color.FromArgb("#34495E"))
+                        {
+                            label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        }
+                    }
+                    else if (child is Layout nestedLayout)
+                    {
+                        UpdateLayoutColors(nestedLayout, isDark);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in UpdateLayoutColors: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] UpdateLayoutColors stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private void LoadContent()
+        {
+            try
+            {
+                Debug.WriteLine($"[ContentDetailPage] LoadContent called for: {subCategory.Name}");
+                
+                // Set header colors and content
+                if (HeaderFrame != null)
+                    HeaderFrame.BackgroundColor = Color.FromArgb(category.Color);
+                
+                if (CategoryIcon != null)
+                    CategoryIcon.Text = category.Icon;
+                
+                if (CategoryTitle != null)
+                {
+                    CategoryTitle.Text = category.Name;
+                    CategoryTitle.TextColor = Colors.White;
+                }
+
+                // Set subcategory content
+                if (SubCategoryTitle != null)
+                    SubCategoryTitle.Text = subCategory.Name;
+                
+                // Set content text directly
+                if (ContentText != null)
+                    ContentText.Text = subCategory.Content;
+
+                // Show audio player if available
+                if (subCategory.HasAudio)
+                {
+                    if (AudioControlsStack != null)
+                        AudioControlsStack.IsVisible = true;
+                    LoadAudioFile();
+                }
+                else
+                {
+                    if (AudioControlsStack != null)
+                        AudioControlsStack.IsVisible = false;
+                }
+
+                // Update favorite button state
+                UpdateFavoriteButton();
+                Debug.WriteLine($"[ContentDetailPage] LoadContent completed for: {subCategory.Name}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in LoadContent: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] LoadContent stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private async void LoadAudioFile()
+        {
+            try
+            {
+                Debug.WriteLine($"[ContentDetailPage] LoadAudioFile started for category: {category.Id}, subcategory: {subCategory.Id}");
+                
+                var audioFileName = $"audio/{category.Id}_{subCategory.Id}.mp3";
+                Debug.WriteLine($"[ContentDetailPage] Loading audio file: {audioFileName}");
+                
+                // Load audio file from Raw resources
+                using var stream = await FileSystem.OpenAppPackageFileAsync(audioFileName);
+                var tempFile = Path.Combine(FileSystem.CacheDirectory, $"{category.Id}_{subCategory.Id}.mp3");
+                Debug.WriteLine($"[ContentDetailPage] Audio temp file path: {tempFile}");
+                
+                using (var fileStream = File.Create(tempFile))
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+                
+                if (AudioPlayer != null && !isDisposing)
+                {
+                    Debug.WriteLine($"[ContentDetailPage] Setting AudioPlayer source to: {tempFile}");
+                    AudioPlayer.Source = MediaSource.FromFile(tempFile);
+                }
+                
+                if (PlayPauseButton != null && !isDisposing)
+                    PlayPauseButton.IsEnabled = true;
+                    
+                Debug.WriteLine($"[ContentDetailPage] LoadAudioFile completed successfully");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Audio file not found or error loading: {category.Id}_{subCategory.Id}.mp3");
+                Debug.WriteLine($"[ContentDetailPage] LoadAudioFile exception: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] LoadAudioFile stack trace: {ex.StackTrace}");
+                Debug.WriteLine($"[ContentDetailPage] Exception type: {ex.GetType().FullName}");
+                
+                if (PlayPauseButton != null && !isDisposing)
+                {
+                    PlayPauseButton.IsEnabled = false;
+                    PlayPauseButton.Opacity = 0.5;
+                }
+            }
+        }
+
+        private void OnPlayPauseClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (isDisposing) return;
+                Debug.WriteLine("[ContentDetailPage] OnPlayPauseClicked called");
+                
+                if (!PlayPauseButton?.IsEnabled ?? true || AudioPlayer?.Source == null)
+                {
+                    Debug.WriteLine("[ContentDetailPage] OnPlayPauseClicked: Button not enabled or Source is null, returning");
+                    return;
+                }
+
+                if (isPlaying)
+                {
+                    Debug.WriteLine("[ContentDetailPage] Pausing audio");
+                    AudioPlayer.Pause();
+                    if (PlayPauseButton != null)
+                        PlayPauseButton.Text = "▶️";
+                    isPlaying = false;
+                }
+                else
+                {
+                    Debug.WriteLine("[ContentDetailPage] Playing audio");
+                    AudioPlayer.Play();
+                    if (PlayPauseButton != null)
+                        PlayPauseButton.Text = "⏸️";
+                    isPlaying = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnPlayPauseClicked: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] OnPlayPauseClicked stack trace: {ex.StackTrace}");
+                Debug.WriteLine($"[ContentDetailPage] Exception type: {ex.GetType().FullName}");
+                isPlaying = false;
+                if (PlayPauseButton != null)
+                {
+                    PlayPauseButton.Text = "▶️";
+                    PlayPauseButton.IsEnabled = false;
+                }
+            }
+        }
+
+        private void UpdateFavoriteButton()
+        {
+            try
+            {
+                var isFavorite = favoritesService.IsFavorite(subCategory.Id);
+                if (FavoriteButton != null)
+                {
+                    FavoriteButton.Text = isFavorite ? DalilAlHaj.Resources.Localization.AppResources.RemoveFromFavorites : DalilAlHaj.Resources.Localization.AppResources.AddToFavorites;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in UpdateFavoriteButton: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] UpdateFavoriteButton stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private void OnFavoriteClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (isDisposing) return;
+                Debug.WriteLine("[ContentDetailPage] OnFavoriteClicked called");
+                
+                favoritesService.ToggleFavorite(subCategory.Id);
+                UpdateFavoriteButton();
+
+                var isFavorite = favoritesService.IsFavorite(subCategory.Id);
+                var message = isFavorite ? DalilAlHaj.Resources.Localization.AppResources.AddedToFavorites : DalilAlHaj.Resources.Localization.AppResources.RemovedFromFavorites;
+                DisplayAlertAsync("✅", message, DalilAlHaj.Resources.Localization.AppResources.OK);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnFavoriteClicked: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] OnFavoriteClicked stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private void OnPlayClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (isDisposing) return;
+                Debug.WriteLine("[ContentDetailPage] OnPlayClicked called");
+                
+                if (AudioPlayer != null)
+                {
+                    AudioPlayer.Play();
+                    if (PlayPauseButton != null)
+                        PlayPauseButton.Text = "⏸️";
+                    isPlaying = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnPlayClicked: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] OnPlayClicked stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private void OnPauseClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (isDisposing) return;
+                Debug.WriteLine("[ContentDetailPage] OnPauseClicked called");
+                
+                if (AudioPlayer != null)
+                {
+                    AudioPlayer.Pause();
+                    if (PlayPauseButton != null)
+                        PlayPauseButton.Text = "▶️";
+                    isPlaying = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnPauseClicked: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] OnPauseClicked stack trace: {ex.StackTrace}");
+            }
+        }
+
+        private async void OnCopyClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (isDisposing) return;
+                Debug.WriteLine("[ContentDetailPage] OnCopyClicked called");
+                
+                await Clipboard.SetTextAsync(subCategory.Content);
+                await DisplayAlertAsync(DalilAlHaj.Resources.Localization.AppResources.Success, DalilAlHaj.Resources.Localization.AppResources.TextCopied, DalilAlHaj.Resources.Localization.AppResources.OK);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnCopyClicked: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] OnCopyClicked stack trace: {ex.StackTrace}");
+                
+                await DisplayAlertAsync(DalilAlHaj.Resources.Localization.AppResources.Error, $"{DalilAlHaj.Resources.Localization.AppResources.CopyError}: {ex.Message}", DalilAlHaj.Resources.Localization.AppResources.OK);
+            }
+        }
+
+        private async void OnShareClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (isDisposing) return;
+                Debug.WriteLine("[ContentDetailPage] OnShareClicked called");
+                
+                await Share.RequestAsync(new ShareTextRequest
+                {
+                    Title = subCategory.Name,
+                    Text = $"{subCategory.Name}\n\n{subCategory.Content}\n\n{DalilAlHaj.Resources.Localization.AppResources.FromApp}"
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error in OnShareClicked: {ex.Message}");
+                Debug.WriteLine($"[ContentDetailPage] OnShareClicked stack trace: {ex.StackTrace}");
+                
+                await DisplayAlertAsync(DalilAlHaj.Resources.Localization.AppResources.Error, $"{DalilAlHaj.Resources.Localization.AppResources.ShareError}: {ex.Message}", DalilAlHaj.Resources.Localization.AppResources.OK);
+            }
+        }
+    }
+}
