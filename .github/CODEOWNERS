@@ -1,0 +1,19 @@
+# This is a CODEOWNERS file.
+# Lines starting with '#' are comments.
+
+# Catch-all: ajalil051983 will be requested for review 
+# for any change in the repository.
+* @ajalil051983
+
+# Specific ownership:
+# You can also assign specific folders or file types.
+# Examples:
+
+# Only ajalil051983 reviews changes in the docs folder
+# /docs/  @ajalil051983
+
+# Only ajalil051983 reviews JavaScript files
+# *.js    @ajalil051983
+
+# Only ajalil051983 reviews the deployment scripts
+# /scripts/deploy.sh @ajalil051983
