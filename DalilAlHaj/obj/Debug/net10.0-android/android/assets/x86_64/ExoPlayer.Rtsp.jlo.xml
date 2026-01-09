@@ -1,6 +1,0 @@
-<api>
-  <acw-types partial-assembly-name="ExoPlayer.Rtsp" module-name="ExoPlayer.Rtsp.dll">
-    <type assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Rtsp.Reader.IRtpPayloadReader, ExoPlayer.Rtsp, Version=2.19.1.0, Culture=neutral, PublicKeyToken=null" compat-jni-name="com.google.android.exoplayer2.source.rtsp.reader.RtpPayloadReader" java-key="com.google.android.exoplayer2.source.rtsp.reader.RtpPayloadReader" managed-key="Com.Google.Android.Exoplayer2.Source.Rtsp.Reader.IRtpPayloadReader" partial-assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Rtsp.Reader.IRtpPayloadReader, ExoPlayer.Rtsp" />
-    <type assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Rtsp.Reader.IRtpPayloadReader+IFactory, ExoPlayer.Rtsp, Version=2.19.1.0, Culture=neutral, PublicKeyToken=null" compat-jni-name="com.google.android.exoplayer2.source.rtsp.reader.RtpPayloadReader$Factory" java-key="com.google.android.exoplayer2.source.rtsp.reader.RtpPayloadReader$Factory" managed-key="Com.Google.Android.Exoplayer2.Source.Rtsp.Reader.IRtpPayloadReader.IFactory" partial-assembly-qualified-name="Com.Google.Android.Exoplayer2.Source.Rtsp.Reader.IRtpPayloadReader+IFactory, ExoPlayer.Rtsp" />
-  </acw-types>
-</api>

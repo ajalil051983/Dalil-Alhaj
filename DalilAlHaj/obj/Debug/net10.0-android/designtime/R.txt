@@ -3349,9 +3349,10 @@ int drawable pin_location 0x7f080111
 int drawable pin_orange 0x7f080112
 int drawable pin_purple 0x7f080113
 int drawable pin_red 0x7f080114
-int drawable test_level_drawable 0x7f080115
-int drawable tooltip_frame_dark 0x7f080116
-int drawable tooltip_frame_light 0x7f080117
+int drawable splash 0x7f080115
+int drawable test_level_drawable 0x7f080116
+int drawable tooltip_frame_dark 0x7f080117
+int drawable tooltip_frame_light 0x7f080118
 int font roboto_medium_numbers 0x7f090000
 int id above 0x7f0a0000
 int id accelerate 0x7f0a0001
