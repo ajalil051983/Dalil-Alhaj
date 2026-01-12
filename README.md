@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![App Icon](DalilAlHaj/Resources/Images/kaaba.svg)
+![App Icon](DalilAlHaj/Resources/AppIcon/kaaba.svg)
 
 **دليل شامل لمناسك الحج حسب المذهب المالكي**  
 *A Comprehensive Hajj Guide According to the Maliki School*
