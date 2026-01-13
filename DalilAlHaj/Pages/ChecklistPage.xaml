@@ -44,6 +44,7 @@
                         
                         <!-- Progress Bar -->
                         <ProgressBar x:Name="MainProgressBar"
+                                     AutomationId="ChecklistProgressBar"
                                      Progress="0"
                                      ProgressColor="White"
                                      HeightRequest="10"
@@ -74,6 +75,7 @@
                     </Border.Shadow>
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
                         <CheckBox IsChecked="{Binding IsCompleted}"
+                                  AutomationId="ChecklistItemCheckBox"
                                   CheckedChanged="OnCheckChanged"
                                   Color="#27AE60"
                                   VerticalOptions="Center"

@@ -14,6 +14,7 @@
                 StrokeThickness="0"
                 Margin="0,0,0,0">
             <SearchBar x:Name="SearchInput"
+                       AutomationId="SearchPageInputID"
                        Placeholder="{x:Static res:AppResources.SearchPlaceholder}"
                        SearchButtonPressed="OnSearchClicked"
                        TextChanged="OnSearchTextChanged" />
@@ -27,6 +28,7 @@
                Margin="10,10,0,0" />
 
         <CollectionView x:Name="ResultsCollection"
+                        AutomationId="SearchPageResultsID"
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>

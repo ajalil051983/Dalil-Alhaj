@@ -21,6 +21,7 @@
             <Grid ColumnDefinitions="Auto,*">
                 <!-- Settings Icon on Left -->
                 <Button Grid.Column="0"
+                        AutomationId="SettingsButtonID"
                         Text="⚙️"
                         FontSize="28"
                         BackgroundColor="Transparent"
@@ -56,6 +57,7 @@
                         <Shadow Brush="Black" Opacity="0.3" Radius="10" Offset="0,2" />
                     </Border.Shadow>
                     <SearchBar x:Name="SearchBar"
+                               AutomationId="SearchBarID"
                                Placeholder="{x:Static res:AppResources.SearchPrompt}"
                                BackgroundColor="Transparent"
                                SearchButtonPressed="OnSearchBarPressed" />
@@ -68,6 +70,7 @@
                       RowSpacing="10">
                     <Button Grid.Column="0" Grid.Row="0"
                             Clicked="OnMapClicked"
+                            AutomationId="MapButtonID"
                             BackgroundColor="#E67E22"
                             TextColor="White"
                             CornerRadius="10"
@@ -76,6 +79,7 @@
                             Text="{x:Static res:AppResources.Map}" />
                     <Button Grid.Column="1" Grid.Row="0"
                             x:Name="ChecklistButton"
+                            AutomationId="ChecklistButtonID"
                             Clicked="OnChecklistClicked"
                             BackgroundColor="#27AE60"
                             TextColor="White"
