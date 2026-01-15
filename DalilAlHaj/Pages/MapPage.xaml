@@ -30,6 +30,7 @@
 
         <!-- OpenStreetMap using Mapsui -->
         <mapsui:MapControl x:Name="HajjMapControl" 
+                           AutomationId="MapControlID"
                            Grid.Row="1" />
     </Grid>
 
