@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-	<application android:allowBackup="true" android:supportsRtl="true" android:icon="@mipmap/kaaba" android:roundIcon="@mipmap/kaaba_round">
+	<application android:allowBackup="true" android:supportsRtl="true" android:icon="@mipmap/kaaba" android:roundIcon="@mipmap/kaaba_round" android:debuggable="true">
 		<!-- Google Maps API Key - Not needed for OpenStreetMap (Mapsui) -->
 	</application>
 	<!-- Network and Location Permissions -->
@@ -8,10 +8,18 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 	
 	<!-- Media and Audio Permissions -->
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+	
+	<!-- Appium UI Testing Support - Allow interaction with UiAutomator2 server and settings -->
+	<queries>
+		<package android:name="io.appium.uiautomator2.server" />
+		<package android:name="io.appium.uiautomator2.server.test" />
+		<package android:name="io.appium.settings" />
+	</queries>
 </manifest>

@@ -41,6 +41,10 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon: adaptive icon with separate foreground and background -->
 		<MauiIcon Include="Resources\AppIcon\kaaba.svg" ForegroundFile="Resources\AppIcon\kaaba_foreground.svg" BackgroundFile="Resources\AppIcon\kaaba_background.svg" />

@@ -8,16 +8,18 @@ namespace DalilAlHaj.UITests.Tests
     [TestFixture]
     public class MapTests : AppiumSetup
     {
+        private const string Pkg = "com.companyname.dalilalhaj:id/";
+
         [Test]
         public void Map_ShouldLoad()
         {
             // 1. Navigate to Map Page
-            var mapButton = _driver.FindElement(By.XPath("//*[@content-desc='MapButtonID']"));
+            var mapButton = _driver.FindElement(By.Id(Pkg + "MapButtonID"));
             mapButton.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
             // 2. Map Control should be present
-            var mapControl = _driver.FindElement(By.XPath("//*[@content-desc='MapControlID']"));
+            var mapControl = _driver.FindElement(By.Id(Pkg + "MapControlID"));
             Assert.IsNotNull(mapControl, "Map control not found.");
 
             // 3. Go Back

@@ -8,30 +8,29 @@ namespace DalilAlHaj.UITests.Tests
     [TestFixture]
     public class ChecklistTests : AppiumSetup
     {
+        private const string Pkg = "com.companyname.dalilalhaj:id/";
+
         [Test]
         public void Checklist_ShouldToggleItems_AndUpdateProgress()
         {
             // 1. Navigate to Checklist Page from Main Page
-            var checklistButton = _driver.FindElement(By.XPath("//*[@content-desc='ChecklistButtonID']"));
+            var checklistButton = _driver.FindElement(By.Id(Pkg + "ChecklistButtonID"));
             checklistButton.Click();
-            Thread.Sleep(1000); // Wait for page nav
+            Thread.Sleep(3000); // Wait for page navigation
 
-            // 2. Find a checkbox and toggle it
-            // Finding Elements inside CollectionView can be tricky.
-            // We look for elements with the ID we assigned.
-            // Note: In ListView/CollectionView, multiple elements will have same ID. FindElements will return a list.
-            var checkBoxes = _driver.FindElements(By.XPath("//*[@content-desc='ChecklistItemCheckBox']"));
-            
+            // 2. Find checkbox items in the checklist
+            var checkBoxes = _driver.FindElements(By.Id(Pkg + "ChecklistItemCheckBox"));
+
             Assert.IsNotEmpty(checkBoxes, "No checklist items found.");
 
             // 3. Click first checkbox
             checkBoxes[0].Click();
-            Thread.Sleep(500); // Wait for progress update logic
+            Thread.Sleep(500);
 
-            // 4. Verify Progress Bar or Percentage Label changes (Optional, requires complex state checking)
-            // Just verifying interaction doesn't crash is a good start if state checking is hard.
-            // We can check if the checkbox state actually changed if UIAutomator exposes 'checked' attribute.
-            
+            // 4. Verify the progress bar exists
+            var progressBar = _driver.FindElement(By.Id(Pkg + "ChecklistProgressBar"));
+            Assert.IsNotNull(progressBar, "Progress bar not found on checklist page.");
+
             // Go back to main
             _driver.Navigate().Back();
         }

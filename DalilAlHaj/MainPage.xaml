@@ -48,6 +48,7 @@
             <VerticalStackLayout Padding="20" Spacing="20">
                 <!-- Search Bar -->
                 <Border x:Name="SearchBarFrame"
+                        AutomationId="SearchBarFrameID"
                         StrokeShape="RoundRectangle 25"
                         StrokeThickness="0"
                         Background="{AppThemeBinding Light=#FFFFFF, Dark=#2C2C2E}"
@@ -109,6 +110,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border
+                                AutomationId="CategoryItem"
                                 StrokeShape="RoundRectangle 15"
                                 BackgroundColor="{Binding Color}"
                                 Padding="0"
@@ -117,18 +119,21 @@
                                     <Shadow Brush="Black" Opacity="0.3" Radius="8" Offset="0,2" />
                                 </Border.Shadow>
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnCategoryTapped"
+                                    <TapGestureRecognizer Tapped="OnCategoryTapped" 
+                                                          AutomationId="CategoryTapGesture"
                                                           CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
                                 <VerticalStackLayout Padding="20"
                                                      Spacing="10"
                                                      HeightRequest="160">
                                     <Label Text="{Binding Icon}"
+                                           AutomationId="CategoryIcon"
                                            FontSize="48"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center" />
 
                                     <Label Text="{Binding Name}"
+                                           AutomationId="CategoryNameLabel"
                                            FontSize="16"
                                            FontAttributes="Bold"
                                            HorizontalOptions="Center"
