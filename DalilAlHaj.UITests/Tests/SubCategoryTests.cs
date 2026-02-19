@@ -8,22 +8,23 @@ namespace DalilAlHaj.UITests.Tests
     [TestFixture]
     public class SubCategoryTests : AppiumSetup
     {
+        private const string Pkg = "com.companyname.dalilalhaj:id/";
+
         [Test]
         public void SubCategory_ShouldListItems()
         {
-            // 1. Navigate to a category (e.g., Umrah)
-            var categoryElement = _driver.FindElement(By.XPath("//android.widget.TextView[@text='Umrah']")); 
+            // 1. Navigate to the first category (Arabic: التحضير للحج)
+            var categoryElement = _driver.FindElement(By.XPath("//android.widget.TextView[@text='التحضير للحج']"));
             categoryElement.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
             // 2. Check for Collection View of subcategories
-            var collection = _driver.FindElement(By.XPath("//*[@content-desc='SubCategoriesCollectionID']"));
-            Assert.IsNotNull(collection);
+            var collection = _driver.FindElement(By.Id(Pkg + "SubCategoriesCollectionID"));
+            Assert.IsNotNull(collection, "SubCategories collection not found.");
 
-            // 3. Check for at least one sub-item (e.g. Ihram, Tawaf)
-            // Searching by text is often easiest for dynamic lists
-            var subItem = _driver.FindElement(By.XPath("//android.widget.TextView[@text='Tawaf']"));
-            Assert.IsNotNull(subItem);
+            // 3. Check for at least one sub-item (Arabic: شروط الحج)
+            var subItem = _driver.FindElement(By.XPath("//android.widget.TextView[@text='شروط الحج']"));
+            Assert.IsNotNull(subItem, "Subcategory 'شروط الحج' not found.");
 
             // Go Back
             _driver.Navigate().Back();

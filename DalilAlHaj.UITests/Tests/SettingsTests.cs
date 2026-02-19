@@ -8,25 +8,27 @@ namespace DalilAlHaj.UITests.Tests
     [TestFixture]
     public class SettingsTests : AppiumSetup
     {
+        private const string Pkg = "com.companyname.dalilalhaj:id/";
+
         [Test]
         public void Settings_ShouldAllowChangingLanguageAndTheme()
         {
             // 1. Navigate to Settings
-            // Assuming Settings button on MainPage has ID from previous edit
-            var settingsButton = _driver.FindElement(By.XPath("//*[@content-desc='SettingsButtonID']"));
+            var settingsButton = _driver.FindElement(By.Id(Pkg + "SettingsButtonID"));
             settingsButton.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
-            // 2. Change Font Size (Click Button)
-            var fontButton = _driver.FindElement(By.XPath("//*[@content-desc='FontSizeMediumID']"));
-            fontButton.Click();
-            
-            // 3. Toggle Dark Mode
-            var themeSwitch = _driver.FindElement(By.XPath("//*[@content-desc='DarkModeSwitchID']"));
-            themeSwitch.Click();
+            // 2. Verify Language Picker exists
+            var languagePicker = _driver.FindElement(By.Id(Pkg + "LanguagePickerID"));
+            Assert.IsNotNull(languagePicker, "Language picker not found.");
 
-            // 4. Verify no crash and elements still exist
-            Assert.IsNotNull(_driver.FindElement(By.XPath("//*[@content-desc='LanguagePickerID']")));
+            // 3. Toggle Dark Mode (re-find element right before clicking to avoid stale ref)
+            _driver.FindElement(By.Id(Pkg + "DarkModeSwitchID")).Click();
+            Thread.Sleep(1500); // Wait for theme re-render
+
+            // 4. Change Font Size - re-find after possible re-render
+            _driver.FindElement(By.Id(Pkg + "FontSizeMediumID")).Click();
+            Thread.Sleep(500);
 
             // Go back
             _driver.Navigate().Back();
