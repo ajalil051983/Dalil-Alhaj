@@ -1,5 +1,5 @@
-# دليل الحاج - ميزات التطبيق
-## Dalil AlHaj App - Features Documentation
+# زاد الحاج - ميزات التطبيق
+## Zad Alhaj App - Features Documentation
 
 ### 📱 نظرة عامة / Overview
 تطبيق شامل لإرشاد الحجاج باللهجة المغربية (الدارجة)، يوفر دليل كامل لأداء مناسك الحج وفق المذهب المالكي.
@@ -137,7 +137,7 @@ All 24 subcategories are flagged for future audio content.
 - Includes:
   - Subcategory title
   - Full content
-  - App attribution: "من تطبيق: دليل الحاج"
+  - App attribution: "من تطبيق: زاد الحاج"
 - Works with: WhatsApp, Email, SMS, etc.
 
 ---
@@ -161,7 +161,7 @@ Three size options:
 - Persistent setting
 
 #### ℹ️ معلومات التطبيق / App Info:
-- App name: دليل الحاج
+- App name: زاد الحاج
 - Version: 1.0.0
 - Developer: تطبيق إرشادي شامل للحجاج
 
@@ -195,51 +195,60 @@ Four prominent buttons in 2x2 grid:
 - **Target SDK: 35** (Android 14+)
 
 ### NuGet Packages:
-- `Microsoft.Maui.Controls` 9.0.60
-- `Microsoft.Maui.Controls.Maps` 9.0.60
+- `Microsoft.Maui.Controls` (MauiVersion)
 - `CommunityToolkit.Maui` 9.1.0
 - `CommunityToolkit.Maui.MediaElement` 4.1.0
+- `CommunityToolkit.Mvvm` 8.4.0
+- `Mapsui` / `Mapsui.Maui` 5.0.0
+- `sqlite-net-pcl` 1.9.172  ← **new**
+- `SQLitePCLRaw.bundle_green` 2.1.10  ← **new**
 
 ### Architecture:
 - **MVVM-lite pattern**
-- **Service layer**: DataService, FavoritesService
-- **JSON data storage**: categories.json
+- **Service layer**: DataService, DatabaseService (new), FavoritesService
+- **SQLite data storage**: `ZadAlhaj.db3` (seeded from JSON on first launch)
+- **JSON bundles** (`categories.json`, `categories-en.json`, `categories-fr.json`): used only for first-run seeding
 - **Persistent settings**: Preferences API
 
 ---
 
 ## 📂 هيكل البيانات / Data Structure
 
-### categories.json:
-```json
-{
-  "categories": [
-    {
-      "id": 1,
-      "nameAr": "التحضير للحج",
-      "icon": "✈️",
-      "color": "#3498DB",
-      "subCategories": [
-        {
-          "id": 1,
-          "nameAr": "الوثائق المطلوبة",
-          "icon": "📄",
-          "content": "...",
-          "hasAudio": true
-        },
-        ...
-      ]
-    },
-    ...
-  ]
-}
+### SQLite Database (`ZadAlhaj.db3`):
+
+Data is stored in a local SQLite database with two tables:
+
+**Categories table:**
+```sql
+Id | NameAr | NameEn | NameFr | Icon | Color
 ```
+
+**SubCategories table:**
+```sql
+Id | CategoryId | NameAr | NameEn | NameFr | Icon
+   | ContentAr  | ContentEn | ContentFr | HasAudio
+```
+
+> All three language translations are stored in a single row.  
+> `DataService` selects the right `Content*` column at query time.
+
+### JSON Seed Files (first-run only):
+
+| File | Language |
+|---|---|
+| `categories.json` | Arabic |
+| `categories-en.json` | English |
+| `categories-fr.json` | French |
+
+These files are still bundled in the app and are merged into SQLite on first launch.
 
 **Structure:**
 - 6 categories
 - 24 subcategories (4 per category)
-- Each with icon, color, and detailed content
+- Full multilingual content (Arabic + English + French)
 - Audio flags for future expansion
+
+> See [SQLITE_MIGRATION.md](SQLITE_MIGRATION.md) for the full migration guide.
 
 ---
 

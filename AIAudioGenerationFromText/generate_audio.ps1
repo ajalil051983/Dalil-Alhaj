@@ -18,7 +18,7 @@ Write-Host "✓ Dependencies ready" -ForegroundColor Green
 Write-Host ""
 
 # Change to the directory with categories.json
-Set-Location "d:\Ai workspace\Dalil Alhaj\DalilAlHaj\Resources\Raw"
+Set-Location "d:\Ai workspace\Dalil Alhaj\ZadAlhaj\Resources\Raw"
 
 Write-Host "Generating audio files..." -ForegroundColor Yellow
 Write-Host ""
@@ -80,7 +80,7 @@ Write-Host "============================================" -ForegroundColor Green
 Write-Host "Audio generation complete!" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "Audio files are in: DalilAlHaj\Resources\Raw\audio\" -ForegroundColor Cyan
+Write-Host "Audio files are in: ZadAlhaj\Resources\Raw\audio\" -ForegroundColor Cyan
 Write-Host "Now rebuild your app to include the audio files." -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Press any key to exit..."
