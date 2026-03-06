@@ -115,6 +115,8 @@ namespace ZadAlhaj.Services
                     return _database;
 
                 var dbPath = Path.Combine(FileSystem.AppDataDirectory, DbFileName);
+               System.Diagnostics.Debug.WriteLine(
+                $"[DB PATH] {dbPath} (exists: {File.Exists(dbPath)})");
                 _database = new SQLiteAsyncConnection(
                     dbPath,
                     SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);

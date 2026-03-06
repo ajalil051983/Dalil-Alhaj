@@ -24,7 +24,7 @@
         <Label x:Name="ResultsLabel" 
                Text="{x:Static res:AppResources.SearchPrompt}" 
                FontSize="16"
-               TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+               TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#AEAEB2}"
                Margin="10,10,0,0" />
 
         <CollectionView x:Name="ResultsCollection"

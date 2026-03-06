@@ -11,7 +11,7 @@
             <Border x:Name="HeaderFrame"
                     Stroke="#BDC3C7"
                     StrokeThickness="1"
-                    Background="{AppThemeBinding Light=#2C3E50, Dark=#1E1E1E}"
+                    Background="{AppThemeBinding Light=#2C3E50, Dark=#2C2C2E}"
                     Margin="0"
                     Padding="20"
                     StrokeShape="RoundRectangle 15">

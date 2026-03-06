@@ -351,8 +351,92 @@
   <data name="Mina" xml:space="preserve">
     <value>🏕️ منى</value>
   </data>
-  <data name="SafaMarwa" xml:space="preserve">
-    <value>🚶 الصفا والمروة</value>
+  <data name="Safa" xml:space="preserve">
+    <value>🚶 الصفا</value>
+  </data>
+  <data name="Marwa" xml:space="preserve">
+    <value>🚶 المروة</value>
+  </data>
+  <data name="Qibla" xml:space="preserve">
+    <value>القبلة</value>
+  </data>
+  <data name="ShareLocation" xml:space="preserve">
+    <value>📍 مشاركة الموقع</value>
+  </data>
+  <data name="MyLocation" xml:space="preserve">
+    <value>موقعي</value>
+  </data>
+  <data name="ViewGuide" xml:space="preserve">
+    <value>📖 عرض الدليل</value>
+  </data>
+  <data name="GettingLocation" xml:space="preserve">
+    <value>📍 جارٍ تحديد الموقع...</value>
+  </data>
+  <data name="ShareMyLocation" xml:space="preserve">
+    <value>مشاركة موقعي</value>
+  </data>
+  <data name="MyCurrentLocation" xml:space="preserve">
+    <value>موقعي الحالي</value>
+  </data>
+  <data name="LocationPermissionRequired" xml:space="preserve">
+    <value>يجب السماح بالوصول إلى الموقع لمشاركته</value>
+  </data>
+  <data name="UnableToGetLocation" xml:space="preserve">
+    <value>تعذر تحديد موقعك، يرجى المحاولة مرة أخرى</value>
+  </data>
+  <data name="LocationSharingNotSupported" xml:space="preserve">
+    <value>مشاركة الموقع غير مدعومة على هذا الجهاز</value>
+  </data>
+  <data name="LocationPermissionDenied" xml:space="preserve">
+    <value>تم رفض إذن الموقع</value>
+  </data>
+  <data name="ErrorSharingLocation" xml:space="preserve">
+    <value>خطأ في مشاركة الموقع</value>
+  </data>
+  <data name="NoGuideContentFound" xml:space="preserve">
+    <value>لا يوجد محتوى دليل لهذا الموقع</value>
+  </data>
+  <data name="CouldNotOpenGuide" xml:space="preserve">
+    <value>تعذر فتح الدليل لـ</value>
+  </data>
+  <data name="Walking" xml:space="preserve">
+    <value>🚶 مشي</value>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>🚗 قيادة</value>
+  </data>
+  <data name="OfflineRouteWarning" xml:space="preserve">
+    <value>لا يوجد اتصال، يتم عرض المسار المباشر</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>خط العرض</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>خط الطول</value>
+  </data>
+  <data name="KaabaDesc" xml:space="preserve">
+    <value>بيت الله الحرام، محور الطواف</value>
+  </data>
+  <data name="ArafatDesc" xml:space="preserve">
+    <value>موقف عرفة، ركن الحج الأعظم</value>
+  </data>
+  <data name="MuzdalifahDesc" xml:space="preserve">
+    <value>مزدلفة، مبيت وجمع الحصى</value>
+  </data>
+  <data name="MinaDesc" xml:space="preserve">
+    <value>منى، مبيت ورمي الجمرات</value>
+  </data>
+  <data name="SafaDesc" xml:space="preserve">
+    <value>جبل الصفا، بداية السعي</value>
+  </data>
+  <data name="MarwaDesc" xml:space="preserve">
+    <value>جبل المروة، نهاية السعي</value>
+  </data>
+  <data name="RouteInfo" xml:space="preserve">
+    <value>معلومات المسار</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>📖 اقرأ المزيد</value>
   </data>
   <data name="SearchPrompt" xml:space="preserve">
     <value>اكتب للبحث...</value>

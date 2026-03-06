@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36" height="50" viewBox="0 0 36 50" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- Shadow -->
+    <ellipse cx="18" cy="48" rx="10" ry="2" fill="#000000" opacity="0.3"/>
+    <!-- Outer glow ring (accuracy indicator) -->
+    <circle cx="18" cy="20" r="18" fill="#2196F3" opacity="0.15"/>
+    <!-- Body circle background -->
+    <circle cx="18" cy="20" r="12" fill="#2196F3" stroke="#FFFFFF" stroke-width="2.5"/>
+    <!-- Pilgrim silhouette - person in ihram -->
+    <!-- Head -->
+    <circle cx="18" cy="14" r="3.5" fill="#FFFFFF"/>
+    <!-- Body (ihram garment) -->
+    <path d="M13 18 C13 17 15 16 18 16 C21 16 23 17 23 18 L23 26 C23 27 21 28 18 28 C15 28 13 27 13 26 Z" 
+          fill="#FFFFFF" opacity="0.95"/>
+    <!-- Direction indicator arrow -->
+    <polygon points="18,6 14,11 22,11" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+</svg>

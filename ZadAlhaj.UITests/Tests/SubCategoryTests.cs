@@ -8,7 +8,7 @@ namespace ZadAlhaj.UITests.Tests
     [TestFixture]
     public class SubCategoryTests : AppiumSetup
     {
-        private const string Pkg = "com.companyname.ZadAlhaj:id/";
+        private const string Pkg = "com.ilafalkhayr.zadalhaj:id/";
 
         [Test]
         public void SubCategory_ShouldListItems()

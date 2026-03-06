@@ -1,67 +1,124 @@
-# Steps to Fix and Run the Appium Test
+# Build and Test Instructions
 
-## Root Cause
-The test was failing because the Android app crashes on launch due to **MAUI Fast Deployment**. When Appium installs the APK (outside Visual Studio), the assemblies are missing, causing this error:
-```
-No assemblies found in '/data/user/0/com.companyname.zadalhaj/files/.__override__/x86_64'
-```
+## Current Status ✅
+All **8 UI tests pass** as of March 2026.
 
-## Solution Already Applied ?
-1. **AndroidManifest.xml** - Added queries for Appium server packages
-2. **ZadAlhaj.csproj** - Already has `<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>` 
-3. **AppiumSetup.cs** - Fixed syntax error and configured for Debug APK
-4. All necessary Appium configurations and timeouts are in place
+## Project Identity
+| Property | Value |
+|---|---|
+| Package ID | `com.ilafalkhayr.zadalhaj` |
+| MainActivity | `crc640e514d85339b6ec1.MainActivity` |
+| APK path | `ZadAlhaj/bin/Release/net10.0-android/com.ilafalkhayr.zadalhaj-Signed.apk` |
+| Appium version | 3.2.0 |
+| Node version | v22.15.1 |
+| Target framework | net10.0-android |
 
-## Steps to Run the Test
+---
 
-### Step 1: Build the Android App
-You **MUST** build the Android app first. In Visual Studio:
+## Step 1: Start the Android Emulator
 
-**Option A - Using Visual Studio UI:**
-1. In Solution Explorer, **right-click** on the `ZadAlhaj` project
-2. Select **Build** (or press Ctrl+Shift+B with the project selected)
-3. Make sure it's building for **net10.0-android** (check the dropdown at the top)
-
-**Option B - Using Developer Command Prompt:**
+Launch an AVD from Android Studio's Device Manager, or use the helper script:
 ```powershell
-msbuild "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\ZadAlhaj.csproj" /t:Build /p:TargetFramework=net10.0-android /p:Configuration=Debug
+.\Start-Emulator.ps1
 ```
+Wait until `adb devices` shows `emulator-5554   device`.
 
-**Option C - Using dotnet CLI (if above don't work):**
+---
+
+## Step 2: Build the Release APK
+
+> **Must be Release** — Debug builds use MAUI Fast Deployment and will crash when
+> installed by Appium (assemblies are not bundled in the APK).
+
 ```powershell
-dotnet publish "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\ZadAlhaj.csproj" -f net10.0-android -c Debug
+dotnet build "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\ZadAlhaj.csproj" `
+    -f net10.0-android -c Release
 ```
 
-### Step 2: Verify the APK was Created
-Run this command to check:
+Expected output: `La génération a réussi. 0 Erreur(s)` (or "Build succeeded. 0 Error(s)" in English).
+
+Verify the APK exists:
 ```powershell
-Test-Path "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\bin\Debug\net10.0-android\com.companyname.zadalhaj-Signed.apk"
+Test-Path "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\bin\Release\net10.0-android\com.ilafalkhayr.zadalhaj-Signed.apk"
+# Should return: True
 ```
 
-Should return: `True`
+---
 
-### Step 3: Run the Appium Test
+## Step 3: Install the APK on the Emulator
+
+Appium is configured with `noReset: true` (no reinstall each session), so the APK must be
+pre-installed manually once per emulator wipe:
+
 ```powershell
-dotnet test "D:\Ai workspace\Dalil Alhaj\ZadAlhaj.UITests\ZadAlhaj.UITests.csproj" --filter "FullyQualifiedName~Categories_ShouldLoadAndDisplay"
+$env:ANDROID_HOME = "C:\PROGRA~2\Android\ANDROI~1"
+$env:Path += ";$env:ANDROID_HOME\platform-tools"
+adb -s emulator-5554 install -r "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\bin\Release\net10.0-android\com.ilafalkhayr.zadalhaj-Signed.apk"
 ```
 
-## Why This Should Work Now
+---
 
-1. ? `EmbedAssembliesIntoApk=true` forces all assemblies to be packaged in the APK
-2. ? AndroidManifest.xml has the required `<queries>` element for Appium interaction  
-3. ? AppiumSetup.cs is configured with proper timeouts for MAUI apps
-4. ? Syntax error in AppiumSetup.cs has been fixed
+## Step 4: Start Appium Server
 
-## If Test Still Fails
-
-Check the Appium server output for specific errors, or run:
+Use the provided script (already patched for Windows 8.3 paths):
 ```powershell
-adb logcat -c  # Clear logs
-# Run the test
-adb shell "cat /data/tombstones/tombstone_*" | Select-Object -Last 100  # Check for crashes
+.\Start-Appium.ps1
 ```
 
-## Files Modified
-- ? `ZadAlhaj\Platforms\Android\AndroidManifest.xml`
-- ? `ZadAlhaj.UITests\AppiumSetup.cs`
-- ? `ZadAlhaj\ZadAlhaj.csproj` (already had the fix)
+Or manually:
+```powershell
+$env:ANDROID_HOME = "C:\PROGRA~2\Android\ANDROI~1"
+$env:Path += ";$env:ANDROID_HOME\platform-tools"
+node "$env:APPDATA\fnm\node-versions\v22.15.1\installation\node_modules\appium\index.js" --allow-cors
+```
+
+Expected: `Appium REST http interface listener started on http://0.0.0.0:4723`
+
+---
+
+## Step 5: Run the Tests
+
+Run all 8 UI tests:
+```powershell
+dotnet test "D:\Ai workspace\Dalil Alhaj\ZadAlhaj.UITests\ZadAlhaj.UITests.csproj"
+```
+
+Run a single test:
+```powershell
+dotnet test "D:\Ai workspace\Dalil Alhaj\ZadAlhaj.UITests\ZadAlhaj.UITests.csproj" `
+    --filter "FullyQualifiedName~Categories_ShouldLoadAndDisplay"
+```
+
+Expected result: **8 passed, 0 failed**.
+
+---
+
+## Test Suite Overview
+
+| Test File | Test Name | What It Verifies |
+|---|---|---|
+| `CategoriesTests.cs` | `Categories_ShouldLoadAndDisplay` | Category grid renders on MainPage |
+| `CategoriesTests.cs` | `SelectingCategory_ShouldNavigateToSubCategories` | Tap category → SubCategoryPage |
+| `SubCategoryTests.cs` | `SubCategory_ShouldListItems` | SubCategoriesCollection loads |
+| `ChecklistTests.cs` | `Checklist_ShouldToggleItems_AndUpdateProgress` | CheckBox + ProgressBar |
+| `SearchTests.cs` | `SearchBar_ShouldExistAndAcceptText` | SearchBar accepts Arabic text |
+| `FavoritesTests.cs` | `AddToFavorites_ShouldPersist_AndShowInFavoritesList` | FavoriteButton on detail page |
+| `MapTests.cs` | `Map_ShouldLoad` | MapControl renders |
+| `SettingsTests.cs` | `Settings_ShouldAllowChangingLanguageAndTheme` | Picker, Switch, font buttons |
+
+---
+
+## Key Configuration (AppiumSetup.cs)
+
+```csharp
+appPackage  = "com.ilafalkhayr.zadalhaj"
+appActivity = "crc640e514d85339b6ec1.MainActivity"
+noReset     = true    // app must be pre-installed (Step 3)
+forceAppLaunch = true // restart app each test
+```
+
+---
+
+## If Tests Fail
+
+See [TROUBLESHOOTING_APPIUM.md](TROUBLESHOOTING_APPIUM.md) for known issues and fixes.

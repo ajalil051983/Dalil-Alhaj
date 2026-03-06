@@ -113,12 +113,15 @@ namespace ZadAlhaj.Pages
                 }
                 else if (child is Label label)
                 {
+                    // Match both light and dark values so dark→light transitions also work
                     if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                        label.TextColor == Color.FromArgb("#34495E"))
+                        label.TextColor == Color.FromArgb("#34495E") ||
+                        label.TextColor == Color.FromArgb("#F5F5F5"))
                     {
                         label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
                     }
-                    else if (label.TextColor == Color.FromArgb("#7F8C8D"))
+                    else if (label.TextColor == Color.FromArgb("#7F8C8D") ||
+                             label.TextColor == Color.FromArgb("#AEAEB2"))
                     {
                         label.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
                     }

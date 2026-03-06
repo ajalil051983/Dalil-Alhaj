@@ -8,17 +8,58 @@ using Mapsui.Tiling;
 using Mapsui.UI.Maui;
 using Mapsui.Widgets;
 using NetTopologySuite.Geometries;
+using ZadAlhaj.Resources.Localization;
 
 namespace ZadAlhaj.Pages
 {
     public partial class MapPage : ContentPage
     {
-        private const string ErrorTitle = "Error";
-
         private ILayer? userLocationLayer;
+        private ILayer? _routeLayer;
         private bool _isMapInitialized = false;
         private Microsoft.Maui.Devices.Sensors.Location? _userLocation;
         private string? _selectedLocationName;
+        private string? _selectedLocationKey;
+        private string _routeProfile = "foot";
+        private readonly Services.RoutingService _routingService = new();
+
+        // Cached guide data for Read More navigation
+        private Models.Category? _guideCategory;
+        private Models.SubCategory? _guideSubCategory;
+
+        // Direct mapping: locationKey -> (CategoryId, SubCategoryId)
+        private static readonly Dictionary<string, (int CatId, int SubId)> LocationGuideMap = new()
+        {
+            { "kaaba",       (3, 303) },
+            { "arafat",      (3, 302) },
+            { "muzdalifah",  (4, 401) },
+            { "mina",        (4, 402) },
+            { "safa",        (3, 304) },
+            { "marwa",       (3, 304) }
+        };
+
+        // Location key -> description resource
+        private static string GetLocationDescription(string key) => key switch
+        {
+            "kaaba"      => AppResources.KaabaDesc,
+            "arafat"     => AppResources.ArafatDesc,
+            "muzdalifah" => AppResources.MuzdalifahDesc,
+            "mina"       => AppResources.MinaDesc,
+            "safa"       => AppResources.SafaDesc,
+            "marwa"      => AppResources.MarwaDesc,
+            _            => string.Empty
+        };
+
+        // Hajj waypoints for routing
+        private static readonly List<(double Lat, double Lon)> HajjWaypoints = new()
+        {
+            (21.4225, 39.8262),   // Kaaba
+            (21.412275901764442, 39.89094110039919), // Mina
+            (21.354070042012918, 39.98500670973953),   // Arafat
+            (21.392408688619156, 39.91010931758093),   // Muzdalifah
+            (21.413052539985806, 39.89021580688235), // Mina (return)
+            (21.4225, 39.8262)    // Kaaba (return)
+        };
 
         public MapPage()
         {
@@ -35,6 +76,7 @@ namespace ZadAlhaj.Pages
                 await InitializeMapAsync();
                 _isMapInitialized = true;
                 _ = RequestLocationPermissionAndShowUserLocationAsync();
+                _ = LoadOsrmRouteAsync(); // Load OSRM route after map init
             }
             
             // Start compass
@@ -96,9 +138,9 @@ namespace ZadAlhaj.Pages
                     // Add OpenStreetMap tile layer (no API key required!)
                     map.Layers.Add(OpenStreetMap.CreateTileLayer());
 
-                    // Add Hajj route line layer
-                    var routeLayer = CreateRouteLayer();
-                    map.Layers.Add(routeLayer);
+                    // Add Hajj route line layer (will be replaced by OSRM route)
+                    _routeLayer = CreateFallbackRouteLayer();
+                    map.Layers.Add(_routeLayer);
 
                     // Add Hajj location pins
                     var pinLayer = CreatePinLayer();
@@ -144,65 +186,74 @@ namespace ZadAlhaj.Pages
             }
         }
 
-        private MemoryLayer CreateRouteLayer()
+        private MemoryLayer CreateFallbackRouteLayer()
         {
-            // Define Hajj route sequence (Kaaba -> Mina -> Arafat -> Muzdalifah -> Mina -> Kaaba)
-            var routePoints = new[]
-            {
-                new { Lat = 21.4225, Lon = 39.8262 }, // Kaaba
-                new { Lat = 21.412275901764442, Lon = 39.89094110039919 }, // Mina
-                new { Lat = 21.3547, Lon = 39.9839 }, // Arafat
-                new { Lat = 21.4069, Lon = 39.9375 }, // Muzdalifah
-                new { Lat = 21.412275901764442, Lon = 39.89094110039919 }, // Mina (return)
-                new { Lat = 21.4225, Lon = 39.8262 }  // Kaaba (return for Tawaf)
-            };
-
-            // Convert to map coordinates
-            var coordinates = routePoints
+            // Straight-line fallback route (used when OSRM is unavailable)
+            var coordinates = HajjWaypoints
                 .Select(p => SphericalMercator.FromLonLat(p.Lon, p.Lat))
                 .Select(coord => new Coordinate(coord.x, coord.y))
                 .ToArray();
 
-            // Create line string
             var lineString = new LineString(coordinates);
+            var feature = new GeometryFeature { Geometry = lineString };
 
-            // Create feature
-            var feature = new GeometryFeature
-            {
-                Geometry = lineString
-            };
-
-            // Create line style
             feature.Styles.Add(new VectorStyle
             {
-                Line = new Pen(Mapsui.Styles.Color.FromString("#E74C3C"), 5)
+                Line = new Pen(Mapsui.Styles.Color.FromString("#3498DB"), 4)
                 {
-                    PenStyle = PenStyle.Solid,
+                    PenStyle = PenStyle.Dash,
                     PenStrokeCap = PenStrokeCap.Round
                 }
             });
 
-            // Create memory layer
-            var layer = new MemoryLayer
+            return new MemoryLayer
             {
                 Name = "Hajj Route",
                 Features = new[] { feature },
                 Style = null
             };
+        }
 
-            return layer;
+        private MemoryLayer CreateOsrmRouteLayer(List<(double Lat, double Lon)> routeCoords, bool isDriving)
+        {
+            var coordinates = routeCoords
+                .Select(p => SphericalMercator.FromLonLat(p.Lon, p.Lat))
+                .Select(coord => new Coordinate(coord.x, coord.y))
+                .ToArray();
+
+            var lineString = new LineString(coordinates);
+            var feature = new GeometryFeature { Geometry = lineString };
+
+            // Walking = dashed blue, Driving = solid green
+            feature.Styles.Add(new VectorStyle
+            {
+                Line = new Pen(
+                    Mapsui.Styles.Color.FromString(isDriving ? "#27AE60" : "#3498DB"), 4)
+                {
+                    PenStyle = isDriving ? PenStyle.Solid : PenStyle.Dash,
+                    PenStrokeCap = PenStrokeCap.Round
+                }
+            });
+
+            return new MemoryLayer
+            {
+                Name = "Hajj Route",
+                Features = new[] { feature },
+                Style = null
+            };
         }
 
         private MemoryLayer CreatePinLayer()
         {
-            // Define Hajj locations with colors matching the SVG pins
+            // Define Hajj locations with colors and location keys for guide mapping
             var locations = new[]
             {
-                new { Name = ZadAlhaj.Resources.Localization.AppResources.Kaaba, Lat = 21.4225, Lon = 39.8262, Color = "#E74C3C" }, // Red
-                new { Name = ZadAlhaj.Resources.Localization.AppResources.Arafat, Lat = 21.3547, Lon = 39.9839, Color = "#3498DB" }, // Blue
-                new { Name = ZadAlhaj.Resources.Localization.AppResources.Muzdalifah, Lat = 21.4069, Lon = 39.9375, Color = "#9B59B6" }, // Purple
-                new { Name = ZadAlhaj.Resources.Localization.AppResources.Mina, Lat = 21.413052539985806, Lon = 39.89021580688235, Color = "#27AE60" }, // Green
-                new { Name = ZadAlhaj.Resources.Localization.AppResources.SafaMarwa, Lat = 21.4233, Lon = 39.8266, Color = "#E67E22" } // Orange
+                new { Name = AppResources.Kaaba, Key = "kaaba", Lat = 21.4225, Lon = 39.8262, Color = "#E74C3C" }, // Red
+                new { Name = AppResources.Arafat, Key = "arafat", Lat = 21.354070042012918, Lon = 39.98500670973953, Color = "#3498DB" }, // Blue
+                new { Name = AppResources.Muzdalifah, Key = "muzdalifah", Lat = 21.392408688619156, Lon = 39.91010931758093, Color = "#9B59B6" }, // Purple
+                new { Name = AppResources.Mina, Key = "mina", Lat = 21.413052539985806, Lon = 39.89021580688235, Color = "#27AE60" }, // Green
+                new { Name = AppResources.Safa, Key = "safa", Lat = 21.421814, Lon = 39.827207, Color = "#E67E22" }, // Orange
+                new { Name = AppResources.Marwa, Key = "marwa", Lat = 21.424796, Lon = 39.827194, Color = "#1ABC9C" } // Teal
             };
 
             var features = locations.Select(location =>
@@ -210,6 +261,7 @@ namespace ZadAlhaj.Pages
                 var point = SphericalMercator.FromLonLat(location.Lon, location.Lat);
                 var feature = new PointFeature(point.ToMPoint());
                 feature["name"] = location.Name;
+                feature["locationKey"] = location.Key;
                 feature["lat"] = location.Lat;
                 feature["lon"] = location.Lon;
                 
@@ -304,17 +356,19 @@ namespace ZadAlhaj.Pages
 
             // Create feature using PointFeature
             var feature = new PointFeature(point.ToMPoint());
-            feature["name"] = ZadAlhaj.Resources.Localization.AppResources.YourLocation;
+            feature["name"] = AppResources.YourLocation;
 
-            // Use blue circle for current location
+            // Semi-transparent accuracy ring
             feature.Styles.Add(new SymbolStyle
             {
-                SymbolScale = 1.2,
+                SymbolScale = 2.0,
                 SymbolType = SymbolType.Ellipse,
-                Fill = new Mapsui.Styles.Brush(Mapsui.Styles.Color.FromString("#2196F3")),
-                Outline = new Pen(Mapsui.Styles.Color.White, 4),
-                RelativeOffset = new RelativeOffset(0.0, 0.5)
+                Fill = new Mapsui.Styles.Brush(new Mapsui.Styles.Color(33, 150, 243, 40)), // Blue with low opacity
+                Outline = new Pen(new Mapsui.Styles.Color(33, 150, 243, 80), 1),
             });
+
+            // Pilgrim-style user marker with layered styles
+            AddFallbackPilgrimStyle(feature);
 
             // Create memory layer
             return new MemoryLayer
@@ -323,6 +377,20 @@ namespace ZadAlhaj.Pages
                 Features = new[] { feature },
                 Style = null
             };
+        }
+
+        private static void AddFallbackPilgrimStyle(PointFeature feature)
+        {
+            // Pilgrim icon using Mapsui v5 ImageStyle with embedded SVG resource
+            feature.Styles.Add(new ImageStyle
+            {
+                Image = new Mapsui.Styles.Image
+                {
+                    Source = "embedded://ZadAlhaj.Resources.Images.pilgrim_location.svg",
+                },
+                SymbolScale = 0.8,
+                RelativeOffset = new RelativeOffset(0.0, 0.35),
+            });
         }
 
         protected override void OnDisappearing()
@@ -336,21 +404,10 @@ namespace ZadAlhaj.Pages
                 Compass.Default.Stop();
             }
             
-            // Clean up map resources
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                try
-                {
-                    if (HajjMapControl?.Map != null)
-                    {
-                        HajjMapControl.Map.Dispose();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error disposing map: {ex.Message}");
-                }
-            });
+            // Do NOT dispose the map here — OnDisappearing fires when pushing
+            // a new page (e.g. Read More → ContentDetailPage). Disposing the map
+            // would leave it blank when the user navigates back, because
+            // _isMapInitialized prevents re-initialization in OnAppearing.
         }
 
         // ==================== Interactive Pin Popup ====================
@@ -369,13 +426,23 @@ namespace ZadAlhaj.Pages
                 {
                     var feature = mapInfo.Feature;
                     var name = feature["name"]?.ToString();
+                    var locationKey = feature["locationKey"]?.ToString();
                     
-                    if (!string.IsNullOrEmpty(name) && name != ZadAlhaj.Resources.Localization.AppResources.YourLocation)
+                    if (!string.IsNullOrEmpty(name) && name != AppResources.YourLocation)
                     {
                         _selectedLocationName = name;
+                        _selectedLocationKey = locationKey;
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
+                            // Reset expanded guide state when opening a new pin
+                            ResetGuidePopupState();
+                            
                             PopupTitle.Text = name;
+                            
+                            // Set location description
+                            PopupDescription.Text = !string.IsNullOrEmpty(locationKey) 
+                                ? GetLocationDescription(locationKey) 
+                                : string.Empty;
                             
                             // Calculate distance and ETA if user location is known
                             if (_userLocation != null && feature["lat"] != null && feature["lon"] != null)
@@ -443,46 +510,77 @@ namespace ZadAlhaj.Pages
         private void OnClosePopupClicked(object? sender, EventArgs e)
         {
             LocationPopup.IsVisible = false;
+            ResetGuidePopupState();
         }
 
         private async void OnViewGuideClicked(object? sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_selectedLocationName))
+            if (string.IsNullOrEmpty(_selectedLocationKey))
                 return;
 
             try
             {
-                // Try to find a category/subcategory matching the selected location
-                var dataService = new Services.DataService();
-                var categories = await dataService.GetCategoriesAsync();
-                
-                foreach (var category in categories)
+                // Use direct location-to-category ID mapping
+                if (LocationGuideMap.TryGetValue(_selectedLocationKey, out var guideRef))
                 {
-                    var matchingSub = category.Subcategories
-                        .FirstOrDefault(s => s.Name.Contains(_selectedLocationName, StringComparison.OrdinalIgnoreCase)
-                                          || _selectedLocationName.Contains(s.Name, StringComparison.OrdinalIgnoreCase));
+                    var dataService = new Services.DataService();
+                    var categories = await dataService.GetCategoriesAsync();
                     
-                    if (matchingSub != null)
+                    var category = categories.FirstOrDefault(c => c.Id == guideRef.CatId);
+                    var subCategory = category?.Subcategories.FirstOrDefault(s => s.Id == guideRef.SubId);
+                    
+                    if (category != null && subCategory != null)
                     {
-                        await Navigation.PushAsync(new ContentDetailPage(category, matchingSub));
+                        // Store for Read More navigation
+                        _guideCategory = category;
+                        _guideSubCategory = subCategory;
+
+                        // Truncate content for summary preview
+                        var content = subCategory.Content ?? string.Empty;
+                        var summary = content.Length > 200
+                            ? content[..200] + "\u2026"
+                            : content;
+
+                        // Show summary + Read More, hide View Guide button
+                        GuideSummaryLabel.Text = summary;
+                        GuideSummaryLabel.IsVisible = true;
+                        ReadMoreButton.IsVisible = true;
+                        ViewGuideButton.IsVisible = false;
                         return;
                     }
                 }
                 
-                // If no exact match, inform the user
+                // If no mapping found, inform the user
                 await DisplayAlertAsync(
-                    _selectedLocationName,
-                    "No guide content found for this location.",
-                    "OK");
+                    _selectedLocationName ?? string.Empty,
+                    AppResources.NoGuideContentFound,
+                    AppResources.OK);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error navigating to guide: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error loading guide: {ex.Message}");
                 await DisplayAlertAsync(
-                    ZadAlhaj.Resources.Localization.AppResources.Error ?? ErrorTitle,
-                    $"Could not open guide for {_selectedLocationName}.",
-                    "OK");
+                    AppResources.Error,
+                    $"{AppResources.CouldNotOpenGuide} {_selectedLocationName}",
+                    AppResources.OK);
             }
+        }
+
+        private async void OnReadMoreClicked(object? sender, EventArgs e)
+        {
+            if (_guideCategory != null && _guideSubCategory != null)
+            {
+                await Navigation.PushAsync(new ContentDetailPage(_guideCategory, _guideSubCategory));
+            }
+        }
+
+        private void ResetGuidePopupState()
+        {
+            GuideSummaryLabel.IsVisible = false;
+            ReadMoreButton.IsVisible = false;
+            ViewGuideButton.IsVisible = true;
+            _guideCategory = null;
+            _guideSubCategory = null;
         }
 
         private async void OnShareLocationClicked(object sender, EventArgs e)
@@ -500,15 +598,15 @@ namespace ZadAlhaj.Pages
                 if (status != PermissionStatus.Granted)
                 {
                     await DisplayAlertAsync(
-                        ZadAlhaj.Resources.Localization.AppResources.Error ?? ErrorTitle,
-                        "Location permission is required to share your location.",
-                        "OK");
+                        AppResources.Error,
+                        AppResources.LocationPermissionRequired,
+                        AppResources.OK);
                     return;
                 }
 
                 // Show loading indicator
                 ShareLocationButton.IsEnabled = false;
-                ShareLocationButton.Text = "📍 Getting Location...";
+                ShareLocationButton.Text = AppResources.GettingLocation;
 
                 // Get current location
                 var location = await Geolocation.GetLocationAsync(new GeolocationRequest
@@ -520,52 +618,201 @@ namespace ZadAlhaj.Pages
                 if (location != null)
                 {
                     // Create shareable location text
-                    var locationText = $"My Current Location:\n" +
-                                     $"Latitude: {location.Latitude:F6}\n" +
-                                     $"Longitude: {location.Longitude:F6}\n" +
-                                     $"Google Maps: https://maps.google.com/?q={location.Latitude},{location.Longitude}";
+                    var locationText = $"{AppResources.MyCurrentLocation}:\n" +
+                                     $"{AppResources.Latitude}: {location.Latitude:F6}\n" +
+                                     $"{AppResources.Longitude}: {location.Longitude:F6}\n" +
+                                     $"Google Maps: https://www.google.com/maps/place/{location.Latitude},{location.Longitude}";
 
                     // Share the location
                     await Share.Default.RequestAsync(new ShareTextRequest
                     {
                         Text = locationText,
-                        Title = "Share My Location"
+                        Title = AppResources.ShareMyLocation
                     });
                 }
                 else
                 {
                     await DisplayAlertAsync(
-                        ZadAlhaj.Resources.Localization.AppResources.Error ?? ErrorTitle,
-                        "Unable to get your current location. Please try again.",
-                        "OK");
+                        AppResources.Error,
+                        AppResources.UnableToGetLocation,
+                        AppResources.OK);
                 }
             }
             catch (FeatureNotSupportedException)
             {
                 await DisplayAlertAsync(
-                    ZadAlhaj.Resources.Localization.AppResources.Error ?? ErrorTitle,
-                    "Location sharing is not supported on this device.",
-                    "OK");
+                    AppResources.Error,
+                    AppResources.LocationSharingNotSupported,
+                    AppResources.OK);
             }
             catch (PermissionException)
             {
                 await DisplayAlertAsync(
-                    ZadAlhaj.Resources.Localization.AppResources.Error ?? ErrorTitle,
-                    "Location permission was denied.",
-                    "OK");
+                    AppResources.Error,
+                    AppResources.LocationPermissionDenied,
+                    AppResources.OK);
             }
             catch (Exception ex)
             {
                 await DisplayAlertAsync(
-                    ZadAlhaj.Resources.Localization.AppResources.Error ?? ErrorTitle,
-                    $"Error sharing location: {ex.Message}",
-                    "OK");
+                    AppResources.Error,
+                    $"{AppResources.ErrorSharingLocation}: {ex.Message}",
+                    AppResources.OK);
             }
             finally
             {
                 // Restore button state
                 ShareLocationButton.IsEnabled = true;
-                ShareLocationButton.Text = "📍 Share Location";
+                ShareLocationButton.Text = AppResources.ShareLocation;
+            }
+        }
+
+        // ==================== Route Toggle ====================
+
+        private async void OnWalkingClicked(object? sender, EventArgs e)
+        {
+            if (_routeProfile == "foot") return;
+            _routeProfile = "foot";
+            UpdateRouteToggleUI();
+            await LoadOsrmRouteAsync();
+        }
+
+        private async void OnDrivingClicked(object? sender, EventArgs e)
+        {
+            if (_routeProfile == "car") return;
+            _routeProfile = "car";
+            UpdateRouteToggleUI();
+            await LoadOsrmRouteAsync();
+        }
+
+        private void UpdateRouteToggleUI()
+        {
+            var isWalking = _routeProfile == "foot";
+            WalkingButton.BackgroundColor = isWalking
+                ? Microsoft.Maui.Graphics.Color.FromArgb("#3498DB")
+                : Colors.Transparent;
+            WalkingButton.TextColor = isWalking
+                ? Colors.White
+                : Microsoft.Maui.Graphics.Color.FromArgb("#7F8C8D");
+            DrivingButton.BackgroundColor = !isWalking
+                ? Microsoft.Maui.Graphics.Color.FromArgb("#27AE60")
+                : Colors.Transparent;
+            DrivingButton.TextColor = !isWalking
+                ? Colors.White
+                : Microsoft.Maui.Graphics.Color.FromArgb("#7F8C8D");
+        }
+
+        private async Task LoadOsrmRouteAsync()
+        {
+            try
+            {
+                var result = await _routingService.GetRouteAsync(HajjWaypoints, _routeProfile);
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    try
+                    {
+                        // Remove old route layer
+                        if (_routeLayer != null && HajjMapControl?.Map?.Layers.Contains(_routeLayer) == true)
+                        {
+                            HajjMapControl.Map.Layers.Remove(_routeLayer);
+                        }
+
+                        if (result != null && result.Coordinates.Count > 1)
+                        {
+                            // Create route layer from OSRM geometry
+                            _routeLayer = CreateOsrmRouteLayer(result.Coordinates, _routeProfile == "car");
+                            HajjMapControl?.Map?.Layers.Insert(1, _routeLayer); // Insert above tile layer but below pins
+
+                            // Show route info
+                            RouteDistanceLabel.Text = result.FormattedDistance;
+                            RouteETALabel.Text = $"{result.FormattedDuration} {(_routeProfile == "foot" ? AppResources.Walking : AppResources.Driving)}";
+                            RouteInfoPanel.IsVisible = true;
+                        }
+                        else
+                        {
+                            // Fallback to straight-line route
+                            _routeLayer = CreateFallbackRouteLayer();
+                            HajjMapControl?.Map?.Layers.Insert(1, _routeLayer);
+                            RouteInfoPanel.IsVisible = false;
+
+                            // Show offline warning
+                            _ = DisplayAlertAsync(
+                                AppResources.RouteInfo,
+                                AppResources.OfflineRouteWarning,
+                                AppResources.OK);
+                        }
+
+                        HajjMapControl?.Map?.Refresh();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error updating route layer: {ex.Message}");
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"OSRM route loading error: {ex.Message}");
+                
+                // Fallback
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (_routeLayer != null && HajjMapControl?.Map?.Layers.Contains(_routeLayer) == true)
+                    {
+                        HajjMapControl.Map.Layers.Remove(_routeLayer);
+                    }
+                    _routeLayer = CreateFallbackRouteLayer();
+                    HajjMapControl?.Map?.Layers.Insert(1, _routeLayer);
+                    RouteInfoPanel.IsVisible = false;
+                    HajjMapControl?.Map?.Refresh();
+                });
+            }
+        }
+
+        private async void OnMyLocationClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                MyLocationButton.IsEnabled = false;
+                await RequestLocationPermissionAndShowUserLocationAsync();
+
+                if (_userLocation != null)
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        try
+                        {
+                            if (HajjMapControl?.Map?.Navigator != null)
+                            {
+                                var userPoint = SphericalMercator.FromLonLat(
+                                    _userLocation.Longitude, _userLocation.Latitude);
+                                var mPoint = new MPoint(userPoint.x, userPoint.y);
+                                HajjMapControl.Map.Navigator.CenterOn(mPoint);
+                                HajjMapControl.Map.Navigator.ZoomTo(16);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Error centering on user location: {ex.Message}");
+                        }
+                    });
+                }
+                else
+                {
+                    await DisplayAlertAsync(
+                        AppResources.UnableToGetLocation,
+                        AppResources.LocationPermissionRequired,
+                        "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"My location error: {ex.Message}");
+            }
+            finally
+            {
+                MyLocationButton.IsEnabled = true;
             }
         }
     }

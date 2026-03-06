@@ -64,37 +64,46 @@ namespace ZadAlhaj.Pages
             {
                 isApplyingTheme = true;
                 lastAppliedTheme = effectiveTheme;
-            
+
                 // Page background
                 this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
-            
-                // Update all frames
-#pragma warning disable CS0618 // Frame is obsolete
-                if (this.Content is ScrollView scrollView && 
+
+                // Update all Borders (the XAML uses Border, not Frame)
+                if (this.Content is ScrollView scrollView &&
                     scrollView.Content is VerticalStackLayout stack)
                 {
+                    bool isFirst = true;
                     foreach (var child in stack.Children)
-                {
-                    if (child is Frame frame)
                     {
-                        // Keep header frame purple, update others
-                        if (frame == stack.Children[0]) // Header frame
+                        if (child is Border border)
                         {
-                            // Keep header purple
-                            continue;
-                        }
-                        else
-                        {
-                            // Settings frames
-                            frame.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
-                            
-                            // Update labels inside frames
-                            UpdateFrameContent(frame, isDark);
+                            if (isFirst)
+                            {
+                                // Keep header purple
+                                isFirst = false;
+                                continue;
+                            }
+                            isFirst = false;
+
+                            border.Background = new SolidColorBrush(
+                                isDark ? Color.FromArgb("#2C2C2E") : Colors.White);
+
+                            UpdateBorderContent(border, isDark);
                         }
                     }
                 }
-            }
-#pragma warning restore CS0618
+
+                // Update specific named elements
+                if (LanguageLabel != null)
+                    LanguageLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                if (PreviewLabel != null)
+                    PreviewLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                if (AboutTitleLabel != null)
+                    AboutTitleLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                if (AboutSubtitleLabel != null)
+                    AboutSubtitleLabel.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
+                if (AboutVersionLabel != null)
+                    AboutVersionLabel.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
             }
             finally
             {
@@ -102,87 +111,59 @@ namespace ZadAlhaj.Pages
             }
         }
 
-#pragma warning disable CS0618 // Frame is obsolete
-        private void UpdateFrameContent(Frame frame, bool isDark)
-#pragma warning restore CS0618
+        private void UpdateBorderContent(Border border, bool isDark)
         {
-            if (frame.Content is Layout layout)
+            if (border.Content is Layout layout)
             {
                 foreach (var child in layout.Children)
                 {
                     if (child is Label label && label != HeaderLabel)
                     {
-                        // Update text colors
-                        if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                            label.TextColor == Color.FromArgb("#34495E"))
+                        // Update text colors for labels using Black/White scheme
+                        if (label.TextColor == Colors.Black ||
+                            label.TextColor == Colors.White ||
+                            label.TextColor == Color.FromArgb("#000000") ||
+                            label.TextColor == Color.FromArgb("#FFFFFF"))
                         {
-                            label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                            label.TextColor = isDark ? Colors.White : Colors.Black;
                         }
-                        else if (label.TextColor == Color.FromArgb("#7F8C8D"))
+                        else if (label.TextColor == Color.FromArgb("#666666") ||
+                                 label.TextColor == Color.FromArgb("#CCCCCC"))
                         {
-                            label.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
-                        }
-                        else if (label.TextColor == Color.FromArgb("#95A5A6"))
-                        {
-                            label.TextColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
+                            label.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
                         }
                     }
                     else if (child is Picker picker)
                     {
-                        picker.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        picker.TextColor = isDark ? Colors.White : Colors.Black;
                     }
                     else if (child is Layout nestedLayout)
                     {
-                        UpdateFrameContent(nestedLayout, isDark);
+                        UpdateBorderContent(new Border { Content = new VerticalStackLayout() }, isDark);
+                        // Directly iterate nested layout
+                        foreach (var nested in nestedLayout.Children)
+                        {
+                            if (nested is Label nestedLabel && nestedLabel != HeaderLabel)
+                            {
+                                if (nestedLabel.TextColor == Colors.Black ||
+                                    nestedLabel.TextColor == Colors.White ||
+                                    nestedLabel.TextColor == Color.FromArgb("#000000") ||
+                                    nestedLabel.TextColor == Color.FromArgb("#FFFFFF"))
+                                {
+                                    nestedLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                                }
+                                else if (nestedLabel.TextColor == Color.FromArgb("#666666") ||
+                                         nestedLabel.TextColor == Color.FromArgb("#CCCCCC"))
+                                {
+                                    nestedLabel.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
+                                }
+                            }
+                            else if (nested is Picker nestedPicker)
+                            {
+                                nestedPicker.TextColor = isDark ? Colors.White : Colors.Black;
+                            }
+                        }
                     }
-                }
-            }
-        }
-
-        private void UpdateFrameContent(Layout layout, bool isDark)
-        {
-            foreach (var child in layout.Children)
-            {
-                if (child is Label label && label != HeaderLabel)
-                {
-                    // Handle PreviewLabel separately (it has FontSize property we need to preserve)
-                    if (label == PreviewLabel || label == AboutTitleLabel)
-                    {
-                        label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                    }
-                    else if (label == AboutSubtitleLabel)
-                    {
-                        label.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
-                    }
-                    else if (label == AboutVersionLabel)
-                    {
-                        label.TextColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
-                    }
-                    else if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                        label.TextColor == Color.FromArgb("#34495E") ||
-                        label.TextColor == Color.FromArgb("#F5F5F5") ||
-                        label.TextColor == null)
-                    {
-                        label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                    }
-                    else if (label.TextColor == Color.FromArgb("#7F8C8D") ||
-                             label.TextColor == Color.FromArgb("#AEAEB2"))
-                    {
-                        label.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
-                    }
-                    else if (label.TextColor == Color.FromArgb("#95A5A6") ||
-                             label.TextColor == Color.FromArgb("#98989D"))
-                    {
-                        label.TextColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
-                    }
-                }
-                else if (child is Picker picker)
-                {
-                    picker.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                }
-                else if (child is Layout nestedLayout)
-                {
-                    UpdateFrameContent(nestedLayout, isDark);
                 }
             }
         }
@@ -205,9 +186,12 @@ namespace ZadAlhaj.Pages
             // Clear flag after setting the value
             isLoadingSettings = false;
 
-            // Load dark mode setting (but don't trigger theme change)
+            // Load dark mode setting — guard with isLoadingSettings to prevent
+            // OnDarkModeToggled from firing during initialization
+            isLoadingSettings = true;
             var isDarkMode = Preferences.Get(DarkModeKey, false);
             DarkModeSwitch.IsToggled = isDarkMode;
+            isLoadingSettings = false;
             
             // Only apply theme if it's different from current (avoid unnecessary updates)
             if (Application.Current != null)
@@ -356,6 +340,8 @@ namespace ZadAlhaj.Pages
 
         private async void OnDarkModeToggled(object? sender, ToggledEventArgs e)
         {
+            if (isLoadingSettings) return;
+
             try
             {
                 // Disable the switch temporarily to prevent rapid toggling
@@ -392,14 +378,15 @@ namespace ZadAlhaj.Pages
             // Update app theme on main thread
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
-                if (isDark)
-                {
-                    Application.Current.UserAppTheme = AppTheme.Dark;
-                }
-                else
-                {
-                    Application.Current.UserAppTheme = AppTheme.Light;
-                }
+                Application.Current.UserAppTheme = isDark ? AppTheme.Dark : AppTheme.Light;
+
+#if ANDROID
+                // Force Android night mode so AppThemeBinding follows the app preference,
+                // not the system dark-mode setting
+                AndroidX.AppCompat.App.AppCompatDelegate.DefaultNightMode = isDark
+                    ? AndroidX.AppCompat.App.AppCompatDelegate.ModeNightYes
+                    : AndroidX.AppCompat.App.AppCompatDelegate.ModeNightNo;
+#endif
             });
 
             // Small delay to allow theme change to propagate

@@ -62,7 +62,7 @@
                         <!-- Title in the center -->
                         <Label Grid.Column="1"
                                x:Name="SubCategoryTitle" 
-                               FontSize="22" 
+                               FontSize="18" 
                                FontAttributes="Bold"
                                VerticalOptions="Center"
                                HorizontalOptions="Start"

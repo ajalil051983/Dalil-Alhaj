@@ -193,6 +193,9 @@ namespace ZadAlhaj.Pages
                         ContentText.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#34495E");
                     }
                 
+                    // CategoryTitle is inside the category-colored HeaderFrame and is always White
+                    // (LoadContent sets it to Colors.White — do not override here)
+
                     if (SubCategoryTitle != null)
                     {
                         SubCategoryTitle.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
@@ -224,6 +227,14 @@ namespace ZadAlhaj.Pages
                 {
                     if (child is Border border)
                     {
+                        // Skip HeaderFrame — its color is always the category color (set by LoadContent)
+                        if (border == HeaderFrame)
+                        {
+                            if (border.Content is Layout headerLayout)
+                                UpdateLayoutColors(headerLayout, isDark);
+                            continue;
+                        }
+
                         border.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
                         
                         if (border.Content is Layout borderLayout)
@@ -233,14 +244,16 @@ namespace ZadAlhaj.Pages
                     }
                     else if (child is Label label)
                     {
-                        // Skip header labels
+                        // Skip header labels (they stay White on the category-colored background)
                         if (label == CategoryIcon || label == CategoryTitle)
                         {
                             continue;
                         }
                         
+                        // Match both light and dark values so dark→light transitions also work
                         if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                            label.TextColor == Color.FromArgb("#34495E"))
+                            label.TextColor == Color.FromArgb("#34495E") ||
+                            label.TextColor == Color.FromArgb("#F5F5F5"))
                         {
                             label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
                         }
@@ -285,8 +298,8 @@ namespace ZadAlhaj.Pages
                 if (ContentText != null)
                     ContentText.Text = subCategory.Content;
 
-                // Show audio player if available
-                if (subCategory.HasAudio)
+                // Show audio player only for Arabic (audio files exist for Arabic only)
+                if (subCategory.HasAudio && LocalizationService.GetCurrentLanguage() == "ar")
                 {
                     if (AudioControlsStack != null)
                         AudioControlsStack.IsVisible = true;

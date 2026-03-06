@@ -791,11 +791,20 @@ namespace ZadAlhaj.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🚶 الصفا والمروة.
+        ///   Looks up a localized string similar to 🚶 الصفا.
         /// </summary>
-        internal static string SafaMarwa {
+        internal static string Safa {
             get {
-                return ResourceManager.GetString("SafaMarwa", resourceCulture);
+                return ResourceManager.GetString("Safa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to جبل الصفا، بداية السعي.
+        /// </summary>
+        internal static string SafaDesc {
+            get {
+                return ResourceManager.GetString("SafaDesc", resourceCulture);
             }
         }
         
@@ -895,6 +904,240 @@ namespace ZadAlhaj.Resources.Localization {
         internal static string YourLocation {
             get {
                 return ResourceManager.GetString("YourLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🚶 المروة.
+        /// </summary>
+        internal static string Marwa {
+            get {
+                return ResourceManager.GetString("Marwa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to جبل المروة، نهاية السعي.
+        /// </summary>
+        internal static string MarwaDesc {
+            get {
+                return ResourceManager.GetString("MarwaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القبلة.
+        /// </summary>
+        internal static string Qibla {
+            get {
+                return ResourceManager.GetString("Qibla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📍 مشاركة الموقع.
+        /// </summary>
+        internal static string ShareLocation {
+            get {
+                return ResourceManager.GetString("ShareLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📖 عرض الدليل.
+        /// </summary>
+        internal static string ViewGuide {
+            get {
+                return ResourceManager.GetString("ViewGuide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📍 جارٍ تحديد الموقع....
+        /// </summary>
+        internal static string GettingLocation {
+            get {
+                return ResourceManager.GetString("GettingLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مشاركة موقعي.
+        /// </summary>
+        internal static string ShareMyLocation {
+            get {
+                return ResourceManager.GetString("ShareMyLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موقعي الحالي.
+        /// </summary>
+        internal static string MyCurrentLocation {
+            get {
+                return ResourceManager.GetString("MyCurrentLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to يجب السماح بالوصول إلى الموقع لمشاركته.
+        /// </summary>
+        internal static string LocationPermissionRequired {
+            get {
+                return ResourceManager.GetString("LocationPermissionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعذر تحديد موقعك، يرجى المحاولة مرة أخرى.
+        /// </summary>
+        internal static string UnableToGetLocation {
+            get {
+                return ResourceManager.GetString("UnableToGetLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مشاركة الموقع غير مدعومة على هذا الجهاز.
+        /// </summary>
+        internal static string LocationSharingNotSupported {
+            get {
+                return ResourceManager.GetString("LocationSharingNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم رفض إذن الموقع.
+        /// </summary>
+        internal static string LocationPermissionDenied {
+            get {
+                return ResourceManager.GetString("LocationPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خطأ في مشاركة الموقع.
+        /// </summary>
+        internal static string ErrorSharingLocation {
+            get {
+                return ResourceManager.GetString("ErrorSharingLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد محتوى دليل لهذا الموقع.
+        /// </summary>
+        internal static string NoGuideContentFound {
+            get {
+                return ResourceManager.GetString("NoGuideContentFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعذر فتح الدليل لـ.
+        /// </summary>
+        internal static string CouldNotOpenGuide {
+            get {
+                return ResourceManager.GetString("CouldNotOpenGuide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🚶 مشي.
+        /// </summary>
+        internal static string Walking {
+            get {
+                return ResourceManager.GetString("Walking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🚗 قيادة.
+        /// </summary>
+        internal static string Driving {
+            get {
+                return ResourceManager.GetString("Driving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد اتصال، يتم عرض المسار المباشر.
+        /// </summary>
+        internal static string OfflineRouteWarning {
+            get {
+                return ResourceManager.GetString("OfflineRouteWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خط العرض.
+        /// </summary>
+        internal static string Latitude {
+            get {
+                return ResourceManager.GetString("Latitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خط الطول.
+        /// </summary>
+        internal static string Longitude {
+            get {
+                return ResourceManager.GetString("Longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to بيت الله الحرام، محور الطواف.
+        /// </summary>
+        internal static string KaabaDesc {
+            get {
+                return ResourceManager.GetString("KaabaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موقف عرفة، ركن الحج الأعظم.
+        /// </summary>
+        internal static string ArafatDesc {
+            get {
+                return ResourceManager.GetString("ArafatDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مزدلفة، مبيت وجمع الحصى.
+        /// </summary>
+        internal static string MuzdalifahDesc {
+            get {
+                return ResourceManager.GetString("MuzdalifahDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to منى، مبيت ورمي الجمرات.
+        /// </summary>
+        internal static string MinaDesc {
+            get {
+                return ResourceManager.GetString("MinaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to معلومات المسار.
+        /// </summary>
+        internal static string RouteInfo {
+            get {
+                return ResourceManager.GetString("RouteInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📖 اقرأ المزيد.
+        /// </summary>
+        internal static string ReadMore {
+            get {
+                return ResourceManager.GetString("ReadMore", resourceCulture);
             }
         }
     }

@@ -348,8 +348,92 @@
   <data name="Mina" xml:space="preserve">
     <value>🏕️ Mina</value>
   </data>
-  <data name="SafaMarwa" xml:space="preserve">
-    <value>🚶 Safa et Marwah</value>
+  <data name="Safa" xml:space="preserve">
+    <value>🚶 Safa</value>
+  </data>
+  <data name="Marwa" xml:space="preserve">
+    <value>🚶 Marwah</value>
+  </data>
+  <data name="Qibla" xml:space="preserve">
+    <value>Qibla</value>
+  </data>
+  <data name="ShareLocation" xml:space="preserve">
+    <value>📍 Partager la position</value>
+  </data>
+  <data name="MyLocation" xml:space="preserve">
+    <value>Ma position</value>
+  </data>
+  <data name="ViewGuide" xml:space="preserve">
+    <value>📖 Voir le guide</value>
+  </data>
+  <data name="GettingLocation" xml:space="preserve">
+    <value>📍 Localisation en cours...</value>
+  </data>
+  <data name="ShareMyLocation" xml:space="preserve">
+    <value>Partager ma position</value>
+  </data>
+  <data name="MyCurrentLocation" xml:space="preserve">
+    <value>Ma position actuelle</value>
+  </data>
+  <data name="LocationPermissionRequired" xml:space="preserve">
+    <value>L'autorisation de localisation est requise pour partager votre position</value>
+  </data>
+  <data name="UnableToGetLocation" xml:space="preserve">
+    <value>Impossible d'obtenir votre position. Veuillez réessayer.</value>
+  </data>
+  <data name="LocationSharingNotSupported" xml:space="preserve">
+    <value>Le partage de position n'est pas pris en charge sur cet appareil</value>
+  </data>
+  <data name="LocationPermissionDenied" xml:space="preserve">
+    <value>L'autorisation de localisation a été refusée</value>
+  </data>
+  <data name="ErrorSharingLocation" xml:space="preserve">
+    <value>Erreur lors du partage de la position</value>
+  </data>
+  <data name="NoGuideContentFound" xml:space="preserve">
+    <value>Aucun contenu de guide trouvé pour cet endroit</value>
+  </data>
+  <data name="CouldNotOpenGuide" xml:space="preserve">
+    <value>Impossible d'ouvrir le guide pour</value>
+  </data>
+  <data name="Walking" xml:space="preserve">
+    <value>🚶 Marche</value>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>🚗 Conduite</value>
+  </data>
+  <data name="OfflineRouteWarning" xml:space="preserve">
+    <value>Pas de connexion, itinéraire direct affiché</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="KaabaDesc" xml:space="preserve">
+    <value>La Maison Sacrée d'Allah, centre du Tawaf</value>
+  </data>
+  <data name="ArafatDesc" xml:space="preserve">
+    <value>Mont Arafat, le plus grand pilier du Hajj</value>
+  </data>
+  <data name="MuzdalifahDesc" xml:space="preserve">
+    <value>Muzdalifah, nuit et collecte de cailloux</value>
+  </data>
+  <data name="MinaDesc" xml:space="preserve">
+    <value>Mina, nuit et lapidation des Jamarat</value>
+  </data>
+  <data name="SafaDesc" xml:space="preserve">
+    <value>Mont Safa, début du Sa'i</value>
+  </data>
+  <data name="MarwaDesc" xml:space="preserve">
+    <value>Mont Marwah, fin du Sa'i</value>
+  </data>
+  <data name="RouteInfo" xml:space="preserve">
+    <value>Info itinéraire</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>📖 En savoir plus</value>
   </data>
   <data name="SearchPrompt" xml:space="preserve">
     <value>Tapez pour rechercher...</value>

@@ -10,12 +10,33 @@ namespace ZadAlhaj
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
             
+#if DEBUG && ANDROID
+            try
+            {
+                var src = Path.Combine(FileSystem.AppDataDirectory, "ZadAlhaj.db3");
+                var downloads = Android.OS.Environment.GetExternalStoragePublicDirectory(
+                    Android.OS.Environment.DirectoryDownloads)!.AbsolutePath;
+                var dst = Path.Combine(downloads, "ZadAlhaj.db3");
+                if (File.Exists(src)) File.Copy(src, dst, overwrite: true);
+                System.Diagnostics.Debug.WriteLine($"[DB EXPORTED] {dst}");
+            }
+            catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[DB EXPORT FAILED] {ex.Message}"); }
+#endif
+
             // Initialize language
             Services.LocalizationService.InitializeLanguage();
             
             // Initialize theme from preferences
             var isDarkMode = Preferences.Get("dark_mode", false);
             UserAppTheme = isDarkMode ? AppTheme.Dark : AppTheme.Light;
+
+#if ANDROID
+            // Force Android night mode to match app preference
+            // so that AppThemeBinding follows UserAppTheme, not the system setting
+            AndroidX.AppCompat.App.AppCompatDelegate.DefaultNightMode = isDarkMode
+                ? AndroidX.AppCompat.App.AppCompatDelegate.ModeNightYes
+                : AndroidX.AppCompat.App.AppCompatDelegate.ModeNightNo;
+#endif
         }
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

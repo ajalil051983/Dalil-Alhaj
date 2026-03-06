@@ -348,8 +348,92 @@
   <data name="Mina" xml:space="preserve">
     <value>🏕️ Mina</value>
   </data>
-  <data name="SafaMarwa" xml:space="preserve">
-    <value>🚶 Safa and Marwah</value>
+  <data name="Safa" xml:space="preserve">
+    <value>🚶 Safa</value>
+  </data>
+  <data name="Marwa" xml:space="preserve">
+    <value>🚶 Marwah</value>
+  </data>
+  <data name="Qibla" xml:space="preserve">
+    <value>Qibla</value>
+  </data>
+  <data name="ShareLocation" xml:space="preserve">
+    <value>📍 Share Location</value>
+  </data>
+  <data name="MyLocation" xml:space="preserve">
+    <value>My Location</value>
+  </data>
+  <data name="ViewGuide" xml:space="preserve">
+    <value>📖 View Guide</value>
+  </data>
+  <data name="GettingLocation" xml:space="preserve">
+    <value>📍 Getting Location...</value>
+  </data>
+  <data name="ShareMyLocation" xml:space="preserve">
+    <value>Share My Location</value>
+  </data>
+  <data name="MyCurrentLocation" xml:space="preserve">
+    <value>My Current Location</value>
+  </data>
+  <data name="LocationPermissionRequired" xml:space="preserve">
+    <value>Location permission is required to share your location</value>
+  </data>
+  <data name="UnableToGetLocation" xml:space="preserve">
+    <value>Unable to get your current location. Please try again.</value>
+  </data>
+  <data name="LocationSharingNotSupported" xml:space="preserve">
+    <value>Location sharing is not supported on this device</value>
+  </data>
+  <data name="LocationPermissionDenied" xml:space="preserve">
+    <value>Location permission was denied</value>
+  </data>
+  <data name="ErrorSharingLocation" xml:space="preserve">
+    <value>Error sharing location</value>
+  </data>
+  <data name="NoGuideContentFound" xml:space="preserve">
+    <value>No guide content found for this location</value>
+  </data>
+  <data name="CouldNotOpenGuide" xml:space="preserve">
+    <value>Could not open guide for</value>
+  </data>
+  <data name="Walking" xml:space="preserve">
+    <value>🚶 Walking</value>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>🚗 Driving</value>
+  </data>
+  <data name="OfflineRouteWarning" xml:space="preserve">
+    <value>No connection, showing direct route</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="KaabaDesc" xml:space="preserve">
+    <value>The Sacred House of Allah, center of Tawaf</value>
+  </data>
+  <data name="ArafatDesc" xml:space="preserve">
+    <value>Mount Arafat, the greatest pillar of Hajj</value>
+  </data>
+  <data name="MuzdalifahDesc" xml:space="preserve">
+    <value>Muzdalifah, overnight stay and pebble collection</value>
+  </data>
+  <data name="MinaDesc" xml:space="preserve">
+    <value>Mina, overnight stay and stoning of Jamarat</value>
+  </data>
+  <data name="SafaDesc" xml:space="preserve">
+    <value>Mount Safa, start of Sa'i</value>
+  </data>
+  <data name="MarwaDesc" xml:space="preserve">
+    <value>Mount Marwah, end of Sa'i</value>
+  </data>
+  <data name="RouteInfo" xml:space="preserve">
+    <value>Route Info</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>📖 Read More</value>
   </data>
   <data name="SearchPrompt" xml:space="preserve">
     <value>Type to search...</value>
