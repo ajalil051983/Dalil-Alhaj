@@ -1,5 +1,7 @@
-$env:ANDROID_HOME = "C:\Program Files (x86)\Android\android-sdk"
-$env:ANDROID_SDK_ROOT = "C:\Program Files (x86)\Android\android-sdk"
+# Use 8.3 short paths to avoid Windows 'spawn EINVAL' error caused by
+# parentheses in 'C:\Program Files (x86)' when spawned as a child process by Node.js
+$env:ANDROID_HOME = "C:\PROGRA~2\Android\ANDROI~1"
+$env:ANDROID_SDK_ROOT = "C:\PROGRA~2\Android\ANDROI~1"
 $env:JAVA_HOME = "C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot"
 
 # Add paths if they don't exist
@@ -26,8 +28,16 @@ if (Get-Command adb -ErrorAction SilentlyContinue) {
     Write-Host "Starting ADB server..."
     adb start-server
 
-    Write-Host "Starting Appium..."
-    appium --allow-cors
+    # Appium 3.x: invoke via 'node index.js' directly to avoid spawn issues
+    # with the appium wrapper script on Windows.
+    $appiumIndex = "$env:APPDATA\fnm\node-versions\v22.15.1\installation\node_modules\appium\index.js"
+    if (Test-Path $appiumIndex) {
+        Write-Host "Starting Appium 3.x via node..."
+        node $appiumIndex --allow-cors
+    } else {
+        Write-Host "Falling back to 'appium' shim..."
+        appium --allow-cors
+    }
 } else {
     Write-Error "ADB could not be found. Please check paths."
 }

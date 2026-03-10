@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:ZadAlhaj.Resources.Localization"
+             x:Class="ZadAlhaj.Pages.FavoritesPage"
+             Title="{x:Static res:AppResources.FavoritesTitle}"
+             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
+
+    <Grid RowDefinitions="*">
+
+        <!-- Favorites List -->
+        <ScrollView x:Name="FavoritesScroll" IsVisible="False">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <Label x:Name="FavoritesTitleLabel"
+                       Text="{x:Static res:AppResources.FavoritesTitle}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                       Margin="0,0,0,5" />
+
+                <CollectionView x:Name="FavoritesCollection"
+                                SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Stroke="#BDC3C7"
+                                    StrokeThickness="1"
+                                    Background="{AppThemeBinding Light=White, Dark=#2C2C2E}"
+                                    Padding="15"
+                                    StrokeShape="RoundRectangle 15">
+                                <Border.Shadow>
+                                    <Shadow Brush="Black" Opacity="0.15" Radius="6" Offset="0,2" />
+                                </Border.Shadow>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnFavoriteItemTapped"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      ColumnSpacing="12">
+
+                                    <!-- Category color indicator -->
+                                    <BoxView Grid.Column="0"
+                                             Color="{Binding CategoryColor}"
+                                             WidthRequest="5"
+                                             CornerRadius="3"
+                                             VerticalOptions="Fill" />
+
+                                    <!-- Text block -->
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         Spacing="4"
+                                                         VerticalOptions="Center">
+                                        <Label Text="{Binding SubCategoryName}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                                               LineBreakMode="WordWrap" />
+                                        <Label Text="{Binding CategoryName}"
+                                               FontSize="13"
+                                               TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#98989D}" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Icon -->
+                                    <Label Grid.Column="2"
+                                           Text="{Binding Icon}"
+                                           FontSize="28"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Empty State -->
+        <VerticalStackLayout x:Name="EmptyState"
+                             IsVisible="True"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center"
+                             Spacing="20"
+                             Padding="40">
+            <Label Text="⭐"
+                   FontSize="72"
+                   HorizontalOptions="Center" />
+            <Label Text="{x:Static res:AppResources.NoFavoritesMessage}"
+                   FontSize="16"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#98989D}"
+                   LineBreakMode="WordWrap" />
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>

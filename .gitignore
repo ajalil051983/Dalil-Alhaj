@@ -90,3 +90,14 @@ Desktop.ini
 
 # Publish
 PublishProfiles/
+/build2_log.txt
+/build2_log.txt
+/build3_log.txt
+/build4_log.txt
+/build_check.txt
+/build_fix.txt
+/build_fix2.txt
+/build_log.txt
+/build_run.txt
+/restore_log.txt
+/run_log.txt

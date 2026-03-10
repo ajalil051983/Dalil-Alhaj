@@ -1,8 +1,8 @@
-# 🕋 دليل الحاج - Dalil AlHaj
+# 🕋 زاد الحاج - Zad Alhaj
 
 <div align="center">
 
-![App Icon](DalilAlHaj/Resources/AppIcon/kaaba.svg)
+![App Icon](ZadAlhaj/Resources/AppIcon/kaaba.svg)
 
 **دليل شامل لمناسك الحج حسب المذهب المالكي**  
 *A Comprehensive Hajj Guide According to the Maliki School*
@@ -18,9 +18,9 @@
 
 ## 📖 نظرة عامة | Overview
 
-**دليل الحاج** تطبيق متكامل يساعد الحجاج على أداء مناسك الحج بشكل صحيح وفق المذهب المالكي. التطبيق مصمم باللهجة المغربية (الدارجة) لتسهيل الفهم والاستخدام.
+**زاد الحاج** تطبيق متكامل يساعد الحجاج على أداء مناسك الحج بشكل صحيح وفق المذهب المالكي. التطبيق مصمم باللهجة المغربية (الدارجة) لتسهيل الفهم والاستخدام.
 
-**Dalil AlHaj** is a comprehensive mobile application that guides pilgrims through Hajj rituals according to the Maliki school of thought. The app is designed in Moroccan Arabic (Darija) for easier understanding and usage.
+**Zad Alhaj** is a comprehensive mobile application that guides pilgrims through Hajj rituals according to the Maliki school of thought. The app is designed in Moroccan Arabic (Darija) for easier understanding and usage.
 
 ---
 
@@ -103,7 +103,7 @@
 
 ### هيكل المشروع | Project Structure
 ```
-DalilAlHaj/
+ZadAlhaj/
 ├── Pages/                      # صفحات التطبيق
 │   ├── MainPage.xaml          # الصفحة الرئيسية
 │   ├── SubCategoryPage.xaml   # صفحة الفئات الفرعية
@@ -275,9 +275,9 @@ dotnet build -t:Run -f net10.0-windows10.0.26100.0
 ## 📞 الدعم | Support
 
 للأسئلة والدعم:
-- 📧 Email: support@dalilalhaj.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/dalil-alhaj/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/dalil-alhaj/discussions)
+- 📧 Email: support@zadalhaj.com
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/zad-alhaj/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/zad-alhaj/discussions)
 
 ---
 

@@ -19,7 +19,7 @@ You have **3 options**:
 1. **Get Free API Key** (مجاني):
    - Go to: https://console.cloud.google.com/google/maps-apis
    - Sign in with Google account
-   - Create new project: "DalilAlHaj"
+   - Create new project: "ZadAlhaj"
    - Enable "**Maps SDK for Android**"
    - Go to "**Credentials**" → "**Create Credentials**" → "**API Key**"
    - Copy your API key
@@ -165,7 +165,7 @@ If you just want to test other features:
 After adding your API key:
 
 ```bash
-cd "d:\Ai workspace\Dalil Alhaj\DalilAlHaj"
+cd "d:\Ai workspace\Dalil Alhaj\ZadAlhaj"
 dotnet build -f net9.0-android -t:Run
 ```
 

@@ -1,6 +1,6 @@
-# Dalil AlHaj — Hajj Guide (English)
+# Zad Alhaj — Hajj Guide (English)
 
-![App Icon](DalilAlHaj/Resources/Images/kaaba.svg)
+![App Icon](ZadAlhaj/Resources/Images/kaaba.svg)
 
 A comprehensive mobile guide to performing the rituals of Hajj according to the Maliki school of thought. The app content is authored in Moroccan Arabic (Darija) and includes English and French translations.
 
@@ -8,7 +8,7 @@ A comprehensive mobile guide to performing the rituals of Hajj according to the 
 
 ## Overview
 
-Dalil AlHaj is a cross-platform mobile application built with .NET MAUI that helps pilgrims perform Hajj correctly following the Maliki madhhab. It organizes the ritual instructions into categories and subcategories, provides audio narration, an interactive map, a checklist, search, and localization.
+Zad Alhaj is a cross-platform mobile application built with .NET MAUI that helps pilgrims perform Hajj correctly following the Maliki madhhab. It organizes the ritual instructions into categories and subcategories, provides audio narration, an interactive map, a checklist, search, and localization.
 
 ---
 
@@ -46,7 +46,7 @@ Dalil AlHaj is a cross-platform mobile application built with .NET MAUI that hel
 
 **Project layout**
 
-See the `DalilAlHaj/` folder for pages, models, services, resources and platform-specific code.
+See the `ZadAlhaj/` folder for pages, models, services, resources and platform-specific code.
 
 ---
 
@@ -65,8 +65,8 @@ Total: 6 main categories × 4 subcategories each = 24 topics
 
 ## Data & Audio
 
-- JSON categories are in `DalilAlHaj/Resources/Raw/` (`categories.json`, `categories-en.json`, `categories-fr.json`).
-- Audio files are stored under `DalilAlHaj/Resources/Raw/audio/` and follow the naming pattern `audio/{CategoryId}_{SubCategoryId}.mp3` (600+ files).
+- JSON categories are in `ZadAlhaj/Resources/Raw/` (`categories.json`, `categories-en.json`, `categories-fr.json`).
+- Audio files are stored under `ZadAlhaj/Resources/Raw/audio/` and follow the naming pattern `audio/{CategoryId}_{SubCategoryId}.mp3` (600+ files).
 
 JSON example:
 
@@ -163,7 +163,7 @@ Abdeljalil El Yasni
 
 ## Support
 
-- Email: support@dalilalhaj.com
+- Email: support@zadalhaj.com
 - Issues: https://github.com/yourusername/dalil-alhaj/issues
 - Discussions: https://github.com/yourusername/dalil-alhaj/discussions
 
