@@ -159,16 +159,6 @@ Abdeljalil El Yasni
 - Fonts: Google Fonts (Tajawal, Open Sans)
 - Thanks to the .NET MAUI community
 
----
-
-## Support
-
-- Email: support@zadalhaj.com
-- Issues: https://github.com/yourusername/dalil-alhaj/issues
-- Discussions: https://github.com/yourusername/dalil-alhaj/discussions
-
----
-
 ## Roadmap
 
 - v1.0.0 released
