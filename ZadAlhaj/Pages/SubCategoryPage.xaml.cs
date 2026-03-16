@@ -63,12 +63,12 @@ namespace ZadAlhaj.Pages
                 isApplyingTheme = true;
                 lastAppliedTheme = effectiveTheme;
             
-                this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                this.BackgroundColor = ThemeColors.PageBackground(isDark);
             
                 // Update TopicsLabel directly
                 if (TopicsLabel != null)
                 {
-                    TopicsLabel.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                    TopicsLabel.TextColor = ThemeColors.PrimaryText(isDark);
                 }
             
                 if (this.Content is ScrollView scrollView && 
@@ -92,8 +92,8 @@ namespace ZadAlhaj.Pages
                 {
                     // Keep category header frame colored, update subcategory frames
                     // HeaderFrame is now a Border, so all frames should be themed
-                    frame.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
-                    
+                    frame.BackgroundColor = ThemeColors.CardBackground(isDark);
+
                     if (frame.Content is Layout frameLayout)
                     {
                         UpdateLayoutColors(frameLayout, isDark);
@@ -107,12 +107,12 @@ namespace ZadAlhaj.Pages
                         continue;
                     }
                     
-                    if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                        label.TextColor == Color.FromArgb("#34495E") ||
-                        label.TextColor == Color.FromArgb("#F5F5F5") ||
+                    if (label.TextColor == ThemeColors.PrimaryTextLight || 
+                        label.TextColor == ThemeColors.ContentTextLight ||
+                        label.TextColor == ThemeColors.PrimaryTextDark ||
                         label.TextColor == null)
                     {
-                        label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        label.TextColor = ThemeColors.PrimaryText(isDark);
                     }
                 }
                 else if (child is CollectionView collectionView)
@@ -165,9 +165,9 @@ namespace ZadAlhaj.Pages
         {
             if (element is Frame frame)
             {
-                frame.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
-                
-                if (frame.Content is Layout layout)
+                frame.BackgroundColor = ThemeColors.CardBackground(isDark);
+
+                                if (frame.Content is Layout layout)
                 {
                     UpdateLayoutColors(layout, isDark);
                 }

@@ -33,6 +33,7 @@
             <!-- OpenStreetMap using Mapsui -->
             <mapsui:MapControl x:Name="HajjMapControl" 
                                AutomationId="MapControlID" 
+                               IsVisible="True"
                                Info="OnMapInfo" />
             
             <!-- Walking/Driving Route Toggle -->

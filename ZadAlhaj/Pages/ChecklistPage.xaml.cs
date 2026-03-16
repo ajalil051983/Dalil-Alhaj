@@ -68,7 +68,7 @@ namespace ZadAlhaj.Pages
                 isApplyingTheme = true;
                 lastAppliedTheme = effectiveTheme;
             
-                this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                this.BackgroundColor = ThemeColors.PageBackground(isDark);
             
                 // Theme colors now handled by AppThemeBinding in XAML with static resources
                 // No need to manually update CollectionView items

@@ -29,7 +29,11 @@ namespace ZadAlhaj
             try
             {
                 InitializeComponent();
-                
+
+                // Set button text with emoji prefixes (avoids XC0025 compiled binding warnings)
+                PrayerTimesButton.Text = $"🕌 {ZadAlhaj.Resources.Localization.AppResources.PrayerTimes}";
+                FavoritesButton.Text = $"⭐ {ZadAlhaj.Resources.Localization.AppResources.Favorites}";
+
                 // Set flow direction based on current language
                 FlowDirection = LocalizationService.GetFlowDirection();
                 
@@ -257,6 +261,28 @@ namespace ZadAlhaj
             await Navigation.PushAsync(new FavoritesPage(dataService));
         }
 
+        private async void OnPrayerTimesClicked(object? sender, EventArgs e)
+        {
+            // Show loading spinner on the button immediately, hide text
+            PrayerTimesButton.IsEnabled = false;
+            PrayerTimesButton.TextColor = Colors.Transparent;
+            PrayerTimesSpinner.IsVisible = true;
+            PrayerTimesSpinner.IsRunning = true;
+
+            try
+            {
+                await Navigation.PushAsync(new PrayerTimesPage());
+            }
+            finally
+            {
+                // Reset button state when returning from PrayerTimesPage
+                PrayerTimesButton.IsEnabled = true;
+                PrayerTimesButton.TextColor = Colors.White;
+                PrayerTimesSpinner.IsVisible = false;
+                PrayerTimesSpinner.IsRunning = false;
+            }
+        }
+
         private async void OnSettingsClicked(object? sender, EventArgs e)
         {
             await Navigation.PushAsync(new SettingsPage());
@@ -294,9 +320,7 @@ namespace ZadAlhaj
                 // Update MainGrid background
                 if (MainGrid != null)
                 {
-                    MainGrid.BackgroundColor = isDark 
-                        ? Color.FromArgb("#1C1C1E") 
-                        : Color.FromArgb("#F5F5F5");
+                    MainGrid.BackgroundColor = ThemeColors.PageBackground(isDark);
                     
                     System.Diagnostics.Debug.WriteLine($"ApplyThemeColors: MainGrid background set to {MainGrid.BackgroundColor}");
                     
@@ -310,8 +334,8 @@ namespace ZadAlhaj
                 // Update SearchBar colors directly
                 if (SearchBar != null)
                 {
-                    SearchBar.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                    SearchBar.PlaceholderColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
+                    SearchBar.TextColor = ThemeColors.PrimaryText(isDark);
+                    SearchBar.PlaceholderColor = ThemeColors.PlaceholderText(isDark);
                     System.Diagnostics.Debug.WriteLine($"ApplyThemeColors: SearchBar colors set - Text: {SearchBar.TextColor}, Placeholder: {SearchBar.PlaceholderColor}");
                 }
             }
@@ -330,7 +354,7 @@ namespace ZadAlhaj
                 {
                     if (child is Label label && label.FontSize == 20 && label.FontAttributes.HasFlag(FontAttributes.Bold))
                     {
-                        label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        label.TextColor = ThemeColors.PrimaryText(isDark);
                     }
                 }
                 
@@ -346,19 +370,19 @@ namespace ZadAlhaj
                 if (child is Label label)
                 {
                     // Update text colors (but skip category name labels which are white on colored backgrounds)
-                    if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                        label.TextColor == Color.FromArgb("#34495E") ||
-                        label.TextColor == Color.FromArgb("#F5F5F5") ||
+                    if (label.TextColor == ThemeColors.PrimaryTextLight || 
+                        label.TextColor == ThemeColors.ContentTextLight ||
+                        label.TextColor == ThemeColors.PrimaryTextDark ||
                         label.TextColor == null)
                     {
-                        var newColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        var newColor = ThemeColors.PrimaryText(isDark);
                         label.TextColor = newColor;
                         System.Diagnostics.Debug.WriteLine($"UpdateLayoutColors: Label text color set to {newColor}");
                     }
-                    else if (label.TextColor == Color.FromArgb("#7F8C8D") ||
-                             label.TextColor == Color.FromArgb("#AEAEB2"))
+                    else if (label.TextColor == ThemeColors.SecondaryTextLight ||
+                             label.TextColor == ThemeColors.SecondaryTextDark)
                     {
-                        label.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
+                        label.TextColor = ThemeColors.SecondaryText(isDark);
                     }
                 }
                 else if (child is Frame frame)
@@ -372,15 +396,15 @@ namespace ZadAlhaj
                     // Check if it's a white/transparent frame or already a dark frame - update it
                     // Skip frames with custom colors (categories have hex colors like #3498DB, etc.)
                     bool isNeutralFrame = currentColor == null || 
-                                         currentColor == Colors.White || 
-                                         currentColor == Color.FromArgb("#2C2C2E") ||
+                                         currentColor == ThemeColors.CardBackgroundLight || 
+                                         currentColor == ThemeColors.CardBackgroundDark ||
                                          currentColor == Colors.Transparent ||
                                          currentColor.ToHex() == "#FFFFFF" ||
-                                         currentColor.ToHex() == "#2C2C2E";
-                    
+                                         currentColor.ToHex() == ThemeColors.CardBackgroundDark.ToHex();
+
                     if (isNeutralFrame)
                     {
-                        var newColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
+                        var newColor = ThemeColors.CardBackground(isDark);
                         frame.BackgroundColor = newColor;
                         System.Diagnostics.Debug.WriteLine($"UpdateLayoutColors: Frame background set to {newColor}");
                     }
@@ -395,15 +419,15 @@ namespace ZadAlhaj
                     }
                     else if (frame.Content is SearchBar searchBar)
                     {
-                        searchBar.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                        searchBar.PlaceholderColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
+                        searchBar.TextColor = ThemeColors.PrimaryText(isDark);
+                        searchBar.PlaceholderColor = ThemeColors.PlaceholderText(isDark);
                         System.Diagnostics.Debug.WriteLine($"UpdateLayoutColors: SearchBar in frame updated");
                     }
                 }
                 else if (child is SearchBar searchBar)
                 {
-                    searchBar.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                    searchBar.PlaceholderColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
+                    searchBar.TextColor = ThemeColors.PrimaryText(isDark);
+                    searchBar.PlaceholderColor = ThemeColors.PlaceholderText(isDark);
                     System.Diagnostics.Debug.WriteLine($"UpdateLayoutColors: SearchBar updated");
                 }
                 else if (child is CollectionView)

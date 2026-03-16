@@ -298,6 +298,6 @@ dotnet build -t:Run -f net10.0-windows10.0.26100.0
 **تقبل الله حجكم وسعيكم**  
 *May Allah accept your Hajj and efforts*
 
-**© 2025 AbdeljalilElYasni. All rights reserved.**
+**© 2026 ilafalkhayr. All rights reserved.**
 
 </div>

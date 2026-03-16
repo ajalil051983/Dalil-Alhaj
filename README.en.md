@@ -148,7 +148,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 Abdeljalil El Yasni
 
 - GitHub: https://github.com/AbdeljalilElYasni
-- Email: your.email@example.com
+- Email: ajalil051983@gmail.com
 
 ---
 
@@ -178,4 +178,4 @@ Abdeljalil El Yasni
 
 May Allah accept your Hajj and efforts.
 
-© 2025 AbdeljalilElYasni. All rights reserved.
+© 2026 IlafAlkhayr. All rights reserved.

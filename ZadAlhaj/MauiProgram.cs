@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Plugin.LocalNotification;
 
 namespace ZadAlhaj
 {
@@ -14,6 +15,22 @@ namespace ZadAlhaj
                 .UseMauiCommunityToolkit()
                 .UseMauiCommunityToolkitMediaElement(isAndroidForegroundServiceEnabled: false)
                 .UseSkiaSharp()
+                .UseLocalNotification(config =>
+                {
+                    config.AddAndroid(android =>
+                    {
+                        android.AddChannel(new Plugin.LocalNotification.AndroidOption.NotificationChannelRequest
+                        {
+                            Id = "prayer_times",
+                            Name = "Prayer Times",
+                            Description = "Notifications for prayer times",
+                            Importance = Plugin.LocalNotification.AndroidOption.AndroidImportance.High,
+                            EnableSound = true,
+                            EnableVibration = true,
+                            ShowBadge = true
+                        });
+                    });
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -472,7 +472,7 @@
     <value>Liste des tâches</value>
   </data>
   <data name="Copyright" xml:space="preserve">
-    <value>© AbdeljalilElYasni 2025</value>
+    <value>© IlafAlkhayr 2026</value>
   </data>
   <data name="FavoritesTitle" xml:space="preserve">
     <value>⭐ Favoris</value>
@@ -480,5 +480,71 @@
   <data name="NoFavoritesMessage" xml:space="preserve">
     <value>Aucun favori pour l'instant
 Appuyez sur ⭐ sur une page de contenu pour l'enregistrer ici</value>
+  </data>
+  <data name="PrayerTimes" xml:space="preserve">
+    <value>Horaires de Prière</value>
+  </data>
+  <data name="Fajr" xml:space="preserve">
+    <value>Fajr</value>
+  </data>
+  <data name="Shurooq" xml:space="preserve">
+    <value>Lever du soleil</value>
+  </data>
+  <data name="Dhuhr" xml:space="preserve">
+    <value>Dhuhr</value>
+  </data>
+  <data name="Asr" xml:space="preserve">
+    <value>Asr</value>
+  </data>
+  <data name="Maghrib" xml:space="preserve">
+    <value>Maghrib</value>
+  </data>
+  <data name="Isha" xml:space="preserve">
+    <value>Isha</value>
+  </data>
+  <data name="NextPrayer" xml:space="preserve">
+    <value>Prochaine Prière</value>
+  </data>
+  <data name="CityLocalTime" xml:space="preserve">
+    <value>Heure locale de la ville</value>
+  </data>
+  <data name="PrayerNotifications" xml:space="preserve">
+    <value>Notifications de Prière</value>
+  </data>
+  <data name="CalculationMethod" xml:space="preserve">
+    <value>Méthode de Calcul</value>
+  </data>
+  <data name="Mathhab" xml:space="preserve">
+    <value>Madhhab (Juridique)</value>
+  </data>
+  <data name="WeeklySchedule" xml:space="preserve">
+    <value>Programme Hebdomadaire</value>
+  </data>
+  <data name="TodaySchedule" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="ShowWeeklySchedule" xml:space="preserve">
+    <value>Afficher le programme hebdomadaire</value>
+  </data>
+  <data name="HideWeeklySchedule" xml:space="preserve">
+    <value>Masquer le programme hebdomadaire</value>
+  </data>
+  <data name="SearchCity" xml:space="preserve">
+    <value>Rechercher une ville...</value>
+  </data>
+  <data name="Imsaak" xml:space="preserve">
+    <value>Imsak</value>
+  </data>
+  <data name="PrayerTimeFor" xml:space="preserve">
+    <value>C'est l'heure de la prière de {0}</value>
+  </data>
+  <data name="PrayerTimeNotifBody" xml:space="preserve">
+    <value>🕌 C'est maintenant l'heure de la prière de {0}</value>
+  </data>
+  <data name="HijriDateAdjustment" xml:space="preserve">
+    <value>Ajustement de la date hégirien</value>
+  </data>
+  <data name="HijriDateAdjustmentHint" xml:space="preserve">
+    <value>Ajuster (−2 à +2 jours) pour correspondre au calendrier local</value>
   </data>
 </root>

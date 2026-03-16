@@ -2,21 +2,22 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:ZadAlhaj.Resources.Localization"
+             xmlns:models="clr-namespace:ZadAlhaj.Models"
              x:Class="ZadAlhaj.MainPage"
              x:Name="MainContentPage"
              Shell.NavBarIsVisible="False">
 
     <Grid RowDefinitions="Auto,*"
           x:Name="MainGrid"
-          BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
-        
-        <!-- Custom Header Bar -->
-        <Border Grid.Row="0" 
-                Background="{AppThemeBinding Light=#2C3E50, Dark=#1E1E1E}" 
-                StrokeShape="Rectangle"
-                StrokeThickness="0"
-                Padding="15,10"
-                Stroke="{AppThemeBinding Light=#2C3E50, Dark=#1E1E1E}"
+          BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
+
+                  <!-- Custom Header Bar -->
+                  <Border Grid.Row="0" 
+                          Background="{StaticResource HeaderBackgroundColor}" 
+                                                     StrokeShape="Rectangle"
+                                                     StrokeThickness="0"
+                                                     Padding="15,10"
+                                                     Stroke="{StaticResource HeaderBackgroundColor}"
                 Margin="0">
             <Grid ColumnDefinitions="Auto,*">
                 <!-- Settings Icon on Left -->
@@ -51,7 +52,7 @@
                         AutomationId="SearchBarFrameID"
                         StrokeShape="RoundRectangle 25"
                         StrokeThickness="0"
-                        Background="{AppThemeBinding Light=#FFFFFF, Dark=#2C2C2E}"
+                        Background="{AppThemeBinding Light={StaticResource InputBackgroundColorLight}, Dark={StaticResource InputBackgroundColorDark}}"
                         Padding="5"
                         Margin="0,0,0,0">
                     <Border.Shadow>
@@ -61,13 +62,15 @@
                                AutomationId="SearchBarID"
                                Placeholder="{x:Static res:AppResources.SearchPrompt}"
                                BackgroundColor="Transparent"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                               PlaceholderColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
                                SearchButtonPressed="OnSearchBarPressed" />
                 </Border>
 
                 <!-- Quick Access Buttons -->
                 <Grid ColumnDefinitions="*,*" 
                       ColumnSpacing="10"
-                      RowDefinitions="Auto,Auto"
+                      RowDefinitions="Auto,Auto,Auto"
                       RowSpacing="10">
                     <Button Grid.Column="0" Grid.Row="0"
                             Clicked="OnMapClicked"
@@ -88,17 +91,34 @@
                             HeightRequest="70"
                             FontSize="16"
                             LineBreakMode="WordWrap" />
-                    <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"
+                    <Button Grid.Column="0" Grid.Row="1"
+                            x:Name="PrayerTimesButton"
+                            AutomationId="PrayerTimesButtonID"
+                            Clicked="OnPrayerTimesClicked"
+                            BackgroundColor="#1ABC9C"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="70"
+                            FontSize="16"
+                            />
+                    <ActivityIndicator Grid.Column="0" Grid.Row="1"
+                                       x:Name="PrayerTimesSpinner"
+                                       IsRunning="False"
+                                       IsVisible="False"
+                                       Color="White"
+                                       WidthRequest="30"
+                                       HeightRequest="30"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                    <Button Grid.Column="1" Grid.Row="1"
+                            x:Name="FavoritesButton"
                             AutomationId="FavoritesButtonID"
                             Clicked="OnFavoritesClicked"
                             BackgroundColor="#9B59B6"
                             TextColor="White"
                             CornerRadius="10"
-                            HeightRequest="55"
-                            FontSize="16"
-                            ImageSource="star_icon.svg"
-                            ContentLayout="Left,10"
-                            Text="{x:Static res:AppResources.Favorites}" />
+                            HeightRequest="70"
+                            FontSize="16" />
                 </Grid>
 
                 <!-- Categories Grid (2 columns) -->
@@ -106,7 +126,7 @@
                        Text="{x:Static res:AppResources.ChooseTopic}" 
                        FontSize="20" 
                        FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
                        Margin="0,10,0,10" />
 
                 <CollectionView x:Name="CategoriesCollection"
@@ -119,7 +139,7 @@
                     </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:Category">
                             <Border
                                 AutomationId="CategoryItem"
                                 StrokeShape="RoundRectangle 15"

@@ -69,19 +69,19 @@ namespace ZadAlhaj.Pages
                 isApplyingTheme = true;
                 lastAppliedTheme = effectiveTheme;
             
-                this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                this.BackgroundColor = ThemeColors.PageBackground(isDark);
             
                 // Update SearchInput colors directly
                 if (SearchInput != null)
                 {
-                    SearchInput.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                    SearchInput.PlaceholderColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
+                    SearchInput.TextColor = ThemeColors.PrimaryText(isDark);
+                    SearchInput.PlaceholderColor = ThemeColors.PlaceholderText(isDark);
                 }
             
                 // Update results label
                 if (ResultsLabel != null)
                 {
-                    ResultsLabel.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
+                    ResultsLabel.TextColor = ThemeColors.SecondaryText(isDark);
                 }
             
                 // Update content
@@ -104,7 +104,7 @@ namespace ZadAlhaj.Pages
                 if (child is Frame frame)
                 {
                     // Search bar frame and result frames
-                    frame.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
+                    frame.BackgroundColor = ThemeColors.CardBackground(isDark);
                     
                     if (frame.Content is Layout frameLayout)
                     {
@@ -114,16 +114,16 @@ namespace ZadAlhaj.Pages
                 else if (child is Label label)
                 {
                     // Match both light and dark values so dark→light transitions also work
-                    if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                        label.TextColor == Color.FromArgb("#34495E") ||
-                        label.TextColor == Color.FromArgb("#F5F5F5"))
+                    if (label.TextColor == ThemeColors.PrimaryTextLight || 
+                        label.TextColor == ThemeColors.ContentTextLight ||
+                        label.TextColor == ThemeColors.PrimaryTextDark)
                     {
-                        label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        label.TextColor = ThemeColors.PrimaryText(isDark);
                     }
-                    else if (label.TextColor == Color.FromArgb("#7F8C8D") ||
-                             label.TextColor == Color.FromArgb("#AEAEB2"))
+                    else if (label.TextColor == ThemeColors.SecondaryTextLight ||
+                             label.TextColor == ThemeColors.SecondaryTextDark)
                     {
-                        label.TextColor = isDark ? Color.FromArgb("#AEAEB2") : Color.FromArgb("#7F8C8D");
+                        label.TextColor = ThemeColors.SecondaryText(isDark);
                     }
                     else if (label.TextColor == Color.FromArgb("#3498DB"))
                     {
@@ -132,8 +132,8 @@ namespace ZadAlhaj.Pages
                 }
                 else if (child is SearchBar searchBar)
                 {
-                    searchBar.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
-                    searchBar.PlaceholderColor = isDark ? Color.FromArgb("#98989D") : Color.FromArgb("#95A5A6");
+                    searchBar.TextColor = ThemeColors.PrimaryText(isDark);
+                    searchBar.PlaceholderColor = ThemeColors.PlaceholderText(isDark);
                 }
                 else if (child is CollectionView)
                 {

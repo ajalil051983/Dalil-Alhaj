@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:ZadAlhaj.Resources.Localization"
              x:Class="ZadAlhaj.Pages.LoadingPage"
-             BackgroundColor="{AppThemeBinding Light=#2C3E50, Dark=#1C1C1E}">
+             BackgroundColor="{StaticResource HeaderBackgroundColor}">
 
     <Grid>
         <VerticalStackLayout 

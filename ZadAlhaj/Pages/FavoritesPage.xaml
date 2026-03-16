@@ -2,9 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:ZadAlhaj.Resources.Localization"
+             xmlns:local="clr-namespace:ZadAlhaj.Pages"
              x:Class="ZadAlhaj.Pages.FavoritesPage"
              Title="{x:Static res:AppResources.FavoritesTitle}"
-             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
 
     <Grid RowDefinitions="*">
 
@@ -16,7 +17,7 @@
                        Text="{x:Static res:AppResources.FavoritesTitle}"
                        FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
                        Margin="0,0,0,5" />
 
                 <CollectionView x:Name="FavoritesCollection"
@@ -26,10 +27,10 @@
                     </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="local:FavoriteItem">
                             <Border Stroke="#BDC3C7"
                                     StrokeThickness="1"
-                                    Background="{AppThemeBinding Light=White, Dark=#2C2C2E}"
+                                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
                                     Padding="15"
                                     StrokeShape="RoundRectangle 15">
                                 <Border.Shadow>
@@ -57,11 +58,11 @@
                                         <Label Text="{Binding SubCategoryName}"
                                                FontSize="16"
                                                FontAttributes="Bold"
-                                               TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}"
+                                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
                                                LineBreakMode="WordWrap" />
                                         <Label Text="{Binding CategoryName}"
                                                FontSize="13"
-                                               TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#98989D}" />
+                                               TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}" />
                                     </VerticalStackLayout>
 
                                     <!-- Icon -->
@@ -92,7 +93,7 @@
                    FontSize="16"
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center"
-                   TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#98989D}"
+                   TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
                    LineBreakMode="WordWrap" />
         </VerticalStackLayout>
 

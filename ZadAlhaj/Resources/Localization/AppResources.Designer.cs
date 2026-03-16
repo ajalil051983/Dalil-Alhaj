@@ -475,7 +475,7 @@ namespace ZadAlhaj.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to © AbdeljalilElYasni 2025.
+        ///   Looks up a localized string similar to © IlafAlkhayr 2026.
         /// </summary>
         internal static string Copyright {
             get {
@@ -1138,6 +1138,204 @@ namespace ZadAlhaj.Resources.Localization {
         internal static string ReadMore {
             get {
                 return ResourceManager.GetString("ReadMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مواقيت الصلاة.
+        /// </summary>
+        internal static string PrayerTimes {
+            get {
+                return ResourceManager.GetString("PrayerTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفجر.
+        /// </summary>
+        internal static string Fajr {
+            get {
+                return ResourceManager.GetString("Fajr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الشروق.
+        /// </summary>
+        internal static string Shurooq {
+            get {
+                return ResourceManager.GetString("Shurooq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الظهر.
+        /// </summary>
+        internal static string Dhuhr {
+            get {
+                return ResourceManager.GetString("Dhuhr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العصر.
+        /// </summary>
+        internal static string Asr {
+            get {
+                return ResourceManager.GetString("Asr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المغرب.
+        /// </summary>
+        internal static string Maghrib {
+            get {
+                return ResourceManager.GetString("Maghrib", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العشاء.
+        /// </summary>
+        internal static string Isha {
+            get {
+                return ResourceManager.GetString("Isha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الصلاة القادمة.
+        /// </summary>
+        internal static string NextPrayer {
+            get {
+                return ResourceManager.GetString("NextPrayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to التوقيت المحلي للمدينة.
+        /// </summary>
+        internal static string CityLocalTime {
+            get {
+                return ResourceManager.GetString("CityLocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تنبيهات الصلاة.
+        /// </summary>
+        internal static string PrayerNotifications {
+            get {
+                return ResourceManager.GetString("PrayerNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طريقة الحساب.
+        /// </summary>
+        internal static string CalculationMethod {
+            get {
+                return ResourceManager.GetString("CalculationMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المذهب.
+        /// </summary>
+        internal static string Mathhab {
+            get {
+                return ResourceManager.GetString("Mathhab", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to جدول الأسبوع.
+        /// </summary>
+        internal static string WeeklySchedule {
+            get {
+                return ResourceManager.GetString("WeeklySchedule", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to اليوم.
+        /// </summary>
+        internal static string TodaySchedule {
+            get {
+                return ResourceManager.GetString("TodaySchedule", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to عرض جدول الأسبوع.
+        /// </summary>
+        internal static string ShowWeeklySchedule {
+            get {
+                return ResourceManager.GetString("ShowWeeklySchedule", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to إخفاء جدول الأسبوع.
+        /// </summary>
+        internal static string HideWeeklySchedule {
+            get {
+                return ResourceManager.GetString("HideWeeklySchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ابحث عن مدينة....
+        /// </summary>
+        internal static string SearchCity {
+            get {
+                return ResourceManager.GetString("SearchCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الإمساك.
+        /// </summary>
+        internal static string Imsaak {
+            get {
+                return ResourceManager.GetString("Imsaak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حان وقت صلاة {0}.
+        /// </summary>
+        internal static string PrayerTimeFor {
+            get {
+                return ResourceManager.GetString("PrayerTimeFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🕌 حان الآن وقت صلاة {0}.
+        /// </summary>
+        internal static string PrayerTimeNotifBody {
+            get {
+                return ResourceManager.GetString("PrayerTimeNotifBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل التاريخ الهجري.
+        /// </summary>
+        internal static string HijriDateAdjustment {
+            get {
+                return ResourceManager.GetString("HijriDateAdjustment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل (−2 إلى +2 أيام) لمطابقة التقويم المحلي.
+        /// </summary>
+        internal static string HijriDateAdjustmentHint {
+            get {
+                return ResourceManager.GetString("HijriDateAdjustmentHint", resourceCulture);
             }
         }
     }

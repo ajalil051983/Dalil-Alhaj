@@ -43,25 +43,52 @@
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
 
-    <!-- Theme-aware colors using AppThemeBinding -->
+    <!-- ══════════════════════════════════════════════════════════
+         Centralized theme colors – change a value here and it
+         updates every XAML page that uses {StaticResource …}.
+         For C# code-behind, see ThemeColors.cs (mirrors these).
+         ══════════════════════════════════════════════════════════ -->
+
+    <!-- Page / scaffold backgrounds -->
     <Color x:Key="PageBackgroundColorLight">#F5F5F5</Color>
-    <Color x:Key="PageBackgroundColorDark">#1C1C1E</Color>
-    
+    <Color x:Key="PageBackgroundColorDark">#2C3E50</Color>
+
+    <!-- Card / surface backgrounds -->
     <Color x:Key="CardBackgroundColorLight">White</Color>
-    <Color x:Key="CardBackgroundColorDark">#2C2C2E</Color>
-    
+    <Color x:Key="CardBackgroundColorDark">#2C3E50</Color>
+
+    <!-- Header bar background (same in both themes) -->
+    <Color x:Key="HeaderBackgroundColor">#2C3E50</Color>
+
+    <!-- Surface / muted card backgrounds (countdown, etc.) -->
+    <Color x:Key="SurfaceBackgroundColorLight">#ECF0F1</Color>
+    <Color x:Key="SurfaceBackgroundColorDark">#2C3E50</Color>
+
+    <!-- Primary text -->
     <Color x:Key="PrimaryTextColorLight">#2C3E50</Color>
     <Color x:Key="PrimaryTextColorDark">#F5F5F5</Color>
-    
+
+    <!-- Secondary text -->
     <Color x:Key="SecondaryTextColorLight">#7F8C8D</Color>
     <Color x:Key="SecondaryTextColorDark">#AEAEB2</Color>
-    
-    <Color x:Key="BorderColorLight">#E0E0E0</Color>
-    <Color x:Key="BorderColorDark">#3A3A3C</Color>
-    
-    <Color x:Key="InputBackgroundColorLight">White</Color>
-    <Color x:Key="InputBackgroundColorDark">#2C2C2E</Color>
-    
+
+    <!-- Label text (settings labels, etc.) -->
+    <Color x:Key="LabelTextColorLight">Black</Color>
+    <Color x:Key="LabelTextColorDark">White</Color>
+
+    <!-- Subtle / muted text (about section, version, etc.) -->
+    <Color x:Key="SubtleTextColorLight">#666666</Color>
+    <Color x:Key="SubtleTextColorDark">#CCCCCC</Color>
+
+    <!-- Placeholder text -->
     <Color x:Key="PlaceholderTextColorLight">#95A5A6</Color>
-    <Color x:Key="PlaceholderTextColorDark">#8E8E93</Color>
+    <Color x:Key="PlaceholderTextColorDark">#98989D</Color>
+
+    <!-- Borders -->
+    <Color x:Key="BorderColorLight">#E0E0E0</Color>
+    <Color x:Key="BorderColorDark">#2C3E50</Color>
+
+    <!-- Input backgrounds -->
+    <Color x:Key="InputBackgroundColorLight">White</Color>
+    <Color x:Key="InputBackgroundColorDark">#34495E</Color>
 </ResourceDictionary>
