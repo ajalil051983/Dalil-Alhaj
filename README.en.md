@@ -145,10 +145,9 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Developer
 
-Abdeljalil El Yasni
-
-- GitHub: https://github.com/AbdeljalilElYasni
-- Email: your.email@example.com
+**Abdeljalil El Yasni**
+- GitHub: [@AbdeljalilElYasni](https://github.com/AbdeljalilElYasni)
+- Email: ajalil051983@gmail.com
 
 ---
 
@@ -159,16 +158,6 @@ Abdeljalil El Yasni
 - Fonts: Google Fonts (Tajawal, Open Sans)
 - Thanks to the .NET MAUI community
 
----
-
-## Support
-
-- Email: support@zadalhaj.com
-- Issues: https://github.com/yourusername/dalil-alhaj/issues
-- Discussions: https://github.com/yourusername/dalil-alhaj/discussions
-
----
-
 ## Roadmap
 
 - v1.0.0 released
@@ -178,4 +167,4 @@ Abdeljalil El Yasni
 
 May Allah accept your Hajj and efforts.
 
-© 2025 AbdeljalilElYasni. All rights reserved.
+© 2026 Abdeljalil ElYasni. All rights reserved.

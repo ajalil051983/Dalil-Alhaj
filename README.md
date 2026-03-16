@@ -259,7 +259,7 @@ dotnet build -t:Run -f net10.0-windows10.0.26100.0
 
 **Abdeljalil El Yasni**
 - GitHub: [@AbdeljalilElYasni](https://github.com/AbdeljalilElYasni)
-- Email: your.email@example.com
+- Email: ajalil051983@gmail.com
 
 ---
 
@@ -269,17 +269,6 @@ dotnet build -t:Run -f net10.0-windows10.0.26100.0
 - الأيقونات من مكتبة Emoji
 - الخطوط من Google Fonts (Tajawal, Open Sans)
 - المجتمع المفتوح المصدر لـ .NET MAUI
-
----
-
-## 📞 الدعم | Support
-
-للأسئلة والدعم:
-- 📧 Email: support@zadalhaj.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/zad-alhaj/issues)
-- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/zad-alhaj/discussions)
-
----
 
 ## 🗺️ خريطة الطريق | Roadmap
 
