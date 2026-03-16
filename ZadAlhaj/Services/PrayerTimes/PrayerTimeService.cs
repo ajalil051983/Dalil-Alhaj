@@ -170,9 +170,12 @@ namespace ZadAlhaj.Services.PrayerTimes
             try
             {
                 // Use Task.WhenAny to enforce a hard 5-second timeout on GPS request
-                // This prevents hanging on emulators or devices with GPS issues
-                var gpsTask = Geolocation.Default.GetLocationAsync(
-                    new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(5)));
+                // This prevents hanging on emulators or devices with GPS issues.
+                // Android requires the Geolocation call (and any internal permission request
+                // it may trigger) to run on the main thread — hence InvokeOnMainThreadAsync.
+                var gpsTask = MainThread.InvokeOnMainThreadAsync(() =>
+                    Geolocation.Default.GetLocationAsync(
+                        new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(5))));
                 var timeoutTask = Task.Delay(TimeSpan.FromSeconds(6));
 
                 var completedTask = await Task.WhenAny(gpsTask, timeoutTask);

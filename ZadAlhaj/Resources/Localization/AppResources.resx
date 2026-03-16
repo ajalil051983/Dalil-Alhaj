@@ -541,4 +541,10 @@
   <data name="PrayerTimeNotifBody" xml:space="preserve">
     <value>🕌 حان الآن وقت صلاة {0}</value>
   </data>
+  <data name="HijriDateAdjustment" xml:space="preserve">
+    <value>تعديل التاريخ الهجري</value>
+  </data>
+  <data name="HijriDateAdjustmentHint" xml:space="preserve">
+    <value>تعديل (−2 إلى +2 أيام) لمطابقة التقويم المحلي</value>
+  </data>
 </root>

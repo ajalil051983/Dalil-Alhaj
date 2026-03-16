@@ -115,18 +115,19 @@ namespace ZadAlhaj.Pages
                 DateLabel.Text = todayTimes.Date.ToString("dddd, dd MMMM yyyy",
                     CultureInfo.CurrentCulture);
 
-                // Simple Hijri approximation using UmAlQura calendar
+                // Hijri date — use HijriDateService (Aladhan API + adjustment + fallback)
                 try
                 {
-                    var hijri = new UmAlQuraCalendar();
-                    int hYear = hijri.GetYear(todayTimes.Date);
-                    int hMonth = hijri.GetMonth(todayTimes.Date);
-                    int hDay = hijri.GetDayOfMonth(todayTimes.Date);
-                    string[] hijriMonths = { "",
-                        "محرم", "صفر", "ربيع الأول", "ربيع الثاني",
-                        "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان",
-                        "رمضان", "شوال", "ذو القعدة", "ذو الحجة" };
-                    HijriDateLabel.Text = $"{hDay} {hijriMonths[hMonth]} {hYear}";
+                    var hijriService = new HijriDateService();
+                    var hijri = await hijriService.GetHijriDateAsync(todayTimes.Date);
+                    if (hijri != null)
+                    {
+                        HijriDateLabel.Text = HijriDateService.Format(hijri);
+                    }
+                    else
+                    {
+                        HijriDateLabel.Text = "";
+                    }
                 }
                 catch
                 {

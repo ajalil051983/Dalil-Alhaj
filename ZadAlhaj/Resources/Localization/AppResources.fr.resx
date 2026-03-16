@@ -541,4 +541,10 @@ Appuyez sur ⭐ sur une page de contenu pour l'enregistrer ici</value>
   <data name="PrayerTimeNotifBody" xml:space="preserve">
     <value>🕌 C'est maintenant l'heure de la prière de {0}</value>
   </data>
+  <data name="HijriDateAdjustment" xml:space="preserve">
+    <value>Ajustement de la date hégirien</value>
+  </data>
+  <data name="HijriDateAdjustmentHint" xml:space="preserve">
+    <value>Ajuster (−2 à +2 jours) pour correspondre au calendrier local</value>
+  </data>
 </root>

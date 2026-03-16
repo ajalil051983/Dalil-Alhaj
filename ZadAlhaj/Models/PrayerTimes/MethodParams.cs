@@ -21,7 +21,7 @@ namespace ZadAlhaj.Models.PrayerTimes
             [CalculationMethod.Morocco] = new MethodParams
             {
                 FajrAngle = 19.0, IshaAngle = 17.0,
-                Offsets = [0, 0, 5, 0, 2, 0]
+                Offsets = [0, 0, 5, 0, 3, 0]
             },
             [CalculationMethod.EgyptNew] = new MethodParams
             {

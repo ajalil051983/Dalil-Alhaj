@@ -150,6 +150,26 @@
                             <x:String>الحنفي / Hanafi</x:String>
                         </Picker.Items>
                     </Picker>
+
+                    <!-- Hijri Date Adjustment -->
+                    <Label Text="{x:Static res:AppResources.HijriDateAdjustment}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}" />
+                    <Label Text="{x:Static res:AppResources.HijriDateAdjustmentHint}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource SubtleTextColorLight}, Dark={StaticResource SubtleTextColorDark}}" />
+                    <Picker x:Name="HijriAdjustmentPicker"
+                            AutomationId="HijriAdjustmentPickerID"
+                            SelectedIndexChanged="OnHijriAdjustmentChanged"
+                            FontSize="14">
+                        <Picker.Items>
+                            <x:String>-2</x:String>
+                            <x:String>-1</x:String>
+                            <x:String>0</x:String>
+                            <x:String>+1</x:String>
+                            <x:String>+2</x:String>
+                        </Picker.Items>
+                    </Picker>
                 </VerticalStackLayout>
             </Border>
 

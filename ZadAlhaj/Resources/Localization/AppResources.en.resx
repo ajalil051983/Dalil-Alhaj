@@ -541,4 +541,10 @@ Tap ⭐ on any content page to save it here</value>
   <data name="PrayerTimeNotifBody" xml:space="preserve">
     <value>🕌 It's now time for {0} prayer</value>
   </data>
+  <data name="HijriDateAdjustment" xml:space="preserve">
+    <value>Hijri Date Adjustment</value>
+  </data>
+  <data name="HijriDateAdjustmentHint" xml:space="preserve">
+    <value>Adjust (−2 to +2 days) to match local calendar</value>
+  </data>
 </root>

@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="NUnit" Version="4.5.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
   </ItemGroup>
 
   <!--
@@ -21,16 +21,11 @@
     the real (unmodified) implementation files.
   -->
   <ItemGroup>
-    <Compile Include="../ZadAlhaj/Models/PrayerTimes/Enums.cs"
-             Link="ProductionSource/Enums.cs" />
-    <Compile Include="../ZadAlhaj/Models/PrayerTimes/MethodParams.cs"
-             Link="ProductionSource/MethodParams.cs" />
-    <Compile Include="../ZadAlhaj/Models/PrayerTimes/DayPrayerTimes.cs"
-             Link="ProductionSource/DayPrayerTimes.cs" />
-    <Compile Include="../ZadAlhaj/Services/PrayerTimes/SolarPosition.cs"
-             Link="ProductionSource/SolarPosition.cs" />
-    <Compile Include="../ZadAlhaj/Services/PrayerTimes/PrayerTimeCalculator.cs"
-             Link="ProductionSource/PrayerTimeCalculator.cs" />
+    <Compile Include="../ZadAlhaj/Models/PrayerTimes/Enums.cs" Link="ProductionSource/Enums.cs" />
+    <Compile Include="../ZadAlhaj/Models/PrayerTimes/MethodParams.cs" Link="ProductionSource/MethodParams.cs" />
+    <Compile Include="../ZadAlhaj/Models/PrayerTimes/DayPrayerTimes.cs" Link="ProductionSource/DayPrayerTimes.cs" />
+    <Compile Include="../ZadAlhaj/Services/PrayerTimes/SolarPosition.cs" Link="ProductionSource/SolarPosition.cs" />
+    <Compile Include="../ZadAlhaj/Services/PrayerTimes/PrayerTimeCalculator.cs" Link="ProductionSource/PrayerTimeCalculator.cs" />
   </ItemGroup>
 
 </Project>

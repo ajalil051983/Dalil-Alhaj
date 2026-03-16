@@ -231,6 +231,9 @@ namespace ZadAlhaj.Pages
             PrayerNotificationSwitch.IsToggled = NotificationService.IsEnabled;
             CalculationMethodPicker.SelectedIndex = (int)prayerService.GetCalculationMethod();
             MathhabPicker.SelectedIndex = (int)prayerService.GetMathhab() - 1; // enum starts at 1
+
+            // Hijri adjustment: picker items are "-2","-1","0","+1","+2" → index = value + 2
+            HijriAdjustmentPicker.SelectedIndex = HijriDateService.GetAdjustment() + 2;
             isLoadingSettings = false;
         }
 
@@ -517,6 +520,16 @@ namespace ZadAlhaj.Pages
             // Mathhab enum: Shafii=1, Hanafi=2 — picker index is 0-based
             prayerService.SetMathhab(
                 (ZadAlhaj.Models.PrayerTimes.Mathhab)(MathhabPicker.SelectedIndex + 1));
+        }
+
+        private void OnHijriAdjustmentChanged(object? sender, EventArgs e)
+        {
+            if (isLoadingSettings) return;
+            if (HijriAdjustmentPicker.SelectedIndex < 0) return;
+
+            // Picker items: "-2","-1","0","+1","+2" → value = index − 2
+            int adjustment = HijriAdjustmentPicker.SelectedIndex - 2;
+            HijriDateService.SetAdjustment(adjustment);
         }
 
         #endregion

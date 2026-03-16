@@ -1320,5 +1320,23 @@ namespace ZadAlhaj.Resources.Localization {
                 return ResourceManager.GetString("PrayerTimeNotifBody", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل التاريخ الهجري.
+        /// </summary>
+        internal static string HijriDateAdjustment {
+            get {
+                return ResourceManager.GetString("HijriDateAdjustment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل (−2 إلى +2 أيام) لمطابقة التقويم المحلي.
+        /// </summary>
+        internal static string HijriDateAdjustmentHint {
+            get {
+                return ResourceManager.GetString("HijriDateAdjustmentHint", resourceCulture);
+            }
+        }
     }
 }
