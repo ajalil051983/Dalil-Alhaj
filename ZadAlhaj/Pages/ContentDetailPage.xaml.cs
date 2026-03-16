@@ -180,17 +180,17 @@ namespace ZadAlhaj.Pages
                     isApplyingTheme = true;
                     lastAppliedTheme = effectiveTheme;
                 
-                    this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                    this.BackgroundColor = ThemeColors.PageBackground(isDark);
                 
                     // Update ContentLabel and ContentText directly
                     if (ContentLabel != null)
                     {
-                        ContentLabel.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        ContentLabel.TextColor = ThemeColors.PrimaryText(isDark);
                     }
                 
                     if (ContentText != null)
                     {
-                        ContentText.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#34495E");
+                        ContentText.TextColor = ThemeColors.ContentText(isDark);
                     }
                 
                     // CategoryTitle is inside the category-colored HeaderFrame and is always White
@@ -198,7 +198,7 @@ namespace ZadAlhaj.Pages
 
                     if (SubCategoryTitle != null)
                     {
-                        SubCategoryTitle.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                        SubCategoryTitle.TextColor = ThemeColors.PrimaryText(isDark);
                     }
                 
                     if (this.Content is ScrollView scrollView && 
@@ -235,7 +235,7 @@ namespace ZadAlhaj.Pages
                             continue;
                         }
 
-                        border.BackgroundColor = isDark ? Color.FromArgb("#2C2C2E") : Colors.White;
+                        border.BackgroundColor = ThemeColors.CardBackground(isDark);
                         
                         if (border.Content is Layout borderLayout)
                         {
@@ -251,11 +251,11 @@ namespace ZadAlhaj.Pages
                         }
                         
                         // Match both light and dark values so dark→light transitions also work
-                        if (label.TextColor == Color.FromArgb("#2C3E50") || 
-                            label.TextColor == Color.FromArgb("#34495E") ||
-                            label.TextColor == Color.FromArgb("#F5F5F5"))
+                        if (label.TextColor == ThemeColors.PrimaryTextLight || 
+                            label.TextColor == ThemeColors.ContentTextLight ||
+                            label.TextColor == ThemeColors.PrimaryTextDark)
                         {
-                            label.TextColor = isDark ? Color.FromArgb("#F5F5F5") : Color.FromArgb("#2C3E50");
+                            label.TextColor = ThemeColors.PrimaryText(isDark);
                         }
                     }
                     else if (child is Layout nestedLayout)

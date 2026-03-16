@@ -150,14 +150,10 @@ namespace ZadAlhaj.Pages
                 _isApplyingTheme = true;
                 _lastAppliedTheme = effectiveTheme;
 
-                BackgroundColor = isDark
-                    ? Color.FromArgb("#1C1C1E")
-                    : Color.FromArgb("#F5F5F5");
+                BackgroundColor = ThemeColors.PageBackground(isDark);
 
                 if (FavoritesTitleLabel != null)
-                    FavoritesTitleLabel.TextColor = isDark
-                        ? Color.FromArgb("#F5F5F5")
-                        : Color.FromArgb("#2C3E50");
+                    FavoritesTitleLabel.TextColor = ThemeColors.PrimaryText(isDark);
             }
             finally
             {

@@ -280,7 +280,7 @@
     <value>جاري التحميل...</value>
   </data>
   <data name="Copyright" xml:space="preserve">
-    <value>© AbdeljalilElYasni 2025</value>
+    <value>© IlafAlkhayr 2026</value>
   </data>
   <data name="Content" xml:space="preserve">
     <value>المحتوى:</value>
@@ -480,5 +480,65 @@
   <data name="NoFavoritesMessage" xml:space="preserve">
     <value>لا توجد مفضلات بعد
 اضغط على ⭐ في صفحة المحتوى لإضافة عنصر</value>
+  </data>
+  <data name="PrayerTimes" xml:space="preserve">
+    <value>مواقيت الصلاة</value>
+  </data>
+  <data name="Fajr" xml:space="preserve">
+    <value>الفجر</value>
+  </data>
+  <data name="Shurooq" xml:space="preserve">
+    <value>الشروق</value>
+  </data>
+  <data name="Dhuhr" xml:space="preserve">
+    <value>الظهر</value>
+  </data>
+  <data name="Asr" xml:space="preserve">
+    <value>العصر</value>
+  </data>
+  <data name="Maghrib" xml:space="preserve">
+    <value>المغرب</value>
+  </data>
+  <data name="Isha" xml:space="preserve">
+    <value>العشاء</value>
+  </data>
+  <data name="NextPrayer" xml:space="preserve">
+    <value>الصلاة القادمة</value>
+  </data>
+  <data name="CityLocalTime" xml:space="preserve">
+    <value>التوقيت المحلي للمدينة</value>
+  </data>
+  <data name="PrayerNotifications" xml:space="preserve">
+    <value>تنبيهات الصلاة</value>
+  </data>
+  <data name="CalculationMethod" xml:space="preserve">
+    <value>طريقة الحساب</value>
+  </data>
+  <data name="Mathhab" xml:space="preserve">
+    <value>المذهب</value>
+  </data>
+  <data name="WeeklySchedule" xml:space="preserve">
+    <value>جدول الأسبوع</value>
+  </data>
+  <data name="TodaySchedule" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="ShowWeeklySchedule" xml:space="preserve">
+    <value>عرض جدول الأسبوع</value>
+  </data>
+  <data name="HideWeeklySchedule" xml:space="preserve">
+    <value>إخفاء جدول الأسبوع</value>
+  </data>
+  <data name="SearchCity" xml:space="preserve">
+    <value>ابحث عن مدينة...</value>
+  </data>
+  <data name="Imsaak" xml:space="preserve">
+    <value>الإمساك</value>
+  </data>
+  <data name="PrayerTimeFor" xml:space="preserve">
+    <value>حان وقت صلاة {0}</value>
+  </data>
+  <data name="PrayerTimeNotifBody" xml:space="preserve">
+    <value>🕌 حان الآن وقت صلاة {0}</value>
   </data>
 </root>

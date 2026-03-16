@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>ZadAlhaj.UnitTests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+  </ItemGroup>
+
+  <!--
+    Link production source files directly instead of referencing the MAUI project,
+    which requires platform targets. This ensures unit tests always compile against
+    the real (unmodified) implementation files.
+  -->
+  <ItemGroup>
+    <Compile Include="../ZadAlhaj/Models/PrayerTimes/Enums.cs"
+             Link="ProductionSource/Enums.cs" />
+    <Compile Include="../ZadAlhaj/Models/PrayerTimes/MethodParams.cs"
+             Link="ProductionSource/MethodParams.cs" />
+    <Compile Include="../ZadAlhaj/Models/PrayerTimes/DayPrayerTimes.cs"
+             Link="ProductionSource/DayPrayerTimes.cs" />
+    <Compile Include="../ZadAlhaj/Services/PrayerTimes/SolarPosition.cs"
+             Link="ProductionSource/SolarPosition.cs" />
+    <Compile Include="../ZadAlhaj/Services/PrayerTimes/PrayerTimeCalculator.cs"
+             Link="ProductionSource/PrayerTimeCalculator.cs" />
+  </ItemGroup>
+
+</Project>

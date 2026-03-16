@@ -2,14 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:ZadAlhaj.Resources.Localization"
+             xmlns:local="clr-namespace:ZadAlhaj.Pages"
              x:Class="ZadAlhaj.Pages.ChecklistPage"
              Title="{x:Static res:AppResources.Checklist}"
-             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1C1C1E}">
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="ItemBackgroundLight">White</Color>
-            <Color x:Key="ItemBackgroundDark">#2C2C2E</Color>
+            <Color x:Key="ItemBackgroundDark">#2C3E50</Color>
             <Color x:Key="TitleColorLight">#2C3E50</Color>
             <Color x:Key="TitleColorDark">#F5F5F5</Color>
             <Color x:Key="DescColorLight">#7F8C8D</Color>
@@ -62,7 +63,7 @@
         </CollectionView.Header>
         
         <CollectionView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="local:ChecklistItem">
                 <!-- Simplified layout hierarchy -->
                 <Border BackgroundColor="{AppThemeBinding Light={StaticResource ItemBackgroundLight}, Dark={StaticResource ItemBackgroundDark}}"
                         StrokeShape="RoundRectangle 10"

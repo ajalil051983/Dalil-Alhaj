@@ -1,4 +1,5 @@
 using ZadAlhaj.Services;
+using ZadAlhaj.Services.PrayerTimes;
 using ZadAlhaj.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Maui.Controls;
@@ -12,11 +13,15 @@ namespace ZadAlhaj.Pages
         private bool isApplyingTheme = false; // Prevent redundant theme applications
         private AppTheme? lastAppliedTheme = null; // Track last applied theme
         private bool isLoadingSettings = false; // Prevent language change event during initialization
+        private readonly PrayerTimeService prayerService;
+        private readonly NotificationService notificationService;
 
         public SettingsPage()
         {
             InitializeComponent();
             FlowDirection = LocalizationService.GetFlowDirection();
+            prayerService = new PrayerTimeService();
+            notificationService = new NotificationService();
             LoadSettings();
             // ApplyThemeColors will be called in OnAppearing
         }
@@ -66,9 +71,9 @@ namespace ZadAlhaj.Pages
                 lastAppliedTheme = effectiveTheme;
 
                 // Page background
-                this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                this.BackgroundColor = ThemeColors.PageBackground(isDark);
 
-                // Update all Borders (the XAML uses Border, not Frame)
+                                // Update all Borders
                 if (this.Content is ScrollView scrollView &&
                     scrollView.Content is VerticalStackLayout stack)
                 {
@@ -86,7 +91,7 @@ namespace ZadAlhaj.Pages
                             isFirst = false;
 
                             border.Background = new SolidColorBrush(
-                                isDark ? Color.FromArgb("#2C2C2E") : Colors.White);
+                                ThemeColors.CardBackground(isDark));
 
                             UpdateBorderContent(border, isDark);
                         }
@@ -95,15 +100,15 @@ namespace ZadAlhaj.Pages
 
                 // Update specific named elements
                 if (LanguageLabel != null)
-                    LanguageLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                    LanguageLabel.TextColor = ThemeColors.LabelText(isDark);
                 if (PreviewLabel != null)
-                    PreviewLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                    PreviewLabel.TextColor = ThemeColors.LabelText(isDark);
                 if (AboutTitleLabel != null)
-                    AboutTitleLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                    AboutTitleLabel.TextColor = ThemeColors.LabelText(isDark);
                 if (AboutSubtitleLabel != null)
-                    AboutSubtitleLabel.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
+                    AboutSubtitleLabel.TextColor = ThemeColors.SubtleText(isDark);
                 if (AboutVersionLabel != null)
-                    AboutVersionLabel.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
+                    AboutVersionLabel.TextColor = ThemeColors.SubtleText(isDark);
             }
             finally
             {
@@ -120,22 +125,22 @@ namespace ZadAlhaj.Pages
                     if (child is Label label && label != HeaderLabel)
                     {
                         // Update text colors for labels using Black/White scheme
-                        if (label.TextColor == Colors.Black ||
-                            label.TextColor == Colors.White ||
+                        if (label.TextColor == ThemeColors.LabelTextLight ||
+                            label.TextColor == ThemeColors.LabelTextDark ||
                             label.TextColor == Color.FromArgb("#000000") ||
                             label.TextColor == Color.FromArgb("#FFFFFF"))
                         {
-                            label.TextColor = isDark ? Colors.White : Colors.Black;
+                            label.TextColor = ThemeColors.LabelText(isDark);
                         }
-                        else if (label.TextColor == Color.FromArgb("#666666") ||
-                                 label.TextColor == Color.FromArgb("#CCCCCC"))
+                        else if (label.TextColor == ThemeColors.SubtleTextLight ||
+                                 label.TextColor == ThemeColors.SubtleTextDark)
                         {
-                            label.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
+                            label.TextColor = ThemeColors.SubtleText(isDark);
                         }
                     }
                     else if (child is Picker picker)
                     {
-                        picker.TextColor = isDark ? Colors.White : Colors.Black;
+                        picker.TextColor = ThemeColors.LabelText(isDark);
                     }
                     else if (child is Layout nestedLayout)
                     {
@@ -145,22 +150,22 @@ namespace ZadAlhaj.Pages
                         {
                             if (nested is Label nestedLabel && nestedLabel != HeaderLabel)
                             {
-                                if (nestedLabel.TextColor == Colors.Black ||
-                                    nestedLabel.TextColor == Colors.White ||
+                                if (nestedLabel.TextColor == ThemeColors.LabelTextLight ||
+                                    nestedLabel.TextColor == ThemeColors.LabelTextDark ||
                                     nestedLabel.TextColor == Color.FromArgb("#000000") ||
                                     nestedLabel.TextColor == Color.FromArgb("#FFFFFF"))
                                 {
-                                    nestedLabel.TextColor = isDark ? Colors.White : Colors.Black;
+                                    nestedLabel.TextColor = ThemeColors.LabelText(isDark);
                                 }
-                                else if (nestedLabel.TextColor == Color.FromArgb("#666666") ||
-                                         nestedLabel.TextColor == Color.FromArgb("#CCCCCC"))
+                                else if (nestedLabel.TextColor == ThemeColors.SubtleTextLight ||
+                                         nestedLabel.TextColor == ThemeColors.SubtleTextDark)
                                 {
-                                    nestedLabel.TextColor = isDark ? Color.FromArgb("#CCCCCC") : Color.FromArgb("#666666");
+                                    nestedLabel.TextColor = ThemeColors.SubtleText(isDark);
                                 }
                             }
                             else if (nested is Picker nestedPicker)
                             {
-                                nestedPicker.TextColor = isDark ? Colors.White : Colors.Black;
+                                nestedPicker.TextColor = ThemeColors.LabelText(isDark);
                             }
                         }
                     }
@@ -220,6 +225,13 @@ namespace ZadAlhaj.Pages
             {
                 Application.Current.Resources["ContentFontSize"] = fontSize;
             }
+
+            // Load prayer time settings
+            isLoadingSettings = true;
+            PrayerNotificationSwitch.IsToggled = NotificationService.IsEnabled;
+            CalculationMethodPicker.SelectedIndex = (int)prayerService.GetCalculationMethod();
+            MathhabPicker.SelectedIndex = (int)prayerService.GetMathhab() - 1; // enum starts at 1
+            isLoadingSettings = false;
         }
 
         private async void OnLanguageChanged(object? sender, EventArgs e)
@@ -401,9 +413,9 @@ namespace ZadAlhaj.Pages
             // Update page background on main thread
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
-                this.BackgroundColor = isDark ? Color.FromArgb("#1C1C1E") : Color.FromArgb("#F5F5F5");
+                this.BackgroundColor = ThemeColors.PageBackground(isDark);
             });
-            
+
             // Notify other pages to update asynchronously
             await Task.Run(() =>
             {
@@ -433,5 +445,80 @@ namespace ZadAlhaj.Pages
                 );
             }
         }
+
+        #region Prayer Settings
+
+        private async void OnPrayerNotificationToggled(object? sender, ToggledEventArgs e)
+        {
+            if (isLoadingSettings) return;
+
+            // Disable the switch while working to prevent double-triggering
+            if (sender is Switch sw) sw.IsEnabled = false;
+
+            try
+            {
+                NotificationService.IsEnabled = e.Value;
+                if (e.Value)
+                {
+                    // Request permission first (must be on main thread — shows a system dialog)
+                    await NotificationService.RequestPermissionAsync();
+
+                    // Compute prayer times AND schedule notifications entirely on a background
+                    // thread so the UI is never blocked by AlarmManager calls.
+                    await Task.Run(async () =>
+                    {
+                        var result = new List<ZadAlhaj.Models.PrayerTimes.DayPrayerTimes>();
+                        for (int i = 0; i < NotificationService.DaysAhead; i++)
+                        {
+                            var t = await prayerService.GetPrayerTimesAsync(DateTime.Today.AddDays(i))
+                                .ConfigureAwait(false);
+                            if (t != null) result.Add(t);
+                        }
+                        if (result.Count > 0)
+                            await notificationService.ScheduleMultiDayNotificationsAsync(result)
+                                .ConfigureAwait(false);
+                    }).ConfigureAwait(false);
+                }
+                else
+                {
+                    await Task.Run(() => notificationService.CancelAllAsync()).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Settings] Error toggling notifications: {ex.Message}");
+            }
+            finally
+            {
+                // Re-enable the switch on the main thread — ConfigureAwait(false) means
+                // the finally block may run on a background thread, and touching views
+                // from a non-UI thread throws AndroidRuntimeException.
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    if (sender is Switch sw2) sw2.IsEnabled = true;
+                });
+            }
+        }
+
+        private void OnCalculationMethodChanged(object? sender, EventArgs e)
+        {
+            if (isLoadingSettings) return;
+            if (CalculationMethodPicker.SelectedIndex < 0) return;
+
+            prayerService.SetCalculationMethod(
+                (ZadAlhaj.Models.PrayerTimes.CalculationMethod)CalculationMethodPicker.SelectedIndex);
+        }
+
+        private void OnMathhabChanged(object? sender, EventArgs e)
+        {
+            if (isLoadingSettings) return;
+            if (MathhabPicker.SelectedIndex < 0) return;
+
+            // Mathhab enum: Shafii=1, Hanafi=2 — picker index is 0-based
+            prayerService.SetMathhab(
+                (ZadAlhaj.Models.PrayerTimes.Mathhab)(MathhabPicker.SelectedIndex + 1));
+        }
+
+        #endregion
     }
 }
