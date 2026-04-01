@@ -6,9 +6,9 @@ All **8 UI tests pass** as of March 2026.
 ## Project Identity
 | Property | Value |
 |---|---|
-| Package ID | `com.ilafalkhayr.zadalhaj` |
+| Package ID | `com.ilafalkhayr.khayratalhaj` |
 | MainActivity | `crc640e514d85339b6ec1.MainActivity` |
-| APK path | `ZadAlhaj/bin/Release/net10.0-android/com.ilafalkhayr.zadalhaj-Signed.apk` |
+| APK path | `KhayratAlhaj/bin/Release/net10.0-android/com.ilafalkhayr.khayratalhaj-Signed.apk` |
 | Appium version | 3.2.0 |
 | Node version | v22.15.1 |
 | Target framework | net10.0-android |
@@ -31,7 +31,7 @@ Wait until `adb devices` shows `emulator-5554   device`.
 > installed by Appium (assemblies are not bundled in the APK).
 
 ```powershell
-dotnet build "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\ZadAlhaj.csproj" `
+dotnet build "D:\Ai workspace\Khayrat Alhaj\KhayratAlhaj\KhayratAlhaj.csproj" `
     -f net10.0-android -c Release
 ```
 
@@ -39,7 +39,7 @@ Expected output: `La génération a réussi. 0 Erreur(s)` (or "Build succeeded. 
 
 Verify the APK exists:
 ```powershell
-Test-Path "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\bin\Release\net10.0-android\com.ilafalkhayr.zadalhaj-Signed.apk"
+Test-Path "D:\Ai workspace\Khayrat Alhaj\KhayratAlhaj\bin\Release\net10.0-android\com.ilafalkhayr.khayratalhaj-Signed.apk"
 # Should return: True
 ```
 
@@ -53,7 +53,7 @@ pre-installed manually once per emulator wipe:
 ```powershell
 $env:ANDROID_HOME = "C:\PROGRA~2\Android\ANDROI~1"
 $env:Path += ";$env:ANDROID_HOME\platform-tools"
-adb -s emulator-5554 install -r "D:\Ai workspace\Dalil Alhaj\ZadAlhaj\bin\Release\net10.0-android\com.ilafalkhayr.zadalhaj-Signed.apk"
+adb -s emulator-5554 install -r "D:\Ai workspace\Khayrat Alhaj\KhayratAlhaj\bin\Release\net10.0-android\com.ilafalkhayr.khayratalhaj-Signed.apk"
 ```
 
 ---
@@ -80,12 +80,12 @@ Expected: `Appium REST http interface listener started on http://0.0.0.0:4723`
 
 Run all 8 UI tests:
 ```powershell
-dotnet test "D:\Ai workspace\Dalil Alhaj\ZadAlhaj.UITests\ZadAlhaj.UITests.csproj"
+dotnet test "D:\Ai workspace\Khayrat Alhaj\KhayratAlhaj.UITests\KhayratAlhaj.UITests.csproj"
 ```
 
 Run a single test:
 ```powershell
-dotnet test "D:\Ai workspace\Dalil Alhaj\ZadAlhaj.UITests\ZadAlhaj.UITests.csproj" `
+dotnet test "D:\Ai workspace\Khayrat Alhaj\KhayratAlhaj.UITests\KhayratAlhaj.UITests.csproj" `
     --filter "FullyQualifiedName~Categories_ShouldLoadAndDisplay"
 ```
 
@@ -111,7 +111,7 @@ Expected result: **8 passed, 0 failed**.
 ## Key Configuration (AppiumSetup.cs)
 
 ```csharp
-appPackage  = "com.ilafalkhayr.zadalhaj"
+appPackage  = "com.ilafalkhayr.khayratalhaj"
 appActivity = "crc640e514d85339b6ec1.MainActivity"
 noReset     = true    // app must be pre-installed (Step 3)
 forceAppLaunch = true // restart app each test

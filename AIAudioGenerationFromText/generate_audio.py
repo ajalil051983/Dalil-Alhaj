@@ -62,7 +62,7 @@ def generate_audio_gtts():
                 print(f"  ✗ Failed {filename}: {e}")
     
     print(f"\n✓ Generated {count} audio files in '{audio_dir}' folder")
-    print("Copy these files to: ZadAlhaj/Resources/Raw/audio/")
+    print("Copy these files to: KhayratAlhaj/Resources/Raw/audio/")
 
 
 # ============================================================================
@@ -116,7 +116,7 @@ async def generate_audio_edge():
                 print(f"  ✗ Failed {filename}: {e}")
     
     print(f"\n✓ Generated {count} audio files in '{audio_dir}' folder")
-    print("Copy these files to: ZadAlhaj/Resources/Raw/audio/")
+    print("Copy these files to: KhayratAlhaj/Resources/Raw/audio/")
 
 
 # ============================================================================
@@ -201,5 +201,5 @@ if __name__ == "__main__":
     
     print("\nDone! Next steps:")
     print("1. Check the 'audio' folder for generated MP3 files")
-    print("2. Copy files to: ZadAlhaj/Resources/Raw/audio/")
+    print("2. Copy files to: KhayratAlhaj/Resources/Raw/audio/")
     print("3. Rebuild the app")

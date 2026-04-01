@@ -2,7 +2,7 @@
 
 ## Overview
 
-Dalil Alhaj delivers local push notifications for every daily prayer. Two notifications fire per prayer:
+Khayrat Alhaj delivers local push notifications for every daily prayer. Two notifications fire per prayer:
 
 - **Reminder** — 5 minutes before the prayer time
 - **Adhan (Arrival)** — exactly at the prayer time
@@ -15,13 +15,13 @@ Notifications are pre-scheduled up to **7 days ahead** so they fire reliably eve
 
 | File | Role |
 |---|---|
-| `ZadAlhaj/Services/NotificationService.cs` | Core scheduling, cancellation, content, ID management |
-| `ZadAlhaj/App.xaml.cs` | Schedules 7 days on app startup; handles notification tap-to-navigate |
-| `ZadAlhaj/Platforms/Android/BootReceiver.cs` | Reschedules after device reboot |
-| `ZadAlhaj/Pages/SettingsPage.xaml.cs` | Toggle switch to enable/disable; reschedules on enable |
-| `ZadAlhaj/Pages/PrayerTimesPage.xaml.cs` | Requests permission when the page is opened |
-| `ZadAlhaj/MauiProgram.cs` | Registers the plugin and creates the `prayer_times` Android channel |
-| `ZadAlhaj/Models/PrayerTimes/DayPrayerTimes.cs` | Data model carrying prayer times + city UTC offset |
+| `KhayratAlhaj/Services/NotificationService.cs` | Core scheduling, cancellation, content, ID management |
+| `KhayratAlhaj/App.xaml.cs` | Schedules 7 days on app startup; handles notification tap-to-navigate |
+| `KhayratAlhaj/Platforms/Android/BootReceiver.cs` | Reschedules after device reboot |
+| `KhayratAlhaj/Pages/SettingsPage.xaml.cs` | Toggle switch to enable/disable; reschedules on enable |
+| `KhayratAlhaj/Pages/PrayerTimesPage.xaml.cs` | Requests permission when the page is opened |
+| `KhayratAlhaj/MauiProgram.cs` | Registers the plugin and creates the `prayer_times` Android channel |
+| `KhayratAlhaj/Models/PrayerTimes/DayPrayerTimes.cs` | Data model carrying prayer times + city UTC offset |
 
 ---
 

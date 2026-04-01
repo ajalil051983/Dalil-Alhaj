@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>خيرات الحاج</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>حسب المذهب المالكي</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>🗺️ الخريطة</value>
+  </data>
+  <data name="Checklist" xml:space="preserve">
+    <value>قائمة المهام</value>
+  </data>
+  <data name="ChooseTopic" xml:space="preserve">
+    <value>اختر الموضوع:</value>
+  </data>
+  <data name="SettingsTitle" xml:space="preserve">
+    <value>⚙️ الإعدادات</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>اللغة</value>
+  </data>
+  <data name="ChooseLanguage" xml:space="preserve">
+    <value>اختر اللغة</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>العربية</value>
+  </data>
+  <data name="French" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="RestartRequired" xml:space="preserve">
+    <value>إعادة التشغيل مطلوبة</value>
+  </data>
+  <data name="RestartMessage" xml:space="preserve">
+    <value>يرجى إعادة تشغيل التطبيق لتطبيق اللغة الجديدة</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>حسناً</value>
+  </data>
+  <data name="ChecklistTitle" xml:space="preserve">
+    <value>✅ قائمة مهام الحج</value>
+  </data>
+  <data name="CompletedOf" xml:space="preserve">
+    <value>{0} من {1} مكتمل</value>
+  </data>
+  <data name="ChecklistItem1Title" xml:space="preserve">
+    <value>تعلم أحكام الحج</value>
+  </data>
+  <data name="ChecklistItem1Desc" xml:space="preserve">
+    <value>دراسة أركان وواجبات الحج</value>
+  </data>
+  <data name="ChecklistItem2Title" xml:space="preserve">
+    <value>التوبة والاستغفار</value>
+  </data>
+  <data name="ChecklistItem2Desc" xml:space="preserve">
+    <value>التوبة النصوح وقضاء الديون</value>
+  </data>
+  <data name="ChecklistItem3Title" xml:space="preserve">
+    <value>تجهيز الوثائق</value>
+  </data>
+  <data name="ChecklistItem3Desc" xml:space="preserve">
+    <value>جواز السفر والتأشيرة</value>
+  </data>
+  <data name="ChecklistItem4Title" xml:space="preserve">
+    <value>تحضير الملابس</value>
+  </data>
+  <data name="ChecklistItem4Desc" xml:space="preserve">
+    <value>ملابس الإحرام والأمتعة</value>
+  </data>
+  <data name="ChecklistItem5Title" xml:space="preserve">
+    <value>الأدوية والإسعافات</value>
+  </data>
+  <data name="ChecklistItem5Desc" xml:space="preserve">
+    <value>الأدوية الضرورية ومستلزمات الرعاية</value>
+  </data>
+  <data name="ChecklistItem6Title" xml:space="preserve">
+    <value>الإحرام من الميقات</value>
+  </data>
+  <data name="ChecklistItem6Desc" xml:space="preserve">
+    <value>الاغتسال ولبس ثياب الإحرام</value>
+  </data>
+  <data name="ChecklistItem7Title" xml:space="preserve">
+    <value>دخول مكة والطواف</value>
+  </data>
+  <data name="ChecklistItem7Desc" xml:space="preserve">
+    <value>طواف القدوم وصلاة ركعتين</value>
+  </data>
+  <data name="ChecklistItem8Title" xml:space="preserve">
+    <value>السعي بين الصفا والمروة</value>
+  </data>
+  <data name="ChecklistItem8Desc" xml:space="preserve">
+    <value>سبعة أشواط</value>
+  </data>
+  <data name="ChecklistItem9Title" xml:space="preserve">
+    <value>التوجه إلى منى</value>
+  </data>
+  <data name="ChecklistItem9Desc" xml:space="preserve">
+    <value>اليوم الثامن من ذي الحجة</value>
+  </data>
+  <data name="ChecklistItem10Title" xml:space="preserve">
+    <value>الوقوف بعرفة</value>
+  </data>
+  <data name="ChecklistItem10Desc" xml:space="preserve">
+    <value>اليوم التاسع - ركن الحج الأعظم</value>
+  </data>
+  <data name="ChecklistItem11Title" xml:space="preserve">
+    <value>المبيت بمزدلفة</value>
+  </data>
+  <data name="ChecklistItem11Desc" xml:space="preserve">
+    <value>بعد غروب يوم عرفة</value>
+  </data>
+  <data name="ChecklistItem12Title" xml:space="preserve">
+    <value>رمي جمرة العقبة</value>
+  </data>
+  <data name="ChecklistItem12Desc" xml:space="preserve">
+    <value>يوم النحر</value>
+  </data>
+  <data name="ChecklistItem13Title" xml:space="preserve">
+    <value>الحلق أو التقصير</value>
+  </data>
+  <data name="ChecklistItem13Desc" xml:space="preserve">
+    <value>بعد رمي جمرة العقبة</value>
+  </data>
+  <data name="ChecklistItem14Title" xml:space="preserve">
+    <value>طواف الإفاضة</value>
+  </data>
+  <data name="ChecklistItem14Desc" xml:space="preserve">
+    <value>ركن من أركان الحج</value>
+  </data>
+  <data name="ChecklistItem15Title" xml:space="preserve">
+    <value>رمي الجمرات أيام التشريق</value>
+  </data>
+  <data name="ChecklistItem15Desc" xml:space="preserve">
+    <value>الأيام 11 و 12 و 13</value>
+  </data>
+  <data name="ChecklistItem16Title" xml:space="preserve">
+    <value>طواف الوداع</value>
+  </data>
+  <data name="ChecklistItem16Desc" xml:space="preserve">
+    <value>قبل مغادرة مكة</value>
+  </data>
+  <data name="SearchTitle" xml:space="preserve">
+    <value>🔍 البحث</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>ابحث هنا...</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>لا توجد نتائج</value>
+  </data>
+  <data name="MapTitle" xml:space="preserve">
+    <value>خريطة مكة المكرمة</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>جاري التحميل...</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>© IlafAlkhayr 2026</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>المحتوى:</value>
+  </data>
+  <data name="Topics" xml:space="preserve">
+    <value>المواضيع:</value>
+  </data>
+  <data name="ListenToContent" xml:space="preserve">
+    <value>🔊 استمع للمحتوى</value>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>▶️ تشغيل</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>⏸️ إيقاف</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>المفضلة</value>
+  </data>
+  <data name="AddToFavorites" xml:space="preserve">
+    <value>🤍 أضف للمفضلة</value>
+  </data>
+  <data name="RemoveFromFavorites" xml:space="preserve">
+    <value>❤️ المفضلة</value>
+  </data>
+  <data name="AddedToFavorites" xml:space="preserve">
+    <value>تمت الإضافة للمفضلة</value>
+  </data>
+  <data name="RemovedFromFavorites" xml:space="preserve">
+    <value>تمت الإزالة من المفضلة</value>
+  </data>
+  <data name="CopyText" xml:space="preserve">
+    <value>📋 انسخ النص</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>📤 شارك</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>نجح</value>
+  </data>
+  <data name="TextCopied" xml:space="preserve">
+    <value>تم نسخ النص بنجاح</value>
+  </data>
+  <data name="CopyError" xml:space="preserve">
+    <value>ما قدرناش ننسخو</value>
+  </data>
+  <data name="ShareError" xml:space="preserve">
+    <value>ما قدرناش نشاركو</value>
+  </data>
+  <data name="FromApp" xml:space="preserve">
+    <value>من تطبيق: خيرات الحاج</value>
+  </data>
+  <data name="MapRoute" xml:space="preserve">
+    <value>المسار حسب المذهب المالكي</value>
+  </data>
+  <data name="YourLocation" xml:space="preserve">
+    <value>📍 موقعك</value>
+  </data>
+  <data name="Kaaba" xml:space="preserve">
+    <value>🕋 الكعبة المشرفة</value>
+  </data>
+  <data name="Arafat" xml:space="preserve">
+    <value>⛰️ جبل عرفات</value>
+  </data>
+  <data name="Muzdalifah" xml:space="preserve">
+    <value>🌙 مزدلفة</value>
+  </data>
+  <data name="Mina" xml:space="preserve">
+    <value>🏕️ منى</value>
+  </data>
+  <data name="Safa" xml:space="preserve">
+    <value>🚶 الصفا</value>
+  </data>
+  <data name="Marwa" xml:space="preserve">
+    <value>🚶 المروة</value>
+  </data>
+  <data name="Qibla" xml:space="preserve">
+    <value>القبلة</value>
+  </data>
+  <data name="ShareLocation" xml:space="preserve">
+    <value>📍 مشاركة الموقع</value>
+  </data>
+  <data name="MyLocation" xml:space="preserve">
+    <value>موقعي</value>
+  </data>
+  <data name="ViewGuide" xml:space="preserve">
+    <value>📖 عرض الدليل</value>
+  </data>
+  <data name="GettingLocation" xml:space="preserve">
+    <value>📍 جارٍ تحديد الموقع...</value>
+  </data>
+  <data name="ShareMyLocation" xml:space="preserve">
+    <value>مشاركة موقعي</value>
+  </data>
+  <data name="MyCurrentLocation" xml:space="preserve">
+    <value>موقعي الحالي</value>
+  </data>
+  <data name="LocationPermissionRequired" xml:space="preserve">
+    <value>يجب السماح بالوصول إلى الموقع لمشاركته</value>
+  </data>
+  <data name="UnableToGetLocation" xml:space="preserve">
+    <value>تعذر تحديد موقعك، يرجى المحاولة مرة أخرى</value>
+  </data>
+  <data name="LocationSharingNotSupported" xml:space="preserve">
+    <value>مشاركة الموقع غير مدعومة على هذا الجهاز</value>
+  </data>
+  <data name="LocationPermissionDenied" xml:space="preserve">
+    <value>تم رفض إذن الموقع</value>
+  </data>
+  <data name="ErrorSharingLocation" xml:space="preserve">
+    <value>خطأ في مشاركة الموقع</value>
+  </data>
+  <data name="NoGuideContentFound" xml:space="preserve">
+    <value>لا يوجد محتوى دليل لهذا الموقع</value>
+  </data>
+  <data name="CouldNotOpenGuide" xml:space="preserve">
+    <value>تعذر فتح الدليل لـ</value>
+  </data>
+  <data name="Walking" xml:space="preserve">
+    <value>🚶 مشي</value>
+  </data>
+  <data name="Driving" xml:space="preserve">
+    <value>🚗 قيادة</value>
+  </data>
+  <data name="OfflineRouteWarning" xml:space="preserve">
+    <value>لا يوجد اتصال، يتم عرض المسار المباشر</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>خط العرض</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>خط الطول</value>
+  </data>
+  <data name="KaabaDesc" xml:space="preserve">
+    <value>بيت الله الحرام، محور الطواف</value>
+  </data>
+  <data name="ArafatDesc" xml:space="preserve">
+    <value>موقف عرفة، ركن الحج الأعظم</value>
+  </data>
+  <data name="MuzdalifahDesc" xml:space="preserve">
+    <value>مزدلفة، مبيت وجمع الحصى</value>
+  </data>
+  <data name="MinaDesc" xml:space="preserve">
+    <value>منى، مبيت ورمي الجمرات</value>
+  </data>
+  <data name="SafaDesc" xml:space="preserve">
+    <value>جبل الصفا، بداية السعي</value>
+  </data>
+  <data name="MarwaDesc" xml:space="preserve">
+    <value>جبل المروة، نهاية السعي</value>
+  </data>
+  <data name="RouteInfo" xml:space="preserve">
+    <value>معلومات المسار</value>
+  </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>📖 اقرأ المزيد</value>
+  </data>
+  <data name="SearchPrompt" xml:space="preserve">
+    <value>اكتب للبحث...</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>النتائج: {0}</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>الوضع الليلي</value>
+  </data>
+  <data name="FontSize" xml:space="preserve">
+    <value>حجم الخط</value>
+  </data>
+  <data name="FontSmall" xml:space="preserve">
+    <value>صغير</value>
+  </data>
+  <data name="FontMedium" xml:space="preserve">
+    <value>متوسط</value>
+  </data>
+  <data name="FontLarge" xml:space="preserve">
+    <value>كبير</value>
+  </data>
+  <data name="FontExample" xml:space="preserve">
+    <value>هذا مثال على حجم الخط المختار</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>الإصدار 1.0.0</value>
+  </data>
+  <data name="FontChanged" xml:space="preserve">
+    <value>تم تغيير حجم الخط إلى</value>
+  </data>
+  <data name="LoadDataError" xml:space="preserve">
+    <value>ما قدرناش نحمّلو البيانات</value>
+  </data>
+  <data name="ChecklistTasks" xml:space="preserve">
+    <value>قائمة المهام</value>
+  </data>
+  <data name="FavoritesTitle" xml:space="preserve">
+    <value>⭐ المفضلة</value>
+  </data>
+  <data name="NoFavoritesMessage" xml:space="preserve">
+    <value>لا توجد مفضلات بعد
+اضغط على ⭐ في صفحة المحتوى لإضافة عنصر</value>
+  </data>
+  <data name="PrayerTimes" xml:space="preserve">
+    <value>مواقيت الصلاة</value>
+  </data>
+  <data name="Fajr" xml:space="preserve">
+    <value>الفجر</value>
+  </data>
+  <data name="Shurooq" xml:space="preserve">
+    <value>الشروق</value>
+  </data>
+  <data name="Dhuhr" xml:space="preserve">
+    <value>الظهر</value>
+  </data>
+  <data name="Asr" xml:space="preserve">
+    <value>العصر</value>
+  </data>
+  <data name="Maghrib" xml:space="preserve">
+    <value>المغرب</value>
+  </data>
+  <data name="Isha" xml:space="preserve">
+    <value>العشاء</value>
+  </data>
+  <data name="NextPrayer" xml:space="preserve">
+    <value>الصلاة القادمة</value>
+  </data>
+  <data name="CityLocalTime" xml:space="preserve">
+    <value>التوقيت المحلي للمدينة</value>
+  </data>
+  <data name="PrayerNotifications" xml:space="preserve">
+    <value>تنبيهات الصلاة</value>
+  </data>
+  <data name="CalculationMethod" xml:space="preserve">
+    <value>طريقة الحساب</value>
+  </data>
+  <data name="Mathhab" xml:space="preserve">
+    <value>المذهب</value>
+  </data>
+  <data name="WeeklySchedule" xml:space="preserve">
+    <value>جدول الأسبوع</value>
+  </data>
+  <data name="TodaySchedule" xml:space="preserve">
+    <value>اليوم</value>
+  </data>
+  <data name="ShowWeeklySchedule" xml:space="preserve">
+    <value>عرض جدول الأسبوع</value>
+  </data>
+  <data name="HideWeeklySchedule" xml:space="preserve">
+    <value>إخفاء جدول الأسبوع</value>
+  </data>
+  <data name="SearchCity" xml:space="preserve">
+    <value>ابحث عن مدينة...</value>
+  </data>
+  <data name="Imsaak" xml:space="preserve">
+    <value>الإمساك</value>
+  </data>
+  <data name="PrayerTimeFor" xml:space="preserve">
+    <value>حان وقت صلاة {0}</value>
+  </data>
+  <data name="PrayerTimeNotifBody" xml:space="preserve">
+    <value>🕌 حان الآن وقت صلاة {0}</value>
+  </data>
+  <data name="HijriDateAdjustment" xml:space="preserve">
+    <value>تعديل التاريخ الهجري</value>
+  </data>
+  <data name="HijriDateAdjustmentHint" xml:space="preserve">
+    <value>تعديل (−2 إلى +2 أيام) لمطابقة التقويم المحلي</value>
+  </data>
+</root>

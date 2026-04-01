@@ -1,7 +1,7 @@
 # Multi-Language Translation - Completed
 
 ## Overview
-The Zad Alhaj app now fully supports three languages:
+The Khayrat Alhaj app now fully supports three languages:
 - **Arabic (العربية)** - Default language
 - **English** - Full translation
 - **French (Français)** - Full translation

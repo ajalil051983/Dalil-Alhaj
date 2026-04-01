@@ -45,8 +45,8 @@ These files are now used **only on first launch** to seed a local SQLite databas
 └────────────────────────┬────────────────────────────────────┘
                          │ reads / writes
 ┌────────────────────────▼────────────────────────────────────┐
-│          SQLite DB  –  ZadAlhaj.db3                        │
-│  (FileSystem.AppDataDirectory/ZadAlhaj.db3)               │
+│          SQLite DB  –  KhayratAlhaj.db3                        │
+│  (FileSystem.AppDataDirectory/KhayratAlhaj.db3)               │
 │                                                             │
 │  ┌─────────────────────────────────────────────────────┐    │
 │  │ Categories                                          │    │
@@ -75,7 +75,7 @@ These files are now used **only on first launch** to seed a local SQLite databas
 
 | File | Change |
 |---|---|
-| `ZadAlhaj.csproj` | Added `sqlite-net-pcl` and `SQLitePCLRaw.bundle_green` NuGet packages |
+| `KhayratAlhaj.csproj` | Added `sqlite-net-pcl` and `SQLitePCLRaw.bundle_green` NuGet packages |
 | `Services/DataService.cs` | Removed JSON-loading logic; now delegates to `DatabaseService` |
 
 ### Unchanged Files (no breaking changes)
@@ -156,14 +156,14 @@ DatabaseService.GetDatabaseAsync()
 ### Step 1 – Restore NuGet packages
 
 ```powershell
-cd "D:\Ai workspace\Dalil Alhaj"
+cd "D:\Ai workspace\Khayrat Alhaj"
 dotnet restore
 ```
 
 ### Step 2 – Build and verify there are no compile errors
 
 ```powershell
-dotnet build "ZadAlhaj\ZadAlhaj.csproj" -f net10.0-android -c Debug
+dotnet build "KhayratAlhaj\KhayratAlhaj.csproj" -f net10.0-android -c Debug
 ```
 
 > Build for any target platform you are testing on (`net10.0-windows10.0.26100.0`, etc.)
@@ -182,13 +182,13 @@ Launch the app normally. On first run:
 Use the **DB Browser for SQLite** tool to inspect the database file at:
 
 ```
-%LOCALAPPDATA%\Packages\<AppId>\LocalState\ZadAlhaj.db3
+%LOCALAPPDATA%\Packages\<AppId>\LocalState\KhayratAlhaj.db3
 ```
 
 Or on Android via `adb`:
 
 ```powershell
-adb shell run-as com.companyname.zadalhaj cat /data/data/com.companyname.zadalhaj/files/ZadAlhaj.db3 > ZadAlhaj.db3
+adb shell run-as com.companyname.khayratalhaj cat /data/data/com.companyname.khayratalhaj/files/KhayratAlhaj.db3 > KhayratAlhaj.db3
 ```
 
 ---
@@ -224,7 +224,7 @@ if (version < 2)
 
 If you need to revert to JSON-only loading:
 
-1. Restore `Services/DataService.cs` from git (`git checkout HEAD~1 -- ZadAlhaj/Services/DataService.cs`).
+1. Restore `Services/DataService.cs` from git (`git checkout HEAD~1 -- KhayratAlhaj/Services/DataService.cs`).
 2. Remove `Services/DatabaseService.cs`.
 3. Remove the two `sqlite-net-pcl` / `SQLitePCLRaw` `PackageReference` lines from the `.csproj`.
 4. Run `dotnet restore`.

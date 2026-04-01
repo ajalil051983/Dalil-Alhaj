@@ -1,8 +1,8 @@
-# 🕋 زاد الحاج - Zad Alhaj
+# 🕋 خيرات الحاج - Khayrat Alhaj
 
 <div align="center">
 
-![App Icon](ZadAlhaj/Resources/AppIcon/kaaba.svg)
+![App Icon](KhayratAlhaj/Resources/AppIcon/kaaba.svg)
 
 **دليل شامل لمناسك الحج حسب المذهب المالكي**  
 *A Comprehensive Hajj Guide According to the Maliki School*
@@ -18,9 +18,9 @@
 
 ## 📖 نظرة عامة | Overview
 
-**زاد الحاج** تطبيق متكامل يساعد الحجاج على أداء مناسك الحج بشكل صحيح وفق المذهب المالكي. التطبيق مصمم باللهجة المغربية (الدارجة) لتسهيل الفهم والاستخدام.
+**خيرات الحاج** تطبيق متكامل يساعد الحجاج على أداء مناسك الحج بشكل صحيح وفق المذهب المالكي. التطبيق مصمم باللهجة المغربية (الدارجة) لتسهيل الفهم والاستخدام.
 
-**Zad Alhaj** is a comprehensive mobile application that guides pilgrims through Hajj rituals according to the Maliki school of thought. The app is designed in Moroccan Arabic (Darija) for easier understanding and usage.
+**Khayrat Alhaj** is a comprehensive mobile application that guides pilgrims through Hajj rituals according to the Maliki school of thought. The app is designed in Moroccan Arabic (Darija) for easier understanding and usage.
 
 ---
 
@@ -103,7 +103,7 @@
 
 ### هيكل المشروع | Project Structure
 ```
-ZadAlhaj/
+KhayratAlhaj/
 ├── Pages/                      # صفحات التطبيق
 │   ├── MainPage.xaml          # الصفحة الرئيسية
 │   ├── SubCategoryPage.xaml   # صفحة الفئات الفرعية
@@ -165,8 +165,8 @@ ZadAlhaj/
 
 1. **استنساخ المستودع | Clone the repository**
 ```bash
-git clone https://github.com/yourusername/dalil-alhaj.git
-cd dalil-alhaj
+git clone https://github.com/yourusername/khayrat-alhaj.git
+cd khayrat-alhaj
 ```
 
 2. **استعادة الحزم | Restore packages**

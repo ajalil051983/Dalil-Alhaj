@@ -7,7 +7,7 @@ Write-Host "`n🎤 Generating Arabic audio for all subcategories...`n" -Foregrou
 pip install edge-tts --quiet
 
 # Generate audio files
-cd "d:\Ai workspace\Dalil Alhaj\ZadAlhaj\Resources\Raw"
+cd "d:\Ai workspace\Dalil Alhaj\KhayratAlhaj\Resources\Raw"
 
 python -c @"
 import json, asyncio, edge_tts

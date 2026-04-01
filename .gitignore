@@ -62,6 +62,10 @@ xcuserdata/
 *.code-workspace
 .history/
 
+# Android signing keystore (NEVER commit)
+*.keystore
+*.jks
+
 # Python (for AIAudioGenerationFromText)
 __pycache__/
 *.py[cod]
@@ -101,3 +105,7 @@ PublishProfiles/
 /build_run.txt
 /restore_log.txt
 /run_log.txt
+
+# Sensitive scripts (never commit)
+generate_keystore.ps1
+generate_keystore_jks.ps1
