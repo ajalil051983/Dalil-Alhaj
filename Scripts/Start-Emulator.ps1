@@ -14,7 +14,7 @@ if ($env:Path -notlike "*$env:ANDROID_HOME\emulator*") {
     $env:Path += ";$env:ANDROID_HOME\emulator"
 }
 
-$AVD_NAME = "pixel_7_-_api_36"
+$AVD_NAME = "pixel_7_-_api_36_0"
 
 Write-Host "ANDROID_HOME: $env:ANDROID_HOME" -ForegroundColor Cyan
 Write-Host "AVD Name: $AVD_NAME" -ForegroundColor Cyan

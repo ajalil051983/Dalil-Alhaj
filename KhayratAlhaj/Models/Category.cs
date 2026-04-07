@@ -42,7 +42,29 @@ namespace KhayratAlhaj.Models
         public string NameFr { get; set; } = string.Empty;
         public string Icon { get; set; } = "📖";
         public string Content { get; set; } = string.Empty;
-        public bool HasAudio { get; set; } = false;
+        public bool HasAudioAr { get; set; } = false;
+        public bool HasAudioEn { get; set; } = false;
+        public bool HasAudioFr { get; set; } = false;
+
+        public bool HasAudioForCurrentLanguage
+        {
+            get
+            {
+                try
+                {
+                    return LocalizationService.GetCurrentLanguage() switch
+                    {
+                        "en" => HasAudioEn,
+                        "fr" => HasAudioFr,
+                        _ => HasAudioAr
+                    };
+                }
+                catch
+                {
+                    return HasAudioAr;
+                }
+            }
+        }
 
         public string Name
         {

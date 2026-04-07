@@ -25,7 +25,7 @@
 		<ApplicationTitle>Khayrat Alhaj</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.ilafalkhayr.khayratalhaj</ApplicationId>
+		<ApplicationId>com.ilafalkhayr.zadalhaj</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -49,7 +49,11 @@
 	<!-- Release: AAB for Google Play, R8 obfuscation, no debug symbols -->
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
 		<AndroidPackageFormat>aab</AndroidPackageFormat>
-		<AndroidLinkTool>r8</AndroidLinkTool>
+		<AndroidLinkTool>d8</AndroidLinkTool>
+		<AndroidEnableProguard>false</AndroidEnableProguard>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+		<AndroidUseFastDeployment>false</AndroidUseFastDeployment>
+		<AndroidEnableMarshalMethods>false</AndroidEnableMarshalMethods>
 		<DebugSymbols>false</DebugSymbols>
 		<AndroidIncludeDebugSymbols>false</AndroidIncludeDebugSymbols>
 		<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
@@ -69,6 +73,8 @@
 		<!-- Use d8 in Debug to avoid R8 stripping MAUI runtime classes -->
 		<AndroidLinkTool>d8</AndroidLinkTool>
 		<AndroidEnableProguard>false</AndroidEnableProguard>
+			<!-- Suppress harmless warnings in Debug: fast deploy + code reducer recommendation (XA0119), missing ProGuard configs (XA4304) -->
+			<NoWarn>$(NoWarn);XA0119;XA4304</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -86,14 +92,17 @@
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiAsset Include="Resources\Raw\**" Exclude="Resources\Raw\categories.json;Resources\Raw\categories-en.json;Resources\Raw\categories-fr.json;Resources\Raw\locdata.bin" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<!-- Pre-built encrypted app database (opaque binary name to avoid easy identification) -->
+		<MauiAsset Include="Resources\Data\appdata.bin" LogicalName="appdata.bin" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <AndroidResource Include="Platforms\Android\Resources\drawable\notification_icon.xml" />
 	</ItemGroup>
 
-	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' AND '$(Configuration)' == 'ProguardOnly'">
 	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
 	</ItemGroup>
 
@@ -121,16 +130,16 @@
 	<ItemGroup>
 		<PackageReference Include="Mapsui" Version="5.0.2" />
 		<PackageReference Include="Mapsui.Maui" Version="5.0.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.50" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
 		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="8.0.1" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<!-- SQLite support -->
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
 		<!-- Local notifications for prayer times -->
-		<PackageReference Include="Plugin.LocalNotification" Version="13.0.0" />
+		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">

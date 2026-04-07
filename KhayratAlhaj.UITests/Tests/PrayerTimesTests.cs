@@ -58,6 +58,30 @@ namespace KhayratAlhaj.UITests.Tests
             }
         }
 
+        // Full Android resource-id prefix for UiScrollable resourceId() lookups.
+        private const string Pkg = "com.ilafalkhayr.zadalhaj:id/";
+
+        /// <summary>
+        /// Scrolls the page until the element with the given AutomationId is visible and
+        /// returns it. Uses Android UiScrollable with resourceId (the attribute .NET MAUI
+        /// maps AutomationId to on Android) so it works even when MAUI has not yet rendered
+        /// off-screen items into the accessibility tree. The scroll attempt is wrapped in a
+        /// try-catch so that the method still succeeds when the element is already visible
+        /// or when there is no scrollable container on screen.
+        /// </summary>
+        private IWebElement ScrollToElement(string automationId)
+        {
+            try
+            {
+                _driver.FindElement(MobileBy.AndroidUIAutomator(
+                    "new UiScrollable(new UiSelector().scrollable(true).instance(0))" +
+                    $".scrollIntoView(new UiSelector().resourceId(\"{Pkg}{automationId}\"))"));
+            }
+            catch (NoSuchElementException) { /* element already visible or no scrollable container */ }
+
+            return _driver.FindElement(MobileBy.Id(automationId));
+        }
+
         /// <summary>
         /// Explicit wait that correctly zeroes the implicit wait while polling,
         /// avoiding the double-wait anti-pattern (implicit + explicit = only one retry).
@@ -89,6 +113,11 @@ namespace KhayratAlhaj.UITests.Tests
             Assert.IsNotNull(cityNameLabel, "City name label not found on Prayer Times page.");
             Assert.IsTrue(cityNameLabel.Displayed, "City name label is not displayed.");
 
+            // 2.1 Verify location mode indicator exists and has text
+            var locationModeLabel = _driver.FindElement(MobileBy.Id("LocationModeLabelID"));
+            Assert.IsNotNull(locationModeLabel, "Location mode label not found.");
+            Assert.IsNotEmpty(locationModeLabel.Text, "Location mode label should not be empty.");
+
             // 3. Verify date labels are present
             var dateLabel = _driver.FindElement(MobileBy.Id("DateLabelID"));
             Assert.IsNotNull(dateLabel, "Date label not found.");
@@ -108,38 +137,56 @@ namespace KhayratAlhaj.UITests.Tests
         }
 
         [Test]
+        public void PrayerTimesPage_LocationModeIndicator_ShouldShowAutoOrManualMode()
+        {
+            // 1. Navigate
+            NavigateToPrayerTimesPage();
+
+            // 2. Verify mode label exists
+            var modeLabel = _driver.FindElement(MobileBy.Id("LocationModeLabelID"));
+            Assert.IsNotNull(modeLabel, "Location mode label not found.");
+
+            // 3. Validate expected text families for AR/EN/FR modes
+            var modeText = modeLabel.Text ?? string.Empty;
+            var isExpected =
+                modeText.Contains("GPS", StringComparison.OrdinalIgnoreCase) ||
+                modeText.Contains("Mode", StringComparison.OrdinalIgnoreCase) ||
+                modeText.Contains("الوضع", StringComparison.OrdinalIgnoreCase) ||
+                modeText.Contains("المدينة", StringComparison.OrdinalIgnoreCase) ||
+                modeText.Contains("Ville", StringComparison.OrdinalIgnoreCase);
+
+            Assert.IsTrue(isExpected,
+                $"Unexpected location mode text: '{modeText}'. Expected Auto/Manual mode indicator.");
+
+            // 4. Go back
+            _driver.Navigate().Back();
+        }
+
+        [Test]
         public void PrayerTimesPage_ShouldDisplayAllSixPrayerTimes()
         {
             // 1. Navigate
             NavigateToPrayerTimesPage();
 
-            // 2. Verify each prayer time label exists
-            var fajrTime = _driver.FindElement(MobileBy.Id("FajrTimeLabelID"));
+            // 2. Verify each prayer time label exists – ScrollToElement scrolls via resourceId
+            //    (the attribute .NET MAUI maps AutomationId to on Android) so any row that is
+            //    below the fold is brought into the accessibility tree before assertion.
+            var fajrTime    = ScrollToElement("FajrTimeLabelID");
             Assert.IsNotNull(fajrTime, "Fajr time label not found.");
 
-            var shurooqTime = _driver.FindElement(MobileBy.Id("ShurooqTimeLabelID"));
+            var shurooqTime = ScrollToElement("ShurooqTimeLabelID");
             Assert.IsNotNull(shurooqTime, "Shurooq time label not found.");
 
-            var dhuhrTime = _driver.FindElement(MobileBy.Id("DhuhrTimeLabelID"));
+            var dhuhrTime   = ScrollToElement("DhuhrTimeLabelID");
             Assert.IsNotNull(dhuhrTime, "Dhuhr time label not found.");
 
-            var asrTime = _driver.FindElement(MobileBy.Id("AsrTimeLabelID"));
+            var asrTime     = ScrollToElement("AsrTimeLabelID");
             Assert.IsNotNull(asrTime, "Asr time label not found.");
 
-            var maghribTime = _driver.FindElement(MobileBy.Id("MaghribTimeLabelID"));
+            var maghribTime = ScrollToElement("MaghribTimeLabelID");
             Assert.IsNotNull(maghribTime, "Maghrib time label not found.");
 
-            // Isha is the last prayer row and may be just below the visible viewport.
-            // scrollIntoView scrolls only as far as needed to make the element visible.
-            try
-            {
-                _driver.FindElement(
-                    MobileBy.AndroidUIAutomator(
-                        "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().description(\"IshaTimeLabelID\"))"));
-            }
-            catch (NoSuchElementException) { /* element already visible or no scrollable container */ }
-
-            var ishaTime = _driver.FindElement(MobileBy.Id("IshaTimeLabelID"));
+            var ishaTime    = ScrollToElement("IshaTimeLabelID");
             Assert.IsNotNull(ishaTime, "Isha time label not found.");
 
             // 3. Verify times are not the default placeholder
@@ -194,13 +241,15 @@ namespace KhayratAlhaj.UITests.Tests
             Assert.IsNotNull(weeklyToggleSwitch, "Weekly toggle switch not found.");
             weeklyToggleSwitch.Click();
 
-            // 3. Scroll the weekly section into view, then confirm it is visible.
-            //    scrollIntoView stops as soon as WeeklySectionID enters the viewport.
+            // 3. Scroll the weekly section into view using resourceId (the attribute .NET MAUI
+            //    maps AutomationId to on Android), then wait for it to be fully rendered.
+            //    The scroll attempt is swallowed if the section is already visible or no
+            //    scrollable container exists.
             try
             {
-                _driver.FindElement(
-                    MobileBy.AndroidUIAutomator(
-                        "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().description(\"WeeklySectionID\"))"));
+                _driver.FindElement(MobileBy.AndroidUIAutomator(
+                    "new UiScrollable(new UiSelector().scrollable(true).instance(0))" +
+                    $".scrollIntoView(new UiSelector().resourceId(\"{Pkg}WeeklySectionID\"))"));
             }
             catch (NoSuchElementException) { /* already visible or no scrollable container */ }
 
@@ -292,29 +341,22 @@ namespace KhayratAlhaj.UITests.Tests
             // 2. Check all prayer time labels match HH:MM format (e.g. "05:23", "12:30")
             var timePattern = new Regex(@"^\d{2}:\d{2}$");
 
-            var fajrTime = _driver.FindElement(MobileBy.Id("FajrTimeLabelID")).Text;
+            // ScrollToElement scrolls via resourceId (the attribute .NET MAUI maps AutomationId
+            // to on Android) so any row below the fold is in the accessibility tree before .Text
+            // is read.
+            var fajrTime    = ScrollToElement("FajrTimeLabelID").Text;
             Assert.IsTrue(timePattern.IsMatch(fajrTime), $"Fajr time '{fajrTime}' should match HH:MM format.");
 
-            var dhuhrTime = _driver.FindElement(MobileBy.Id("DhuhrTimeLabelID")).Text;
+            var dhuhrTime   = ScrollToElement("DhuhrTimeLabelID").Text;
             Assert.IsTrue(timePattern.IsMatch(dhuhrTime), $"Dhuhr time '{dhuhrTime}' should match HH:MM format.");
 
-            var asrTime = _driver.FindElement(MobileBy.Id("AsrTimeLabelID")).Text;
+            var asrTime     = ScrollToElement("AsrTimeLabelID").Text;
             Assert.IsTrue(timePattern.IsMatch(asrTime), $"Asr time '{asrTime}' should match HH:MM format.");
 
-            var maghribTime = _driver.FindElement(MobileBy.Id("MaghribTimeLabelID")).Text;
+            var maghribTime = ScrollToElement("MaghribTimeLabelID").Text;
             Assert.IsTrue(timePattern.IsMatch(maghribTime), $"Maghrib time '{maghribTime}' should match HH:MM format.");
 
-            // Isha is the last prayer row and may be just below the visible viewport.
-            // scrollIntoView scrolls only as far as needed to make the element visible.
-            try
-            {
-                _driver.FindElement(
-                    MobileBy.AndroidUIAutomator(
-                        "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().description(\"IshaTimeLabelID\"))"));
-            }
-            catch (NoSuchElementException) { /* element already visible or no scrollable container */ }
-
-            var ishaTime = _driver.FindElement(MobileBy.Id("IshaTimeLabelID")).Text;
+            var ishaTime    = ScrollToElement("IshaTimeLabelID").Text;
             Assert.IsTrue(timePattern.IsMatch(ishaTime), $"Isha time '{ishaTime}' should match HH:MM format.");
 
             // 3. Go back

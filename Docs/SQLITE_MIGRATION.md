@@ -56,7 +56,7 @@ These files are now used **only on first launch** to seed a local SQLite databas
 │  │ SubCategories                                       │    │
 │  │  Id | CategoryId | NameAr | NameEn | NameFr |      │    │
 │  │  Icon | ContentAr | ContentEn | ContentFr |         │    │
-│  │  HasAudio                                           │    │
+│  │  HasAudioAr | HasAudioEn | HasAudioFr               │    │
 │  └─────────────────────────────────────────────────────┘    │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -115,7 +115,9 @@ CREATE TABLE SubCategories (
     ContentAr   TEXT NOT NULL DEFAULT '',  -- Arabic long-form content
     ContentEn   TEXT NOT NULL DEFAULT '',  -- English long-form content
     ContentFr   TEXT NOT NULL DEFAULT '',  -- French long-form content
-    HasAudio    INTEGER NOT NULL DEFAULT 0 -- BOOLEAN (0/1)
+    HasAudioAr  INTEGER NOT NULL DEFAULT 0, -- BOOLEAN (0/1)
+    HasAudioEn  INTEGER NOT NULL DEFAULT 0, -- BOOLEAN (0/1)
+    HasAudioFr  INTEGER NOT NULL DEFAULT 0  -- BOOLEAN (0/1)
 );
 ```
 
@@ -213,7 +215,9 @@ Example skeleton:
 var version = await _database.ExecuteScalarAsync<int>("PRAGMA user_version;");
 if (version < 2)
 {
-    await _database.ExecuteAsync("ALTER TABLE SubCategories ADD COLUMN AudioUrl TEXT DEFAULT ''");
+    await _database.ExecuteAsync("ALTER TABLE SubCategories ADD COLUMN HasAudioAr INTEGER NOT NULL DEFAULT 0");
+    await _database.ExecuteAsync("ALTER TABLE SubCategories ADD COLUMN HasAudioEn INTEGER NOT NULL DEFAULT 0");
+    await _database.ExecuteAsync("ALTER TABLE SubCategories ADD COLUMN HasAudioFr INTEGER NOT NULL DEFAULT 0");
     await _database.ExecuteAsync("PRAGMA user_version = 2;");
 }
 ```

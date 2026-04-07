@@ -110,6 +110,7 @@ namespace KhayratAlhaj.Pages
                 // Update location display
                 CityNameLabel.Text = todayTimes.LocationName ?? "---";
                 CountryLabel.Text = todayTimes.CountryCode ?? "";
+                UpdateLocationModeIndicator();
 
                 // Update date labels
                 DateLabel.Text = todayTimes.Date.ToString("dddd, dd MMMM yyyy",
@@ -389,6 +390,8 @@ namespace KhayratAlhaj.Pages
 
                 // Clear stored city so GPS will be used
                 prayerService.ClearStoredCity();
+                prayerService.SetUseCurrentLocationAsDefault(true);
+                UpdateLocationModeIndicator();
 
                 // Hide search section if open
                 SearchSection.IsVisible = false;
@@ -458,6 +461,8 @@ namespace KhayratAlhaj.Pages
             if (e.CurrentSelection.FirstOrDefault() is LocationEntry city)
             {
                 prayerService.SaveSelectedCity(city);
+                prayerService.SetUseCurrentLocationAsDefault(false);
+                UpdateLocationModeIndicator();
 
                 SearchSection.IsVisible = false;
                 CitySearchBar.Text = "";
@@ -475,6 +480,36 @@ namespace KhayratAlhaj.Pages
         #endregion
 
         #region Helpers
+
+        private void UpdateLocationModeIndicator()
+        {
+            if (LocationModeLabel == null)
+            {
+                return;
+            }
+
+            var isAuto = prayerService.IsUsingCurrentLocationAsDefault();
+            var lang = LocalizationService.GetCurrentLanguage();
+
+            if (isAuto)
+            {
+                LocationModeLabel.Text = lang switch
+                {
+                    "en" => "Mode: Auto GPS",
+                    "fr" => "Mode: GPS auto",
+                    _ => "الوضع: الموقع الحالي (GPS)"
+                };
+            }
+            else
+            {
+                LocationModeLabel.Text = lang switch
+                {
+                    "en" => "Mode: Selected city",
+                    "fr" => "Mode: Ville choisie",
+                    _ => "الوضع: المدينة المختارة"
+                };
+            }
+        }
 
         /// <summary>
         /// Shows or hides the city local time card.

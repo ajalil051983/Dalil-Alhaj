@@ -9,13 +9,13 @@
     3. Produces a signed AAB (Android App Bundle) ready for Google Play Console upload
 
 .PARAMETER KeystorePath
-    Path to the .keystore file. Default: .\khayratalhaj-release.keystore
+    Path to the .keystore file. Default: .\zadalhaj-release.keystore
 
 .PARAMETER KeystorePassword
     Password for the keystore. Will prompt if not provided.
 
 .PARAMETER KeyAlias
-    Alias name for the signing key. Default: khayratalhaj
+    Alias name for the signing key. Default: zadalhaj
 
 .PARAMETER KeyPassword
     Password for the key alias. Will prompt if not provided.
@@ -33,13 +33,13 @@
     .\Deploy-GooglePlay.ps1 -VersionCode 1 -VersionName "1.0"
 
 .EXAMPLE
-    .\Deploy-GooglePlay.ps1 -KeystorePath "C:\keys\khayratalhaj.keystore" -KeystorePassword "mypass" -KeyAlias "khayratalhaj" -KeyPassword "mypass" -VersionCode 2 -VersionName "1.1"
+    .\Deploy-GooglePlay.ps1 -KeystorePath "C:\keys\zadalhaj.keystore" -KeystorePassword "mypass" -KeyAlias "zadalhaj" -KeyPassword "mypass" -VersionCode 2 -VersionName "1.1"
 #>
 [CmdletBinding()]
 param(
-    [string]$KeystorePath = ".\khayratalhaj-release.keystore",
+    [string]$KeystorePath = ".\zadalhaj-release.keystore",
     [string]$KeystorePassword,
-    [string]$KeyAlias = "khayratalhaj",
+    [string]$KeyAlias = "zadalhaj",
     [string]$KeyPassword,
     [int]$VersionCode = 1,
     [string]$VersionName = "1.0",
@@ -49,7 +49,9 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$ProjectPath = Join-Path $PSScriptRoot "KhayratAlhaj\KhayratAlhaj.csproj"
+# Get the parent directory (workspace root) since we're in Scripts folder
+$WorkspaceRoot = Split-Path $PSScriptRoot -Parent
+$ProjectPath = Join-Path $WorkspaceRoot "KhayratAlhaj\KhayratAlhaj.csproj"
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
@@ -214,18 +216,18 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host ""
 Write-Host "[Step 4] Locating output AAB..." -ForegroundColor Yellow
 
-$publishDir = Join-Path $PSScriptRoot "KhayratAlhaj\bin\Release\net10.0-android\publish"
+$publishDir = Join-Path $WorkspaceRoot "KhayratAlhaj\bin\Release\net10.0-android\publish"
 $aabFile = Get-ChildItem -Path $publishDir -Filter "*.aab" -ErrorAction SilentlyContinue | Select-Object -First 1
 
 if (-not $aabFile) {
     # Also check non-publish directory
-    $altDir = Join-Path $PSScriptRoot "KhayratAlhaj\bin\Release\net10.0-android"
+    $altDir = Join-Path $WorkspaceRoot "KhayratAlhaj\bin\Release\net10.0-android"
     $aabFile = Get-ChildItem -Path $altDir -Filter "*-Signed.aab" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
 }
 
 if (-not $aabFile) {
     # Final fallback: search for any .aab
-    $aabFile = Get-ChildItem -Path (Join-Path $PSScriptRoot "KhayratAlhaj\bin\Release") -Filter "*.aab" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+    $aabFile = Get-ChildItem -Path (Join-Path $WorkspaceRoot "KhayratAlhaj\bin\Release") -Filter "*.aab" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
 }
 
 if ($aabFile) {

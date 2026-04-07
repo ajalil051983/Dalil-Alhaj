@@ -1,64 +1,43 @@
 ﻿using SQLite;
 using KhayratAlhaj.Models.PrayerTimes;
+using KhayratAlhaj.Services;
 
 namespace KhayratAlhaj.Services.PrayerTimes
 {
     /// <summary>
-    /// Reads location data from the embedded_data.db (Salaat First database).
-    /// Uses sqlite-net-pcl ORM consistent with the project's DatabaseService pattern.
+    /// Reads location data from the combined app database (LocationEntity table).
+    /// Uses the shared <see cref="AppDb"/> connection consistent with DatabaseService.
     /// </summary>
     public class LocationRepository
     {
-        private SQLiteAsyncConnection? _database;
-        private bool _initialized;
-        private readonly SemaphoreSlim _initLock = new(1, 1);
-
-        /// <summary>
-        /// Ensures the database is copied from app assets and opened.
-        /// </summary>
-        private async Task EnsureInitializedAsync()
-        {
-            if (_initialized) return;
-
-            await _initLock.WaitAsync();
-            try
-            {
-                if (_initialized) return;
-
-                var dbPath = Path.Combine(FileSystem.AppDataDirectory, "embedded_data.db");
-
-                // Copy from app package if not already present
-                if (!File.Exists(dbPath))
-                {
-                    using var stream = await FileSystem.OpenAppPackageFileAsync("embedded_data.db");
-                    using var fileStream = File.Create(dbPath);
-                    await stream.CopyToAsync(fileStream);
-                }
-
-                _database = new SQLiteAsyncConnection(dbPath,
-                    SQLiteOpenFlags.ReadOnly | SQLiteOpenFlags.SharedCache);
-
-                _initialized = true;
-            }
-            finally
-            {
-                _initLock.Release();
-            }
-        }
+        private static Task<SQLiteAsyncConnection> GetDbAsync() => AppDb.GetAsync();
 
         /// <summary>
         /// Search locations by name (partial match). Returns up to 20 results.
         /// </summary>
         public async Task<List<LocationEntry>> SearchByNameAsync(string query)
         {
-            await EnsureInitializedAsync();
+            try
+            {
+                var db = await GetDbAsync();
 
-            var results = await _database!.QueryAsync<LocationEntry>(
-                "SELECT id, name, countryCode, latitude, longitude, altitude " +
-                "FROM LocationEntity WHERE name LIKE ? LIMIT 20",
-                $"%{query}%");
+                var results = await db.QueryAsync<LocationEntry>(
+                    "SELECT id, name, countryCode, latitude, longitude, altitude " +
+                    "FROM LocationEntity WHERE name LIKE ? LIMIT 20",
+                    $"%{query}%");
 
-            return results;
+                return results;
+            }
+            catch (Exception ex)
+            {
+                if (IsMissingLocationTable(ex))
+                {
+                    System.Diagnostics.Debug.WriteLine("[LocationRepository] LocationEntity table missing. Returning empty search results.");
+                    return new List<LocationEntry>();
+                }
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -67,20 +46,38 @@ namespace KhayratAlhaj.Services.PrayerTimes
         /// </summary>
         public async Task<LocationEntry?> GetNearestAsync(double latitude, double longitude)
         {
-            await EnsureInitializedAsync();
+            try
+            {
+                var db = await GetDbAsync();
 
-            // Convert to the DB's integer scale (×100)
-            var lat100 = latitude * 100.0;
-            var lon100 = longitude * 100.0;
+                // Convert to the DB's integer scale (×100)
+                var lat100 = latitude * 100.0;
+                var lon100 = longitude * 100.0;
 
-            var results = await _database!.QueryAsync<LocationEntry>(
-                "SELECT id, name, countryCode, latitude, longitude, altitude " +
-                "FROM LocationEntity " +
-                "ORDER BY ((latitude - ?) * (latitude - ?) + (longitude - ?) * (longitude - ?)) " +
-                "LIMIT 1",
-                lat100, lat100, lon100, lon100);
+                var results = await db.QueryAsync<LocationEntry>(
+                    "SELECT id, name, countryCode, latitude, longitude, altitude " +
+                    "FROM LocationEntity " +
+                    "ORDER BY ((latitude - ?) * (latitude - ?) + (longitude - ?) * (longitude - ?)) " +
+                    "LIMIT 1",
+                    lat100, lat100, lon100, lon100);
 
-            return results.FirstOrDefault();
+                return results.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                if (IsMissingLocationTable(ex))
+                {
+                    System.Diagnostics.Debug.WriteLine("[LocationRepository] LocationEntity table missing. Returning null nearest location.");
+                    return null;
+                }
+
+                throw;
+            }
+        }
+
+        private static bool IsMissingLocationTable(Exception ex)
+        {
+            return ex.Message?.Contains("no such table: LocationEntity", StringComparison.OrdinalIgnoreCase) == true;
         }
     }
 }

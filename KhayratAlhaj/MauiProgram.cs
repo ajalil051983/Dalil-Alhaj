@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Plugin.LocalNotification;
+using Plugin.LocalNotification.Core.Models.AndroidOption;
 
 namespace KhayratAlhaj
 {
@@ -19,12 +20,12 @@ namespace KhayratAlhaj
                 {
                     config.AddAndroid(android =>
                     {
-                        android.AddChannel(new Plugin.LocalNotification.AndroidOption.NotificationChannelRequest
+                        android.AddChannel(new AndroidNotificationChannelRequest
                         {
                             Id = "prayer_times",
                             Name = "Prayer Times",
                             Description = "Notifications for prayer times",
-                            Importance = Plugin.LocalNotification.AndroidOption.AndroidImportance.High,
+                            Importance = AndroidImportance.High,
                             EnableSound = true,
                             EnableVibration = true,
                             ShowBadge = true

@@ -8,7 +8,7 @@ namespace KhayratAlhaj.UITests.Tests
     [TestFixture]
     public class MapTests : AppiumSetup
     {
-        private const string Pkg = "com.ilafalkhayr.khayratalhaj:id/";
+        private const string Pkg = "com.ilafalkhayr.zadalhaj:id/";
 
         private void NavigateToMap()
         {

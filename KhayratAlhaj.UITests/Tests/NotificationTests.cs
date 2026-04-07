@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Threading;
 
@@ -24,7 +25,7 @@ namespace KhayratAlhaj.UITests.Tests
         /// thread; emulators can be slow, so we allow up to 6 seconds.
         /// </summary>
         private const int MultiDaySchedulingWaitMs = 6000;
-        private const string Pkg = "com.ilafalkhayr.khayratalhaj:id/";
+        private const string Pkg = "com.ilafalkhayr.zadalhaj:id/";
 
         #region Helpers
 
@@ -39,19 +40,83 @@ namespace KhayratAlhaj.UITests.Tests
         }
 
         /// <summary>
+        /// Scrolls the page until the element with the given AutomationId is visible and
+        /// returns it. Uses Android UiScrollable with resourceId (the attribute .NET MAUI
+        /// maps AutomationId to on Android) so it works even when MAUI has not yet rendered
+        /// off-screen items into the accessibility tree. The scroll attempt is wrapped in a
+        /// try-catch so that the method still succeeds when the element is already visible
+        /// or when there is no scrollable container on screen.
+        /// </summary>
+        private IWebElement ScrollToElement(string automationId)
+        {
+            try
+            {
+                _driver.FindElement(MobileBy.AndroidUIAutomator(
+                    "new UiScrollable(new UiSelector().scrollable(true).instance(0))" +
+                    $".scrollIntoView(new UiSelector().resourceId(\"{Pkg}{automationId}\"))"));
+            }
+            catch (NoSuchElementException) { /* element already visible or no scrollable container */ }
+
+            return _driver.FindElement(By.Id(Pkg + automationId));
+        }
+
+        /// <summary>
+        /// Explicit wait that correctly zeroes the implicit wait while polling,
+        /// avoiding the double-wait anti-pattern (implicit + explicit = only one retry).
+        /// </summary>
+        private AppiumElement WaitForElement(string automationId, int timeoutSeconds = 30)
+        {
+            var previousImplicit = _driver.Manage().Timeouts().ImplicitWait;
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.Zero;
+            try
+            {
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(timeoutSeconds));
+                wait.IgnoreExceptionTypes(typeof(NoSuchElementException));
+                return (AppiumElement)wait.Until(d => d.FindElement(MobileBy.Id(automationId)));
+            }
+            finally
+            {
+                _driver.Manage().Timeouts().ImplicitWait = previousImplicit;
+            }
+        }
+
+        /// <summary>
         /// Navigate from MainPage → PrayerTimesPage and wait for it to fully load.
         /// </summary>
         private void NavigateToPrayerTimesPage()
         {
-            var prayerTimesButton = _driver.FindElement(By.Id(Pkg + "PrayerTimesButtonID"));
-            prayerTimesButton.Click();
-
-            // Increase implicit wait for slow loading, then restore
             var originalTimeout = _driver.Manage().Timeouts().ImplicitWait;
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
             try
             {
-                _driver.FindElement(By.Id(Pkg + "CityNameLabelID"));
+                try
+                {
+                    var prayerTimesButton = _driver.FindElement(By.Id(Pkg + "PrayerTimesButtonID"));
+                    prayerTimesButton.Click();
+                }
+                catch (NoSuchElementException ex)
+                {
+                    var pageSource = _driver.PageSource;
+                    System.Diagnostics.Debug.WriteLine(
+                        $"Failed to find PrayerTimesButtonID. Page source:\n{pageSource}");
+                    throw new Exception(
+                        $"PrayerTimesButtonID not found. App may not have launched properly. Original error: {ex.Message}");
+                }
+
+                // Wait until city name is populated (loading overlay hidden, content rendered).
+                // 45 s accounts for GPS timeout on slow emulators.
+                var wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(45));
+                wait.Until(d =>
+                {
+                    try
+                    {
+                        var cityLabel = d.FindElement(By.Id(Pkg + "CityNameLabelID"));
+                        return cityLabel != null
+                            && !string.IsNullOrEmpty(cityLabel.Text)
+                            && cityLabel.Text != "...";
+                    }
+                    catch { return false; }
+                });
             }
             finally
             {
@@ -214,7 +279,10 @@ namespace KhayratAlhaj.UITests.Tests
 
             foreach (var id in prayers)
             {
-                var label = _driver.FindElement(By.Id(Pkg + id));
+                // ScrollToElement scrolls via resourceId (correct MAUI AutomationId mapping on
+                // Android) so off-screen items are brought into the accessibility tree before
+                // the assertion reads their Text property.
+                var label = ScrollToElement(id);
                 Assert.IsNotNull(label, $"{id} not found on PrayerTimesPage.");
                 Assert.AreNotEqual("--:--", label.Text,
                     $"{id} should display a real time, not the placeholder.");
@@ -251,11 +319,12 @@ namespace KhayratAlhaj.UITests.Tests
             // 3. Navigate to PrayerTimesPage
             NavigateToPrayerTimesPage();
 
-            // 4. Verify at least Fajr and Isha display a time
-            var fajr = _driver.FindElement(By.Id(Pkg + "FajrTimeLabelID"));
+            // 4. Verify at least Fajr and Isha display a time – use ScrollToElement so rows
+            //    that are below the fold are scrolled into the accessibility tree first.
+            var fajr = ScrollToElement("FajrTimeLabelID");
             Assert.AreNotEqual("--:--", fajr.Text, "Fajr time should be loaded after re-enabling notifications.");
 
-            var isha = _driver.FindElement(By.Id(Pkg + "IshaTimeLabelID"));
+            var isha = ScrollToElement("IshaTimeLabelID");
             Assert.AreNotEqual("--:--", isha.Text, "Isha time should be loaded after re-enabling notifications.");
 
             // 5. Go back
@@ -340,7 +409,7 @@ namespace KhayratAlhaj.UITests.Tests
             // 1. Navigate directly to PrayerTimesPage (same page the notification opens)
             NavigateToPrayerTimesPage();
 
-            // 2. Verify the countdown section exists (this is what the user would see)
+            // 2. Verify the countdown section (at the top – normally visible)
             var nextPrayerName = _driver.FindElement(By.Id(Pkg + "NextPrayerNameLabelID"));
             Assert.IsTrue(nextPrayerName.Displayed, "Next prayer name should be visible.");
 
@@ -349,21 +418,22 @@ namespace KhayratAlhaj.UITests.Tests
             Assert.AreNotEqual("--:--", countdownLabel.Text,
                 "Countdown should show a real timer, not the placeholder.");
 
-            // 3. Verify all prayer rows are visible
-            var fajr = _driver.FindElement(By.Id(Pkg + "FajrTimeLabelID"));
+            // 3. Verify all prayer rows – scroll each one into view first because MAUI
+            //    does not render off-screen items into the accessibility tree.
+            var fajr = ScrollToElement("FajrTimeLabelID");
             Assert.IsTrue(fajr.Displayed, "Fajr row should be visible.");
 
-            var dhuhr = _driver.FindElement(By.Id(Pkg + "DhuhrTimeLabelID"));
+            var dhuhr = ScrollToElement("DhuhrTimeLabelID");
             Assert.IsTrue(dhuhr.Displayed, "Dhuhr row should be visible.");
 
-            var isha = _driver.FindElement(By.Id(Pkg + "IshaTimeLabelID"));
+            var isha = ScrollToElement("IshaTimeLabelID");
             Assert.IsTrue(isha.Displayed, "Isha row should be visible.");
 
-            // 4. Verify dates are present
-            var dateLabel = _driver.FindElement(By.Id(Pkg + "DateLabelID"));
+            // 4. Verify dates – also scroll into view
+            var dateLabel = ScrollToElement("DateLabelID");
             Assert.IsNotEmpty(dateLabel.Text, "Gregorian date should be shown.");
 
-            var hijriLabel = _driver.FindElement(By.Id(Pkg + "HijriDateLabelID"));
+            var hijriLabel = ScrollToElement("HijriDateLabelID");
             Assert.IsNotEmpty(hijriLabel.Text, "Hijri date should be shown.");
 
             // 5. Go back

@@ -81,7 +81,7 @@ APK file not found at: ...\com.companyname.khayratalhaj-Signed.apk
 ```
 
 ### Root Cause
-`AppiumSetup.cs` was using the placeholder package ID `com.companyname.khayratalhaj`. The actual `ApplicationId` in `KhayratAlhaj.csproj` is `com.ilafalkhayr.khayratalhaj`.
+`AppiumSetup.cs` was using the placeholder package ID `com.companyname.khayratalhaj`. The actual `ApplicationId` in `KhayratAlhaj.csproj` is `com.ilafalkhayr.zadalhaj`.
 
 ### Fix
 Updated `AppiumSetup.cs`:
@@ -91,8 +91,8 @@ Updated `AppiumSetup.cs`:
 driverOptions.AddAdditionalAppiumOption("appPackage", "com.companyname.khayratalhaj");
 
 // After
-"com.ilafalkhayr.khayratalhaj-Signed.apk"
-driverOptions.AddAdditionalAppiumOption("appPackage", "com.ilafalkhayr.khayratalhaj");
+"com.ilafalkhayr.zadalhaj-Signed.apk"
+driverOptions.AddAdditionalAppiumOption("appPackage", "com.ilafalkhayr.zadalhaj");
 ```
 
 ---
@@ -102,7 +102,7 @@ driverOptions.AddAdditionalAppiumOption("appPackage", "com.ilafalkhayr.khayratal
 ### Symptom
 ```
 Error type 3
-Error: Activity class {com.ilafalkhayr.khayratalhaj/crc64c1fe6d0abd199a4b.MainActivity} does not exist.
+Error: Activity class {com.ilafalkhayr.zadalhaj/crc64c1fe6d0abd199a4b.MainActivity} does not exist.
 ```
 
 ### Root Cause
@@ -111,7 +111,7 @@ The `appActivity` hash in `AppiumSetup.cs` (`crc64c1fe6d0abd199a4b`) did not mat
 ### Diagnosis
 Find the real activity hash from the installed package:
 ```powershell
-adb -s emulator-5554 shell pm dump com.ilafalkhayr.khayratalhaj | Select-String "Activity"
+adb -s emulator-5554 shell pm dump com.ilafalkhayr.zadalhaj | Select-String "Activity"
 # Output: crc640e514d85339b6ec1.MainActivity
 ```
 
@@ -148,7 +148,7 @@ Updated all 6 test files:
 private const string Pkg = "com.companyname.KhayratAlhaj:id/";
 
 // After
-private const string Pkg = "com.ilafalkhayr.khayratalhaj:id/";
+private const string Pkg = "com.ilafalkhayr.zadalhaj:id/";
 ```
 
 ---
@@ -166,10 +166,10 @@ adb devices
 adb shell pm list packages | Select-String "khayratalhaj"
 
 # What is the real MainActivity hash?
-adb shell pm dump com.ilafalkhayr.khayratalhaj | Select-String "Activity"
+adb shell pm dump com.ilafalkhayr.zadalhaj | Select-String "Activity"
 
 # Clear app data (if state is dirty between test runs)
-adb shell pm clear com.ilafalkhayr.khayratalhaj
+adb shell pm clear com.ilafalkhayr.zadalhaj
 
 # View live logs from the app
 adb logcat -s MonoDroid:* AndroidRuntime:E *:S

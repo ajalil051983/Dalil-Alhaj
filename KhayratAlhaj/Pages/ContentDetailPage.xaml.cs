@@ -298,8 +298,8 @@ namespace KhayratAlhaj.Pages
                 if (ContentText != null)
                     ContentText.Text = subCategory.Content;
 
-                // Show audio player only for Arabic (audio files exist for Arabic only)
-                if (subCategory.HasAudio && LocalizationService.GetCurrentLanguage() == "ar")
+                // Keep current Arabic file naming while gating visibility by language flag.
+                if (subCategory.HasAudioForCurrentLanguage)
                 {
                     if (AudioControlsStack != null)
                         AudioControlsStack.IsVisible = true;

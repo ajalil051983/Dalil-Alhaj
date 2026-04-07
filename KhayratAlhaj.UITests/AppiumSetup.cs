@@ -28,7 +28,7 @@ namespace KhayratAlhaj.UITests
             // Adjust the path to where your .apk is generated.
             // Using Release APK to avoid Fast Deployment issues (Debug APK doesn't bundle assemblies)
             var projectRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../../"));
-            var appPath = Path.Combine(projectRoot, "KhayratAlhaj", "bin", "Release", "net10.0-android", "com.ilafalkhayr.khayratalhaj-Signed.apk");
+            var appPath = Path.Combine(projectRoot, "KhayratAlhaj", "bin", "Release", "net10.0-android", "com.ilafalkhayr.zadalhaj-Signed.apk");
 
             if (!File.Exists(appPath))
             {
@@ -42,9 +42,9 @@ namespace KhayratAlhaj.UITests
 
             // Use the pre-installed Release app instead of letting Appium install it
             // (Debug APK uses Fast Deployment and crashes; Release APK must be installed manually first)
-            driverOptions.AddAdditionalAppiumOption("appPackage", "com.ilafalkhayr.khayratalhaj");
-            driverOptions.AddAdditionalAppiumOption("appActivity", "com.ilafalkhayr.khayratalhaj.MainActivity");
-            driverOptions.AddAdditionalAppiumOption("appWaitActivity", "com.ilafalkhayr.khayratalhaj.MainActivity");
+            driverOptions.AddAdditionalAppiumOption("appPackage", "com.ilafalkhayr.zadalhaj");
+            driverOptions.AddAdditionalAppiumOption("appActivity", "com.ilafalkhayr.zadalhaj.MainActivity");
+            driverOptions.AddAdditionalAppiumOption("appWaitActivity", "com.ilafalkhayr.zadalhaj.MainActivity");
             driverOptions.AddAdditionalAppiumOption("appWaitDuration", 60000);
             driverOptions.AddAdditionalAppiumOption("autoGrantPermissions", true);
             driverOptions.AddAdditionalAppiumOption("noReset", true); // Don't reinstall, use existing app

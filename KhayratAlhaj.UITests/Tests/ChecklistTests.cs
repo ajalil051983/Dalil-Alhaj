@@ -8,7 +8,7 @@ namespace KhayratAlhaj.UITests.Tests
     [TestFixture]
     public class ChecklistTests : AppiumSetup
     {
-        private const string Pkg = "com.ilafalkhayr.khayratalhaj:id/";
+        private const string Pkg = "com.ilafalkhayr.zadalhaj:id/";
 
         [Test]
         public void Checklist_ShouldToggleItems_AndUpdateProgress()

@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using System.Text.Json;
 using KhayratAlhaj.Models;
 
 namespace KhayratAlhaj.Services
@@ -45,37 +44,175 @@ namespace KhayratAlhaj.Services
         /// <summary>French content text.</summary>
         public string ContentFr { get; set; } = string.Empty;
 
-        public bool HasAudio { get; set; }
+        public bool HasAudioAr { get; set; }
+        public bool HasAudioEn { get; set; }
+        public bool HasAudioFr { get; set; }
     }
 
     // ---------------------------------------------------------------------------
-    // DTOs used only for seeding from the three legacy JSON bundles
+    // AppDb – shared encrypted connection (used by DatabaseService & LocationRepository)
     // ---------------------------------------------------------------------------
-    internal class CategoryJsonDto
-    {
-        public int Id { get; set; }
-        public string? NameAr { get; set; }
-        public string? NameEn { get; set; }
-        public string? NameFr { get; set; }
-        public string Icon { get; set; } = string.Empty;
-        public string Color { get; set; } = "#3498DB";
-        public List<SubCategoryJsonDto> Subcategories { get; set; } = new();
-    }
 
-    internal class SubCategoryJsonDto
+    /// <summary>
+    /// Singleton that owns the single SQLCipher connection to the combined app database
+    /// (<c>appdata.bin</c>).  Both <see cref="DatabaseService"/> and
+    /// <c>LocationRepository</c> call <see cref="GetAsync"/> instead of opening their
+    /// own connections, so the file is opened only once per app session.
+    /// </summary>
+    internal static class AppDb
     {
-        public int Id { get; set; }
-        public string? NameAr { get; set; }
-        public string? NameEn { get; set; }
-        public string? NameFr { get; set; }
-        public string Icon { get; set; } = "📖";
+        internal const string FileName = "appdata.bin";
+        private static readonly string[] RequiredTables = { "Categories", "SubCategories", "LocationEntity" };
+        private const int MinimumCategoryCount = 8;
 
-        /// <summary>
-        /// The content field from the source JSON – its language depends on which
-        /// file is being loaded (Arabic, English or French).
-        /// </summary>
-        public string Content { get; set; } = string.Empty;
-        public bool HasAudio { get; set; }
+        private static SQLiteAsyncConnection? _connection;
+        private static readonly SemaphoreSlim _lock = new(1, 1);
+
+        internal static async Task<SQLiteAsyncConnection> GetAsync()
+        {
+            if (_connection != null) return _connection;
+
+            await _lock.WaitAsync();
+            try
+            {
+                if (_connection != null) return _connection;
+
+                var dbPath = Path.Combine(FileSystem.AppDataDirectory, FileName);
+                System.Diagnostics.Debug.WriteLine(
+                    $"[AppDb] {dbPath} (exists: {File.Exists(dbPath)})");
+
+                if (!File.Exists(dbPath))
+                {
+                    await CopyBundledDatabaseAsync(dbPath);
+                    System.Diagnostics.Debug.WriteLine("[AppDb] Database copied to app storage.");
+                }
+                else if (!IsDatabaseCompatible(dbPath))
+                {
+                    System.Diagnostics.Debug.WriteLine("[AppDb] Existing local database is stale/incompatible. Replacing with bundled database.");
+                    File.Delete(dbPath);
+                    await CopyBundledDatabaseAsync(dbPath);
+                    System.Diagnostics.Debug.WriteLine("[AppDb] Local database replaced with bundled database.");
+                }
+
+                _connection = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.ReadWrite);
+                await EnsureSubCategoriesAudioColumnsAsync(_connection);
+            }
+            finally
+            {
+                _lock.Release();
+            }
+
+            return _connection!;
+        }
+
+        private static async Task CopyBundledDatabaseAsync(string dbPath)
+        {
+            using var asset = await FileSystem.OpenAppPackageFileAsync(FileName);
+            using var file = File.Create(dbPath);
+            await asset.CopyToAsync(file);
+        }
+
+        private static bool IsDatabaseCompatible(string dbPath)
+        {
+            try
+            {
+                using var db = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadOnly);
+
+                var tableNames = db.QueryScalars<string>("SELECT name FROM sqlite_master WHERE type='table';");
+                var hasRequiredTables = RequiredTables.All(tableNames.Contains);
+                if (!hasRequiredTables)
+                {
+                    return false;
+                }
+
+                var categoryCount = db.ExecuteScalar<int>("SELECT COUNT(*) FROM Categories;");
+                return categoryCount >= MinimumCategoryCount;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[AppDb] Compatibility check failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static async Task EnsureSubCategoriesAudioColumnsAsync(SQLiteAsyncConnection connection)
+        {
+            const int targetVersion = 2;
+
+            var versionRows = await connection.QueryAsync<PragmaIntResult>("PRAGMA user_version;");
+            var version = versionRows.FirstOrDefault()?.Value ?? 0;
+            if (version >= targetVersion)
+            {
+                return;
+            }
+
+            var tableInfo = await connection.QueryAsync<PragmaTableInfoResult>("PRAGMA table_info(SubCategories);");
+            var columnNames = new HashSet<string>(tableInfo.Select(x => x.Name), StringComparer.OrdinalIgnoreCase);
+
+            if (columnNames.Contains("HasAudioAr") && columnNames.Contains("HasAudioEn") && columnNames.Contains("HasAudioFr"))
+            {
+                await connection.ExecuteAsync($"PRAGMA user_version = {targetVersion};");
+                return;
+            }
+
+            await connection.ExecuteAsync("BEGIN TRANSACTION;");
+            try
+            {
+                await connection.ExecuteAsync(@"
+                    CREATE TABLE IF NOT EXISTS SubCategories_new (
+                        Id INTEGER PRIMARY KEY,
+                        CategoryId INTEGER NOT NULL,
+                        NameAr TEXT NOT NULL DEFAULT '',
+                        NameEn TEXT NOT NULL DEFAULT '',
+                        NameFr TEXT NOT NULL DEFAULT '',
+                        Icon TEXT NOT NULL DEFAULT '📖',
+                        ContentAr TEXT NOT NULL DEFAULT '',
+                        ContentEn TEXT NOT NULL DEFAULT '',
+                        ContentFr TEXT NOT NULL DEFAULT '',
+                        HasAudioAr INTEGER NOT NULL DEFAULT 0,
+                        HasAudioEn INTEGER NOT NULL DEFAULT 0,
+                        HasAudioFr INTEGER NOT NULL DEFAULT 0
+                    );
+                ");
+
+                var hasLegacyHasAudio = columnNames.Contains("HasAudio");
+                var selectHasAudioAr = columnNames.Contains("HasAudioAr") ? "HasAudioAr" : (hasLegacyHasAudio ? "HasAudio" : "0");
+                var selectHasAudioEn = columnNames.Contains("HasAudioEn") ? "HasAudioEn" : "0";
+                var selectHasAudioFr = columnNames.Contains("HasAudioFr") ? "HasAudioFr" : "0";
+
+                await connection.ExecuteAsync($@"
+                    INSERT INTO SubCategories_new
+                    (Id, CategoryId, NameAr, NameEn, NameFr, Icon, ContentAr, ContentEn, ContentFr, HasAudioAr, HasAudioEn, HasAudioFr)
+                    SELECT
+                    Id, CategoryId, NameAr, NameEn, NameFr, Icon, ContentAr, ContentEn, ContentFr,
+                    IFNULL({selectHasAudioAr}, 0), IFNULL({selectHasAudioEn}, 0), IFNULL({selectHasAudioFr}, 0)
+                    FROM SubCategories;
+                ");
+
+                await connection.ExecuteAsync("DROP TABLE SubCategories;");
+                await connection.ExecuteAsync("ALTER TABLE SubCategories_new RENAME TO SubCategories;");
+                await connection.ExecuteAsync("CREATE INDEX IF NOT EXISTS IX_SubCategories_CategoryId ON SubCategories(CategoryId);");
+                await connection.ExecuteAsync($"PRAGMA user_version = {targetVersion};");
+                await connection.ExecuteAsync("COMMIT;");
+            }
+            catch
+            {
+                await connection.ExecuteAsync("ROLLBACK;");
+                throw;
+            }
+        }
+
+        private class PragmaTableInfoResult
+        {
+            [Column("name")]
+            public string Name { get; set; } = string.Empty;
+        }
+
+        private class PragmaIntResult
+        {
+            [Column("user_version")]
+            public int Value { get; set; }
+        }
     }
 
     // ---------------------------------------------------------------------------
@@ -83,137 +220,12 @@ namespace KhayratAlhaj.Services
     // ---------------------------------------------------------------------------
 
     /// <summary>
-    /// Provides SQLite-backed persistence for category and subcategory data.
-    /// <para>
-    /// On first run the service seeds the database from the three bundled JSON assets:
-    /// <c>categories.json</c> (Arabic), <c>categories-en.json</c> (English) and
-    /// <c>categories-fr.json</c> (French).  Subsequent launches read directly from
-    /// SQLite – no JSON parsing overhead.
-    /// </para>
+    /// Provides encrypted SQLite-backed persistence for category and subcategory data.
+    /// Uses the shared <see cref="AppDb"/> connection so only one file handle is open.
     /// </summary>
     public class DatabaseService
     {
-        private const string DbFileName = "KhayratAlhaj.db3";
-
-        private SQLiteAsyncConnection? _database;
-        private bool _initialized;
-        private readonly SemaphoreSlim _initLock = new(1, 1);
-
-        // -----------------------------------------------------------------------
-        // Initialisation & seeding
-        // -----------------------------------------------------------------------
-
-        private async Task<SQLiteAsyncConnection> GetDatabaseAsync()
-        {
-            if (_database != null && _initialized)
-                return _database;
-
-            await _initLock.WaitAsync();
-            try
-            {
-                if (_database != null && _initialized)
-                    return _database;
-
-                var dbPath = Path.Combine(FileSystem.AppDataDirectory, DbFileName);
-               System.Diagnostics.Debug.WriteLine(
-                $"[DB PATH] {dbPath} (exists: {File.Exists(dbPath)})");
-                _database = new SQLiteAsyncConnection(
-                    dbPath,
-                    SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
-
-                // Create tables (no-op if they already exist)
-                await _database.CreateTableAsync<CategoryEntity>();
-                await _database.CreateTableAsync<SubCategoryEntity>();
-
-                // Seed only when the tables are empty (i.e. fresh install / upgrade)
-                var count = await _database.Table<CategoryEntity>().CountAsync();
-                if (count == 0)
-                    await SeedDatabaseAsync(_database);
-
-                _initialized = true;
-            }
-            finally
-            {
-                _initLock.Release();
-            }
-
-            return _database;
-        }
-
-        /// <summary>
-        /// Merges the three language JSON bundles and inserts all rows.
-        /// </summary>
-        private static async Task SeedDatabaseAsync(SQLiteAsyncConnection db)
-        {
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-            var arCategories = await LoadJsonAsync("categories.json", options);
-            var enCategories = await LoadJsonAsync("categories-en.json", options);
-            var frCategories = await LoadJsonAsync("categories-fr.json", options);
-
-            var enIndex = enCategories.ToDictionary(c => c.Id);
-            var frIndex = frCategories.ToDictionary(c => c.Id);
-
-            await db.RunInTransactionAsync(conn =>
-            {
-                foreach (var arCat in arCategories)
-                {
-                    enIndex.TryGetValue(arCat.Id, out var enCat);
-                    frIndex.TryGetValue(arCat.Id, out var frCat);
-
-                    conn.InsertOrReplace(new CategoryEntity
-                    {
-                        Id = arCat.Id,
-                        NameAr = arCat.NameAr ?? string.Empty,
-                        NameEn = enCat?.NameEn ?? string.Empty,
-                        NameFr = frCat?.NameFr ?? string.Empty,
-                        Icon = arCat.Icon,
-                        Color = arCat.Color
-                    });
-
-                    var enSubIndex = (enCat?.Subcategories ?? new()).ToDictionary(s => s.Id);
-                    var frSubIndex = (frCat?.Subcategories ?? new()).ToDictionary(s => s.Id);
-
-                    foreach (var arSub in arCat.Subcategories)
-                    {
-                        enSubIndex.TryGetValue(arSub.Id, out var enSub);
-                        frSubIndex.TryGetValue(arSub.Id, out var frSub);
-
-                        conn.InsertOrReplace(new SubCategoryEntity
-                        {
-                            Id = arSub.Id,
-                            CategoryId = arCat.Id,
-                            NameAr = arSub.NameAr ?? string.Empty,
-                            NameEn = enSub?.NameEn ?? string.Empty,
-                            NameFr = frSub?.NameFr ?? string.Empty,
-                            Icon = arSub.Icon,
-                            ContentAr = arSub.Content,
-                            ContentEn = enSub?.Content ?? string.Empty,
-                            ContentFr = frSub?.Content ?? string.Empty,
-                            HasAudio = arSub.HasAudio
-                        });
-                    }
-                }
-            });
-
-            System.Diagnostics.Debug.WriteLine("[DatabaseService] Database seeded from JSON bundles.");
-        }
-
-        private static async Task<List<CategoryJsonDto>> LoadJsonAsync(string fileName, JsonSerializerOptions options)
-        {
-            try
-            {
-                using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
-                using var reader = new StreamReader(stream);
-                var json = await reader.ReadToEndAsync();
-                return JsonSerializer.Deserialize<List<CategoryJsonDto>>(json, options) ?? new();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[DatabaseService] Could not load '{fileName}': {ex.Message}");
-                return new();
-            }
-        }
+        private static Task<SQLiteAsyncConnection> GetDatabaseAsync() => AppDb.GetAsync();
 
         // -----------------------------------------------------------------------
         // Public query API (mirrors the old DataService API)
@@ -315,7 +327,9 @@ namespace KhayratAlhaj.Services
                 NameFr = se.NameFr,
                 Icon = se.Icon,
                 Content = content,
-                HasAudio = se.HasAudio
+                HasAudioAr = se.HasAudioAr,
+                HasAudioEn = se.HasAudioEn,
+                HasAudioFr = se.HasAudioFr
             };
         }
     }

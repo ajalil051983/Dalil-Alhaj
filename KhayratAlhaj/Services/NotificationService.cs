@@ -1,5 +1,7 @@
 ﻿using Plugin.LocalNotification;
 using Plugin.LocalNotification.EventArgs;
+using Plugin.LocalNotification.Core.Models;
+using Plugin.LocalNotification.Core.Models.AndroidOption;
 using KhayratAlhaj.Models.PrayerTimes;
 
 namespace KhayratAlhaj.Services
@@ -132,8 +134,26 @@ namespace KhayratAlhaj.Services
         {
             try
             {
-                var result = await LocalNotificationCenter.Current.RequestNotificationPermission();
-                return result;
+                if (MainThread.IsMainThread)
+                {
+                    return await LocalNotificationCenter.Current.RequestNotificationPermission();
+                }
+
+                var tcs = new TaskCompletionSource<bool>();
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    try
+                    {
+                        var result = await LocalNotificationCenter.Current.RequestNotificationPermission();
+                        tcs.TrySetResult(result);
+                    }
+                    catch
+                    {
+                        tcs.TrySetResult(false);
+                    }
+                });
+
+                return await tcs.Task.ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -180,11 +200,11 @@ namespace KhayratAlhaj.Services
                     {
                         NotifyTime = reminderTime
                     },
-                    Android = new Plugin.LocalNotification.AndroidOption.AndroidOptions
+                    Android = new AndroidOptions
                     {
                         ChannelId = "prayer_times",
-                        IconSmallName = new Plugin.LocalNotification.AndroidOption.AndroidIcon("notification_icon"),
-                        Priority = Plugin.LocalNotification.AndroidOption.AndroidPriority.High,
+                        IconSmallName = new AndroidIcon("notification_icon"),
+                        Priority = AndroidPriority.High,
                         AutoCancel = true
                     }
                 };
@@ -218,11 +238,11 @@ namespace KhayratAlhaj.Services
                     {
                         NotifyTime = arrivalTime
                     },
-                    Android = new Plugin.LocalNotification.AndroidOption.AndroidOptions
+                    Android = new AndroidOptions
                     {
                         ChannelId = "prayer_times",
-                        IconSmallName = new Plugin.LocalNotification.AndroidOption.AndroidIcon("notification_icon"),
-                        Priority = Plugin.LocalNotification.AndroidOption.AndroidPriority.High,
+                        IconSmallName = new AndroidIcon("notification_icon"),
+                        Priority = AndroidPriority.High,
                         AutoCancel = true
                     }
                 };

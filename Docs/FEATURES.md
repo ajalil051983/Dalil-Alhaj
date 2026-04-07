@@ -110,7 +110,7 @@ MainPage (6 Categories) → SubCategoryPage (4 Subcategories) → ContentDetailP
 **Audio integration** for selected content:
 
 **Features:**
-- 🎵 Audio player appears for content with `hasAudio: true` flag
+- 🎵 Audio player appears for content with the current language audio flag (`hasAudioAr`, `hasAudioEn`, `hasAudioFr`)
 - ▶️ Play button (تشغيل)
 - ⏸️ Pause button (إيقاف)
 - Clean blue UI integrated with content
@@ -226,7 +226,7 @@ Id | NameAr | NameEn | NameFr | Icon | Color
 **SubCategories table:**
 ```sql
 Id | CategoryId | NameAr | NameEn | NameFr | Icon
-   | ContentAr  | ContentEn | ContentFr | HasAudio
+  | ContentAr  | ContentEn | ContentFr | HasAudioAr | HasAudioEn | HasAudioFr
 ```
 
 > All three language translations are stored in a single row.  

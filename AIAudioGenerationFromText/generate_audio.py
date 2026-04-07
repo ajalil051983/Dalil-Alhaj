@@ -18,6 +18,23 @@ import os
 import asyncio
 from pathlib import Path
 
+
+def validate_audio_flags(categories):
+    """Ensure all subcategories explicitly declare per-language audio flags."""
+    for category in categories:
+        cat_id = category.get("id")
+        for subcategory in category.get("subcategories", []):
+            sub_id = subcategory.get("id")
+            missing = [
+                key
+                for key in ("hasAudioAr", "hasAudioEn", "hasAudioFr")
+                if key not in subcategory
+            ]
+            if missing:
+                raise ValueError(
+                    f"Subcategory {cat_id}_{sub_id} is missing audio flags: {', '.join(missing)}"
+                )
+
 # ============================================================================
 # OPTION 1: Using gTTS (Google Text-to-Speech) - Simplest
 # ============================================================================
@@ -32,6 +49,7 @@ def generate_audio_gtts():
     # Load categories
     with open('categories.json', 'r', encoding='utf-8') as f:
         categories = json.load(f)
+    validate_audio_flags(categories)
     
     # Create audio folder
     audio_dir = Path('audio')
@@ -42,10 +60,13 @@ def generate_audio_gtts():
         cat_id = category['id']
         for subcategory in category.get('subcategories', []):
             sub_id = subcategory['id']
+
+            if not subcategory.get('hasAudioAr', False):
+                continue
             
             # Combine title and content for full narration
             title = subcategory.get('nameAr', '')
-            content = subcategory.get('content', '')
+            content = subcategory.get('contentAr', '') or subcategory.get('content', '')
             full_text = f"{title}. {content}"
             
             # Generate audio
@@ -79,6 +100,7 @@ async def generate_audio_edge():
     # Load categories
     with open('categories.json', 'r', encoding='utf-8') as f:
         categories = json.load(f)
+    validate_audio_flags(categories)
     
     # Create audio folder
     audio_dir = Path('audio')
@@ -96,10 +118,13 @@ async def generate_audio_edge():
         cat_id = category['id']
         for subcategory in category.get('subcategories', []):
             sub_id = subcategory['id']
+
+            if not subcategory.get('hasAudioAr', False):
+                continue
             
             # Combine title and content
             title = subcategory.get('nameAr', '')
-            content = subcategory.get('content', '')
+            content = subcategory.get('contentAr', '') or subcategory.get('content', '')
             full_text = f"{title}. {content}"
             
             # Generate audio
@@ -142,6 +167,7 @@ def generate_audio_pyttsx3():
     # Load categories
     with open('categories.json', 'r', encoding='utf-8') as f:
         categories = json.load(f)
+    validate_audio_flags(categories)
     
     # Create audio folder
     audio_dir = Path('audio')
@@ -152,9 +178,12 @@ def generate_audio_pyttsx3():
         cat_id = category['id']
         for subcategory in category.get('subcategories', []):
             sub_id = subcategory['id']
+
+            if not subcategory.get('hasAudioAr', False):
+                continue
             
             title = subcategory.get('nameAr', '')
-            content = subcategory.get('content', '')
+            content = subcategory.get('contentAr', '') or subcategory.get('content', '')
             full_text = f"{title}. {content}"
             
             filename = f'{cat_id}_{sub_id}.mp3'

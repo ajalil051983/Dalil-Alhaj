@@ -9,6 +9,14 @@ namespace KhayratAlhaj.Services.PrayerTimes
     public class PrayerTimeService
     {
         private readonly LocationRepository _locationRepo = new();
+        private static readonly LocationEntry DefaultMakkahLocation = new()
+        {
+            Name = "Makkah",
+            CountryCode = "SA",
+            Latitude = 2142,
+            Longitude = 3983,
+            Altitude = 277
+        };
 
         // Preference keys
         private const string CalcMethodKey = "prayer_calc_method";
@@ -18,6 +26,7 @@ namespace KhayratAlhaj.Services.PrayerTimes
         private const string CityLatKey = "prayer_city_lat";
         private const string CityLonKey = "prayer_city_lon";
         private const string CityAltKey = "prayer_city_alt";
+        private const string UseCurrentLocationKey = "prayer_use_current_location";
 
         /// <summary>
         /// Get prayer times for a specific date using stored location, 
@@ -93,6 +102,22 @@ namespace KhayratAlhaj.Services.PrayerTimes
         }
 
         /// <summary>
+        /// Set whether prayer times should default to live current location.
+        /// </summary>
+        public void SetUseCurrentLocationAsDefault(bool useCurrentLocation)
+        {
+            Preferences.Set(UseCurrentLocationKey, useCurrentLocation);
+        }
+
+        /// <summary>
+        /// Returns true if prayer times should default to live current location.
+        /// </summary>
+        public bool IsUsingCurrentLocationAsDefault()
+        {
+            return Preferences.Get(UseCurrentLocationKey, true);
+        }
+
+        /// <summary>
         /// Get the stored city name, or null if none stored.
         /// </summary>
         public string? GetStoredCityName()
@@ -152,9 +177,11 @@ namespace KhayratAlhaj.Services.PrayerTimes
         /// </summary>
         private async Task<LocationEntry?> GetStoredOrGpsLocationAsync()
         {
+            var useCurrentLocation = IsUsingCurrentLocationAsDefault();
+
             // Check if we have a stored city
             var storedName = Preferences.Get(CityNameKey, string.Empty);
-            if (!string.IsNullOrEmpty(storedName))
+            if (!useCurrentLocation && !string.IsNullOrEmpty(storedName))
             {
                 return new LocationEntry
                 {
@@ -192,6 +219,7 @@ namespace KhayratAlhaj.Services.PrayerTimes
                         {
                             // Auto-save the detected city
                             SaveSelectedCity(nearest);
+                            SetUseCurrentLocationAsDefault(true);
                             return nearest;
                         }
                     }
@@ -206,8 +234,30 @@ namespace KhayratAlhaj.Services.PrayerTimes
                 System.Diagnostics.Debug.WriteLine($"GPS location error: {ex.Message}");
             }
 
-            // Absolute fallback: Makkah
-            return await _locationRepo.GetNearestAsync(21.4225, 39.8262);
+            // Fallback to previously stored city if GPS is unavailable.
+            if (!string.IsNullOrEmpty(storedName))
+            {
+                return new LocationEntry
+                {
+                    Name = storedName,
+                    CountryCode = Preferences.Get(CityCountryKey, ""),
+                    Latitude = Preferences.Get(CityLatKey, 0),
+                    Longitude = Preferences.Get(CityLonKey, 0),
+                    Altitude = Preferences.Get(CityAltKey, 0)
+                };
+            }
+
+            // Absolute fallback: Makkah (works even when LocationEntity table is missing)
+            try
+            {
+                var nearestMakkah = await _locationRepo.GetNearestAsync(21.4225, 39.8262);
+                return nearestMakkah ?? DefaultMakkahLocation;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Prayer fallback error: {ex.Message}");
+                return DefaultMakkahLocation;
+            }
         }
 
         /// <summary>

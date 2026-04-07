@@ -5,6 +5,8 @@ namespace KhayratAlhaj
 {
     public partial class App : Application
     {
+        private const string NotificationPermissionRequestedKey = "notification_permission_requested";
+
         public App()
         {
             InitializeComponent();
@@ -21,10 +23,10 @@ namespace KhayratAlhaj
 #if DEBUG && ANDROID
             try
             {
-                var src = Path.Combine(FileSystem.AppDataDirectory, "KhayratAlhaj.db3");
+                var src = Path.Combine(FileSystem.AppDataDirectory, "appdata.bin");
                 var downloads = Android.OS.Environment.GetExternalStoragePublicDirectory(
                     Android.OS.Environment.DirectoryDownloads)!.AbsolutePath;
-                var dst = Path.Combine(downloads, "KhayratAlhaj.db3");
+                var dst = Path.Combine(downloads, "appdata.bin");
                 if (File.Exists(src)) File.Copy(src, dst, overwrite: true);
                 System.Diagnostics.Debug.WriteLine($"[DB EXPORTED] {dst}");
             }
@@ -80,8 +82,20 @@ namespace KhayratAlhaj
             e.SetObserved(); // Prevent app crash
         }
 
+        private bool _windowCreated = false;
+
         protected override Window CreateWindow(IActivationState? activationState)
         {
+            // Guard against multiple calls (can happen if Android recreates the activity
+            // due to a locale/UiMode change before ConfigChanges can prevent it).
+            if (_windowCreated && Windows.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine("[App] CreateWindow called again — reusing existing window.");
+                return Windows[0];
+            }
+
+            _windowCreated = true;
+
             var window = new Window(new Pages.LoadingPage());
             window.Title = "Khayrat Alhaj";
             window.FlowDirection = Services.LocalizationService.GetFlowDirection();
@@ -89,10 +103,26 @@ namespace KhayratAlhaj
             // Listen for notification taps to navigate to PrayerTimesPage
             LocalNotificationCenter.Current.NotificationActionTapped += OnNotificationTapped;
 
-            // Schedule prayer notifications on startup (fire-and-forget)
-            _ = SchedulePrayerNotificationsOnStartupAsync();
+            // Delay notification scheduling so it doesn't compete with the initial UI render.
+            // Scheduling 84 AlarmManager entries during startup overloads the main thread.
+            window.Activated += OnWindowFirstActivated;
 
             return window;
+        }
+
+        private bool _notificationsScheduled = false;
+
+        private void OnWindowFirstActivated(object? sender, EventArgs e)
+        {
+            if (sender is Window window)
+                window.Activated -= OnWindowFirstActivated;
+
+            if (_notificationsScheduled) return;
+            _notificationsScheduled = true;
+
+            // Give the UI 3 seconds to settle before scheduling background work.
+            _ = Task.Delay(3000).ContinueWith(_ => SchedulePrayerNotificationsOnStartupAsync(),
+                TaskScheduler.Default);
         }
 
         /// <summary>
@@ -129,10 +159,9 @@ namespace KhayratAlhaj
         {
             try
             {
-                if (!Services.NotificationService.IsEnabled) return;
+                await RequestNotificationPermissionOnceAsync();
 
-                // Request notification permission first (required on Android 13+)
-                await Services.NotificationService.RequestPermissionAsync();
+                if (!Services.NotificationService.IsEnabled) return;
 
                 // Compute prayer times on background thread to avoid blocking UI
                 var multiDayTimes = await Task.Run(async () =>
@@ -160,6 +189,37 @@ namespace KhayratAlhaj
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[App] Failed to schedule prayer notifications: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Ask for notification authorization only once after install.
+        /// Android 13+ shows runtime notification prompt on first request.
+        /// </summary>
+        private static async Task RequestNotificationPermissionOnceAsync()
+        {
+            if (Preferences.Get(NotificationPermissionRequestedKey, false))
+            {
+                return;
+            }
+
+            var requestCompleted = false;
+
+            try
+            {
+                var granted = await Services.NotificationService.RequestPermissionAsync();
+                requestCompleted = true;
+                System.Diagnostics.Debug.WriteLine($"[App] Notification permission first request result: {granted}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[App] Notification permission request failed: {ex.Message}");
+            }
+
+            if (requestCompleted)
+            {
+                // Mark as requested even if denied/error to avoid repeatedly prompting.
+                Preferences.Set(NotificationPermissionRequestedKey, true);
             }
         }
 #if !DEBUG && ANDROID

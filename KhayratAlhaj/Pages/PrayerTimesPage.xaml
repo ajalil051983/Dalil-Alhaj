@@ -121,24 +121,33 @@
                 <Border StrokeShape="RoundRectangle 10"
                         Padding="12"
                         Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}">
-                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                        <HorizontalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnLocationDisplayClicked" />
-                        </HorizontalStackLayout.GestureRecognizers>
-                        <Label Text="📍" FontSize="16" VerticalOptions="Center" />
-                        <Label x:Name="CityNameLabel"
-                               AutomationId="CityNameLabelID"
-                               Text="..."
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
-                               VerticalOptions="Center" />
-                        <Label x:Name="CountryLabel"
+                    <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                        <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLocationDisplayClicked" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <Label Text="📍" FontSize="16" VerticalOptions="Center" />
+                            <Label x:Name="CityNameLabel"
+                                   AutomationId="CityNameLabelID"
+                                   Text="..."
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                   VerticalOptions="Center" />
+                            <Label x:Name="CountryLabel"
+                                   Text=""
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <Label x:Name="LocationModeLabel"
+                               AutomationId="LocationModeLabelID"
                                Text=""
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
-                               VerticalOptions="Center" />
-                    </HorizontalStackLayout>
+                               FontSize="12"
+                               HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}" />
+                    </VerticalStackLayout>
                 </Border>
 
                 <!-- City Local Time Card (shown only when city timezone differs from device) -->
