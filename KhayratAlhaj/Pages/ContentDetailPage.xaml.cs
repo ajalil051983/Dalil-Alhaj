@@ -5,14 +5,23 @@ using CommunityToolkit.Maui.Views;
 using KhayratAlhaj.Messages;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
+using System.Globalization;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace KhayratAlhaj.Pages
 {
     public partial class ContentDetailPage : ContentPage
     {
-        private readonly Category category;
-        private readonly SubCategory subCategory;
+        private static readonly Regex HtmlImageSourceRegex = new(@"src\s*=\s*['""](?<src>[^'""]+)['""]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex HtmlTagRegex = new("<[^>]+>", RegexOptions.Compiled);
+        private Category category;
+        private SubCategory subCategory;
         private readonly FavoritesService favoritesService;
+        private readonly DataService dataService;
+        private readonly Dictionary<string, string> imageDataUriCache = new(StringComparer.OrdinalIgnoreCase);
+        private string? lastLoadedLanguage;
         private bool isPlaying = false;
         private bool isApplyingTheme = false;
         private AppTheme? lastAppliedTheme = null;
@@ -26,16 +35,19 @@ namespace KhayratAlhaj.Pages
             this.category = category;
             this.subCategory = subCategory;
             this.favoritesService = new FavoritesService();
+            this.dataService = new DataService();
+            lastLoadedLanguage = LocalizationService.GetCurrentLanguage();
             
             Title = subCategory.Name;
             LoadContent();
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             try
             {
                 base.OnAppearing();
+                await RefreshLocalizedContentIfNeededAsync();
                 Debug.WriteLine($"[ContentDetailPage] OnAppearing called for: {subCategory.Name}");
                 
                 ApplyThemeColors();
@@ -73,6 +85,33 @@ namespace KhayratAlhaj.Pages
                 Debug.WriteLine($"[ContentDetailPage] Error in OnAppearing: {ex.Message}");
                 Debug.WriteLine($"[ContentDetailPage] Stack trace: {ex.StackTrace}");
             }
+        }
+
+        private async Task RefreshLocalizedContentIfNeededAsync()
+        {
+            FlowDirection = LocalizationService.GetFlowDirection();
+
+            var currentLanguage = LocalizationService.GetCurrentLanguage();
+            if (lastLoadedLanguage == currentLanguage)
+            {
+                return;
+            }
+
+            lastLoadedLanguage = currentLanguage;
+
+            var refreshedCategory = await dataService.GetCategoryByIdAsync(category.Id);
+            if (refreshedCategory != null)
+            {
+                var refreshedSubCategory = refreshedCategory.Subcategories.FirstOrDefault(sc => sc.Id == subCategory.Id);
+                if (refreshedSubCategory != null)
+                {
+                    category = refreshedCategory;
+                    subCategory = refreshedSubCategory;
+                }
+            }
+
+            Title = subCategory.Name;
+            LoadContent();
         }
 
         protected override void OnDisappearing()
@@ -182,15 +221,10 @@ namespace KhayratAlhaj.Pages
                 
                     this.BackgroundColor = ThemeColors.PageBackground(isDark);
                 
-                    // Update ContentLabel and ContentText directly
+                    // Update ContentLabel directly
                     if (ContentLabel != null)
                     {
                         ContentLabel.TextColor = ThemeColors.PrimaryText(isDark);
-                    }
-                
-                    if (ContentText != null)
-                    {
-                        ContentText.TextColor = ThemeColors.ContentText(isDark);
                     }
                 
                     // CategoryTitle is inside the category-colored HeaderFrame and is always White
@@ -206,6 +240,8 @@ namespace KhayratAlhaj.Pages
                     {
                         UpdateLayoutColors(stack, isDark);
                     }
+
+                    _ = LoadHtmlContentAsync();
                 }
                 finally
                 {
@@ -294,9 +330,7 @@ namespace KhayratAlhaj.Pages
                 if (SubCategoryTitle != null)
                     SubCategoryTitle.Text = subCategory.Name;
                 
-                // Set content text directly
-                if (ContentText != null)
-                    ContentText.Text = subCategory.Content;
+                _ = LoadHtmlContentAsync();
 
                 // Keep current Arabic file naming while gating visibility by language flag.
                 if (subCategory.HasAudioForCurrentLanguage)
@@ -328,12 +362,12 @@ namespace KhayratAlhaj.Pages
             {
                 Debug.WriteLine($"[ContentDetailPage] LoadAudioFile started for category: {category.Id}, subcategory: {subCategory.Id}");
                 
-                var audioFileName = $"audio/{category.Id}_{subCategory.Id}.mp3";
+                var audioFileName = $"audio/{category.Id}_{subCategory.Id}.ogg";
                 Debug.WriteLine($"[ContentDetailPage] Loading audio file: {audioFileName}");
                 
                 // Load audio file from Raw resources
                 using var stream = await FileSystem.OpenAppPackageFileAsync(audioFileName);
-                var tempFile = Path.Combine(FileSystem.CacheDirectory, $"{category.Id}_{subCategory.Id}.mp3");
+                var tempFile = Path.Combine(FileSystem.CacheDirectory, $"{category.Id}_{subCategory.Id}.ogg");
                 Debug.WriteLine($"[ContentDetailPage] Audio temp file path: {tempFile}");
                 
                 using (var fileStream = File.Create(tempFile))
@@ -354,7 +388,7 @@ namespace KhayratAlhaj.Pages
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"[ContentDetailPage] Audio file not found or error loading: {category.Id}_{subCategory.Id}.mp3");
+                Debug.WriteLine($"[ContentDetailPage] Audio file not found or error loading: {category.Id}_{subCategory.Id}.ogg");
                 Debug.WriteLine($"[ContentDetailPage] LoadAudioFile exception: {ex.Message}");
                 Debug.WriteLine($"[ContentDetailPage] LoadAudioFile stack trace: {ex.StackTrace}");
                 Debug.WriteLine($"[ContentDetailPage] Exception type: {ex.GetType().FullName}");
@@ -365,6 +399,207 @@ namespace KhayratAlhaj.Pages
                     PlayPauseButton.Opacity = 0.5;
                 }
             }
+        }
+
+        private async Task LoadHtmlContentAsync()
+        {
+            if (ContentWebView == null || isDisposing)
+            {
+                return;
+            }
+
+            var isDark = (Application.Current?.UserAppTheme ?? AppTheme.Unspecified) == AppTheme.Dark;
+            var renderedBody = await ResolveLocalImageSourcesAsync(subCategory.Content);
+            var textColor = isDark ? "#F5F5F5" : "#2C3E50";
+            var mutedColor = isDark ? "#D0D3D4" : "#4A5560";
+            var cardColor = isDark ? "#2C2C2E" : "#FFFFFF";
+            var direction = FlowDirection == FlowDirection.RightToLeft ? "rtl" : "ltr";
+            var language = LocalizationService.GetCurrentLanguage();
+
+            var html = $$"""
+            <!DOCTYPE html>
+            <html lang="{{language}}" dir="{{direction}}">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        background: {{cardColor}};
+                        color: {{textColor}};
+                        font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+                        font-size: 17px;
+                        line-height: 1.7;
+                        overflow-x: hidden;
+                        word-wrap: break-word;
+                    }
+
+                    h3 {
+                        margin: 0 0 12px 0;
+                        color: {{textColor}};
+                        font-size: 22px;
+                    }
+
+                    p, li, aside, figcaption {
+                        color: {{textColor}};
+                    }
+
+                    ul {
+                        margin: 0 0 12px 0;
+                        padding-inline-start: 24px;
+                    }
+
+                    li {
+                        margin-bottom: 8px;
+                    }
+
+                    aside {
+                        margin-top: 10px;
+                        color: {{mutedColor}};
+                    }
+
+                    figure {
+                        margin: 14px 0 0 0;
+                        text-align: center;
+                    }
+
+                    figcaption {
+                        margin-bottom: 8px;
+                        font-weight: 700;
+                    }
+
+                    img {
+                        display: block;
+                        margin: 0 auto;
+                        width: 78%;
+                        max-width: 260px;
+                        height: auto;
+                    }
+                </style>
+            </head>
+            <body>{{renderedBody}}</body>
+            </html>
+            """;
+
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                if (ContentWebView != null && !isDisposing)
+                {
+                    ContentWebView.Source = new HtmlWebViewSource { Html = html };
+                }
+            });
+        }
+
+        private async Task<string> ResolveLocalImageSourcesAsync(string html)
+        {
+            if (string.IsNullOrWhiteSpace(html))
+            {
+                return string.Empty;
+            }
+
+            var builder = new StringBuilder();
+            var lastIndex = 0;
+
+            foreach (Match match in HtmlImageSourceRegex.Matches(html))
+            {
+                builder.Append(html, lastIndex, match.Index - lastIndex);
+
+                var src = match.Groups["src"].Value.Trim();
+                var replacement = await TryResolveImageSourceAttributeAsync(src);
+                builder.Append(replacement ?? match.Value);
+
+                lastIndex = match.Index + match.Length;
+            }
+
+            builder.Append(html, lastIndex, html.Length - lastIndex);
+            return builder.ToString();
+        }
+
+        private async Task<string?> TryResolveImageSourceAttributeAsync(string source)
+        {
+            if (string.IsNullOrWhiteSpace(source) ||
+                source.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                source.StartsWith("https://", StringComparison.OrdinalIgnoreCase) ||
+                source.StartsWith("data:", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var assetName = Path.GetFileName(source);
+            if (string.IsNullOrWhiteSpace(assetName))
+            {
+                return null;
+            }
+
+            if (!imageDataUriCache.TryGetValue(assetName, out var dataUri))
+            {
+                try
+                {
+                    using var stream = await FileSystem.OpenAppPackageFileAsync(assetName);
+                    using var memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream);
+                    var base64 = Convert.ToBase64String(memoryStream.ToArray());
+                    dataUri = $"data:{GetMimeType(assetName)};base64,{base64}";
+                    imageDataUriCache[assetName] = dataUri;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"[ContentDetailPage] Could not resolve image asset '{assetName}': {ex.Message}");
+                    return null;
+                }
+            }
+
+            return $"src=\"{dataUri}\"";
+        }
+
+        private static string GetMimeType(string fileName)
+        {
+            return Path.GetExtension(fileName).ToLowerInvariant() switch
+            {
+                ".png" => "image/png",
+                ".jpg" => "image/jpeg",
+                ".jpeg" => "image/jpeg",
+                ".webp" => "image/webp",
+                ".svg" => "image/svg+xml",
+                _ => "application/octet-stream"
+            };
+        }
+
+        private async void OnContentWebViewNavigated(object? sender, WebNavigatedEventArgs e)
+        {
+            if (sender is not WebView webView || e.Result != WebNavigationResult.Success || isDisposing)
+            {
+                return;
+            }
+
+            try
+            {
+                var heightValue = await webView.EvaluateJavaScriptAsync("Math.max(document.body.scrollHeight, document.documentElement.scrollHeight).toString();");
+                var sanitizedHeight = heightValue?.Trim('"');
+
+                if (double.TryParse(sanitizedHeight, NumberStyles.Float, CultureInfo.InvariantCulture, out var height))
+                {
+                    webView.HeightRequest = Math.Max(1, height + 24);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[ContentDetailPage] Error sizing HTML content: {ex.Message}");
+            }
+        }
+
+        private string GetPlainTextContent()
+        {
+            if (string.IsNullOrWhiteSpace(subCategory.Content))
+            {
+                return string.Empty;
+            }
+
+            var text = HtmlTagRegex.Replace(subCategory.Content, " ");
+            text = WebUtility.HtmlDecode(text);
+            text = Regex.Replace(text, @"\s+", " ").Trim();
+            return text;
         }
 
         private void OnPlayPauseClicked(object? sender, EventArgs e)
@@ -500,7 +735,7 @@ namespace KhayratAlhaj.Pages
                 if (isDisposing) return;
                 Debug.WriteLine("[ContentDetailPage] OnCopyClicked called");
                 
-                await Clipboard.SetTextAsync(subCategory.Content);
+                await Clipboard.SetTextAsync(GetPlainTextContent());
                 await DisplayAlertAsync(KhayratAlhaj.Resources.Localization.AppResources.Success, KhayratAlhaj.Resources.Localization.AppResources.TextCopied, KhayratAlhaj.Resources.Localization.AppResources.OK);
             }
             catch (Exception ex)
@@ -522,7 +757,7 @@ namespace KhayratAlhaj.Pages
                 await Share.RequestAsync(new ShareTextRequest
                 {
                     Title = subCategory.Name,
-                    Text = $"{subCategory.Name}\n\n{subCategory.Content}\n\n{KhayratAlhaj.Resources.Localization.AppResources.FromApp}"
+                    Text = $"{subCategory.Name}\n\n{GetPlainTextContent()}\n\n{KhayratAlhaj.Resources.Localization.AppResources.FromApp}"
                 });
             }
             catch (Exception ex)

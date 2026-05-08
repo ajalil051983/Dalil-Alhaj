@@ -1,7 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using KhayratAlhaj.Resources.Localization;
 using KhayratAlhaj.Messages;
+using KhayratAlhaj.Services;
+using KhayratAlhaj.Models;
 using CommunityToolkit.Mvvm.Messaging;
 
 namespace KhayratAlhaj.Pages
@@ -11,6 +14,15 @@ namespace KhayratAlhaj.Pages
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public bool IsCompleted { get; set; }
+
+        [JsonIgnore]
+        public int CategoryId { get; set; }
+
+        [JsonIgnore]
+        public int SubCategoryId { get; set; }
+
+        [JsonIgnore]
+        public bool HasNavigationTarget => CategoryId > 0;
     }
 
     public partial class ChecklistPage : ContentPage
@@ -19,21 +31,56 @@ namespace KhayratAlhaj.Pages
         private ObservableCollection<ChecklistItem> checklistItems = new();
         private bool isApplyingTheme = false;
         private AppTheme? lastAppliedTheme = null;
+        private readonly DataService dataService;
 
-        public ChecklistPage()
+        // (categoryId, subCategoryId) for each of the 16 default checklist items.
+        // subCategoryId == 0 means navigate to the category list page only.
+        private static readonly (int CategoryId, int SubCategoryId)[] ItemNavMap =
+        {
+            (1, 101),  // 1  - Learn rules of Hajj
+            (1, 102),  // 2  - Repentance / preparation
+            (1, 104),  // 3  - Prepare documents
+            (2, 202),  // 4  - Prepare ihram clothes
+            (1, 104),  // 5  - Medicines & first aid
+            (2, 202),  // 6  - Ihram from miqat
+            (3, 303),  // 7  - Enter Mecca & Tawaf
+            (3, 304),  // 8  - Sa'i between Safa and Marwah
+            (4, 402),  // 9  - Go to Mina
+            (3, 302),  // 10 - Station at Arafat
+            (4, 401),  // 11 - Pass night at Muzdalifah
+            (4, 403),  // 12 - Stone Jamrat al-Aqabah
+            (4, 0),    // 13 - Shaving / shortening (no specific subcat)
+            (3, 303),  // 14 - Tawaf al-Ifadah
+            (4, 403),  // 15 - Stoning during days of Tashreeq
+            (4, 404),  // 16 - Farewell Tawaf
+        };
+
+        public ChecklistPage(DataService dataService)
         {
             InitializeComponent();
             FlowDirection = Services.LocalizationService.GetFlowDirection();
+            this.dataService = dataService;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
+            // Ensure page direction follows current language on every appearance.
+            FlowDirection = Services.LocalizationService.GetFlowDirection();
             
             // Load data asynchronously to prevent UI blocking
             if (checklistItems.Count == 0)
             {
                 LoadChecklist();
+            }
+            else
+            {
+                // If language changed while page remained alive, refresh localized text immediately.
+                LocalizeChecklistItems();
+                ChecklistCollection.ItemsSource = null;
+                ChecklistCollection.ItemsSource = checklistItems;
+                UpdateProgress();
             }
             
             ApplyThemeColors();
@@ -96,8 +143,25 @@ namespace KhayratAlhaj.Pages
                 checklistItems = GetDefaultChecklist();
             }
 
+            // Saved checklist stores previously rendered text. Re-apply localized
+            // titles/descriptions for the current language while keeping completion state.
+            LocalizeChecklistItems();
+
+            ApplyCategoryMappings();
             ChecklistCollection.ItemsSource = checklistItems;
             UpdateProgress();
+        }
+
+        private void LocalizeChecklistItems()
+        {
+            var localizedDefaults = GetDefaultChecklist();
+            var count = Math.Min(checklistItems.Count, localizedDefaults.Count);
+
+            for (int i = 0; i < count; i++)
+            {
+                checklistItems[i].Title = localizedDefaults[i].Title;
+                checklistItems[i].Description = localizedDefaults[i].Description;
+            }
         }
 
         private ObservableCollection<ChecklistItem> GetDefaultChecklist()
@@ -128,6 +192,36 @@ namespace KhayratAlhaj.Pages
         {
             SaveChecklist();
             UpdateProgress();
+        }
+
+        private void ApplyCategoryMappings()
+        {
+            for (int i = 0; i < checklistItems.Count && i < ItemNavMap.Length; i++)
+            {
+                checklistItems[i].CategoryId    = ItemNavMap[i].CategoryId;
+                checklistItems[i].SubCategoryId = ItemNavMap[i].SubCategoryId;
+            }
+        }
+
+        private async void OnNavigateClicked(object? sender, EventArgs e)
+        {
+            if (sender is Button btn && btn.BindingContext is ChecklistItem item && item.CategoryId > 0)
+            {
+                var category = await dataService.GetCategoryByIdAsync(item.CategoryId);
+                if (category == null) return;
+
+                if (item.SubCategoryId > 0)
+                {
+                    var sub = category.Subcategories.FirstOrDefault(sc => sc.Id == item.SubCategoryId);
+                    if (sub != null)
+                    {
+                        await Navigation.PushAsync(new ContentDetailPage(category, sub));
+                        return;
+                    }
+                }
+
+                await Navigation.PushAsync(new SubCategoryPage(category, dataService));
+            }
         }
 
         private void SaveChecklist()

@@ -88,7 +88,7 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to دليل الحاج.
+        ///   Looks up a localized string similar to خيرات الحاج.
         /// </summary>
         internal static string AppTitle {
             get {
@@ -111,6 +111,33 @@ namespace KhayratAlhaj.Resources.Localization {
         internal static string Arafat {
             get {
                 return ResourceManager.GetString("Arafat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موقف عرفة، ركن الحج الأعظم.
+        /// </summary>
+        internal static string ArafatDesc {
+            get {
+                return ResourceManager.GetString("ArafatDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العصر.
+        /// </summary>
+        internal static string Asr {
+            get {
+                return ResourceManager.GetString("Asr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طريقة الحساب.
+        /// </summary>
+        internal static string CalculationMethod {
+            get {
+                return ResourceManager.GetString("CalculationMethod", resourceCulture);
             }
         }
         
@@ -448,6 +475,15 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to التوقيت المحلي للمدينة.
+        /// </summary>
+        internal static string CityLocalTime {
+            get {
+                return ResourceManager.GetString("CityLocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} من {1} مكتمل.
         /// </summary>
         internal static string CompletedOf {
@@ -493,11 +529,38 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تعذر فتح الدليل لـ.
+        /// </summary>
+        internal static string CouldNotOpenGuide {
+            get {
+                return ResourceManager.GetString("CouldNotOpenGuide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الوضع الليلي.
         /// </summary>
         internal static string DarkMode {
             get {
                 return ResourceManager.GetString("DarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الظهر.
+        /// </summary>
+        internal static string Dhuhr {
+            get {
+                return ResourceManager.GetString("Dhuhr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🚗 قيادة.
+        /// </summary>
+        internal static string Driving {
+            get {
+                return ResourceManager.GetString("Driving", resourceCulture);
             }
         }
         
@@ -516,6 +579,24 @@ namespace KhayratAlhaj.Resources.Localization {
         internal static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خطأ في مشاركة الموقع.
+        /// </summary>
+        internal static string ErrorSharingLocation {
+            get {
+                return ResourceManager.GetString("ErrorSharingLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الفجر.
+        /// </summary>
+        internal static string Fajr {
+            get {
+                return ResourceManager.GetString("Fajr", resourceCulture);
             }
         }
         
@@ -601,11 +682,74 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to من تطبيق: دليل الحاج.
+        ///   Looks up a localized string similar to من تطبيق: خيرات الحاج.
         /// </summary>
         internal static string FromApp {
             get {
                 return ResourceManager.GetString("FromApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🧭 اعرض المسار.
+        /// </summary>
+        internal static string GetDirections {
+            get {
+                return ResourceManager.GetString("GetDirections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📍 جارٍ تحديد الموقع....
+        /// </summary>
+        internal static string GettingLocation {
+            get {
+                return ResourceManager.GetString("GettingLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إخفاء جدول الأسبوع.
+        /// </summary>
+        internal static string HideWeeklySchedule {
+            get {
+                return ResourceManager.GetString("HideWeeklySchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل التاريخ الهجري.
+        /// </summary>
+        internal static string HijriDateAdjustment {
+            get {
+                return ResourceManager.GetString("HijriDateAdjustment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تعديل (−2 إلى +2 أيام) لمطابقة التقويم المحلي.
+        /// </summary>
+        internal static string HijriDateAdjustmentHint {
+            get {
+                return ResourceManager.GetString("HijriDateAdjustmentHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الإمساك.
+        /// </summary>
+        internal static string Imsaak {
+            get {
+                return ResourceManager.GetString("Imsaak", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العشاء.
+        /// </summary>
+        internal static string Isha {
+            get {
+                return ResourceManager.GetString("Isha", resourceCulture);
             }
         }
         
@@ -619,11 +763,29 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to بيت الله الحرام، محور الطواف.
+        /// </summary>
+        internal static string KaabaDesc {
+            get {
+                return ResourceManager.GetString("KaabaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اللغة.
         /// </summary>
         internal static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خط العرض.
+        /// </summary>
+        internal static string Latitude {
+            get {
+                return ResourceManager.GetString("Latitude", resourceCulture);
             }
         }
         
@@ -655,6 +817,51 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تم رفض إذن الموقع.
+        /// </summary>
+        internal static string LocationPermissionDenied {
+            get {
+                return ResourceManager.GetString("LocationPermissionDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to يجب السماح بالوصول إلى الموقع لمشاركته.
+        /// </summary>
+        internal static string LocationPermissionRequired {
+            get {
+                return ResourceManager.GetString("LocationPermissionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مشاركة الموقع غير مدعومة على هذا الجهاز.
+        /// </summary>
+        internal static string LocationSharingNotSupported {
+            get {
+                return ResourceManager.GetString("LocationSharingNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خط الطول.
+        /// </summary>
+        internal static string Longitude {
+            get {
+                return ResourceManager.GetString("Longitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المغرب.
+        /// </summary>
+        internal static string Maghrib {
+            get {
+                return ResourceManager.GetString("Maghrib", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🗺️ الخريطة.
         /// </summary>
         internal static string Map {
@@ -682,6 +889,33 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 🚶 المروة.
+        /// </summary>
+        internal static string Marwa {
+            get {
+                return ResourceManager.GetString("Marwa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to جبل المروة، نهاية السعي.
+        /// </summary>
+        internal static string MarwaDesc {
+            get {
+                return ResourceManager.GetString("MarwaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المذهب.
+        /// </summary>
+        internal static string Mathhab {
+            get {
+                return ResourceManager.GetString("Mathhab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🏕️ منى.
         /// </summary>
         internal static string Mina {
@@ -691,11 +925,65 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to منى، مبيت ورمي الجمرات.
+        /// </summary>
+        internal static string MinaDesc {
+            get {
+                return ResourceManager.GetString("MinaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🌙 مزدلفة.
         /// </summary>
         internal static string Muzdalifah {
             get {
                 return ResourceManager.GetString("Muzdalifah", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مزدلفة، مبيت وجمع الحصى.
+        /// </summary>
+        internal static string MuzdalifahDesc {
+            get {
+                return ResourceManager.GetString("MuzdalifahDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موقعي الحالي.
+        /// </summary>
+        internal static string MyCurrentLocation {
+            get {
+                return ResourceManager.GetString("MyCurrentLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to موقعي.
+        /// </summary>
+        internal static string MyLocation {
+            get {
+                return ResourceManager.GetString("MyLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ›.
+        /// </summary>
+        internal static string NavChevron {
+            get {
+                return ResourceManager.GetString("NavChevron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الصلاة القادمة.
+        /// </summary>
+        internal static string NextPrayer {
+            get {
+                return ResourceManager.GetString("NextPrayer", resourceCulture);
             }
         }
         
@@ -710,11 +998,29 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يوجد محتوى دليل لهذا الموقع.
+        /// </summary>
+        internal static string NoGuideContentFound {
+            get {
+                return ResourceManager.GetString("NoGuideContentFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا توجد نتائج.
         /// </summary>
         internal static string NoResults {
             get {
                 return ResourceManager.GetString("NoResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يوجد اتصال، يتم عرض المسار المباشر.
+        /// </summary>
+        internal static string OfflineRouteWarning {
+            get {
+                return ResourceManager.GetString("OfflineRouteWarning", resourceCulture);
             }
         }
         
@@ -742,6 +1048,60 @@ namespace KhayratAlhaj.Resources.Localization {
         internal static string Play {
             get {
                 return ResourceManager.GetString("Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تنبيهات الصلاة.
+        /// </summary>
+        internal static string PrayerNotifications {
+            get {
+                return ResourceManager.GetString("PrayerNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حان وقت صلاة {0}.
+        /// </summary>
+        internal static string PrayerTimeFor {
+            get {
+                return ResourceManager.GetString("PrayerTimeFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 🕌 حان الآن وقت صلاة {0}.
+        /// </summary>
+        internal static string PrayerTimeNotifBody {
+            get {
+                return ResourceManager.GetString("PrayerTimeNotifBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مواقيت الصلاة.
+        /// </summary>
+        internal static string PrayerTimes {
+            get {
+                return ResourceManager.GetString("PrayerTimes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to القبلة.
+        /// </summary>
+        internal static string Qibla {
+            get {
+                return ResourceManager.GetString("Qibla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📖 اقرأ المزيد.
+        /// </summary>
+        internal static string ReadMore {
+            get {
+                return ResourceManager.GetString("ReadMore", resourceCulture);
             }
         }
         
@@ -791,6 +1151,15 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to معلومات المسار.
+        /// </summary>
+        internal static string RouteInfo {
+            get {
+                return ResourceManager.GetString("RouteInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 🚶 الصفا.
         /// </summary>
         internal static string Safa {
@@ -805,6 +1174,15 @@ namespace KhayratAlhaj.Resources.Localization {
         internal static string SafaDesc {
             get {
                 return ResourceManager.GetString("SafaDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ابحث عن مدينة....
+        /// </summary>
+        internal static string SearchCity {
+            get {
+                return ResourceManager.GetString("SearchCity", resourceCulture);
             }
         }
         
@@ -863,6 +1241,42 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 📍 مشاركة الموقع.
+        /// </summary>
+        internal static string ShareLocation {
+            get {
+                return ResourceManager.GetString("ShareLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مشاركة موقعي.
+        /// </summary>
+        internal static string ShareMyLocation {
+            get {
+                return ResourceManager.GetString("ShareMyLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عرض جدول الأسبوع.
+        /// </summary>
+        internal static string ShowWeeklySchedule {
+            get {
+                return ResourceManager.GetString("ShowWeeklySchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الشروق.
+        /// </summary>
+        internal static string Shurooq {
+            get {
+                return ResourceManager.GetString("Shurooq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نجح.
         /// </summary>
         internal static string Success {
@@ -881,110 +1295,20 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to اليوم.
+        /// </summary>
+        internal static string TodaySchedule {
+            get {
+                return ResourceManager.GetString("TodaySchedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المواضيع:.
         /// </summary>
         internal static string Topics {
             get {
                 return ResourceManager.GetString("Topics", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الإصدار 1.0.0.
-        /// </summary>
-        internal static string Version {
-            get {
-                return ResourceManager.GetString("Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 📍 موقعك.
-        /// </summary>
-        internal static string YourLocation {
-            get {
-                return ResourceManager.GetString("YourLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 🚶 المروة.
-        /// </summary>
-        internal static string Marwa {
-            get {
-                return ResourceManager.GetString("Marwa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to جبل المروة، نهاية السعي.
-        /// </summary>
-        internal static string MarwaDesc {
-            get {
-                return ResourceManager.GetString("MarwaDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to القبلة.
-        /// </summary>
-        internal static string Qibla {
-            get {
-                return ResourceManager.GetString("Qibla", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 📍 مشاركة الموقع.
-        /// </summary>
-        internal static string ShareLocation {
-            get {
-                return ResourceManager.GetString("ShareLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 📖 عرض الدليل.
-        /// </summary>
-        internal static string ViewGuide {
-            get {
-                return ResourceManager.GetString("ViewGuide", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 📍 جارٍ تحديد الموقع....
-        /// </summary>
-        internal static string GettingLocation {
-            get {
-                return ResourceManager.GetString("GettingLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to مشاركة موقعي.
-        /// </summary>
-        internal static string ShareMyLocation {
-            get {
-                return ResourceManager.GetString("ShareMyLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to موقعي الحالي.
-        /// </summary>
-        internal static string MyCurrentLocation {
-            get {
-                return ResourceManager.GetString("MyCurrentLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to يجب السماح بالوصول إلى الموقع لمشاركته.
-        /// </summary>
-        internal static string LocationPermissionRequired {
-            get {
-                return ResourceManager.GetString("LocationPermissionRequired", resourceCulture);
             }
         }
         
@@ -998,47 +1322,20 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to مشاركة الموقع غير مدعومة على هذا الجهاز.
+        ///   Looks up a localized string similar to الإصدار 1.0.0.
         /// </summary>
-        internal static string LocationSharingNotSupported {
+        internal static string Version {
             get {
-                return ResourceManager.GetString("LocationSharingNotSupported", resourceCulture);
+                return ResourceManager.GetString("Version", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to تم رفض إذن الموقع.
+        ///   Looks up a localized string similar to 📖 عرض الدليل.
         /// </summary>
-        internal static string LocationPermissionDenied {
+        internal static string ViewGuide {
             get {
-                return ResourceManager.GetString("LocationPermissionDenied", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to خطأ في مشاركة الموقع.
-        /// </summary>
-        internal static string ErrorSharingLocation {
-            get {
-                return ResourceManager.GetString("ErrorSharingLocation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لا يوجد محتوى دليل لهذا الموقع.
-        /// </summary>
-        internal static string NoGuideContentFound {
-            get {
-                return ResourceManager.GetString("NoGuideContentFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تعذر فتح الدليل لـ.
-        /// </summary>
-        internal static string CouldNotOpenGuide {
-            get {
-                return ResourceManager.GetString("CouldNotOpenGuide", resourceCulture);
+                return ResourceManager.GetString("ViewGuide", resourceCulture);
             }
         }
         
@@ -1052,204 +1349,6 @@ namespace KhayratAlhaj.Resources.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 🚗 قيادة.
-        /// </summary>
-        internal static string Driving {
-            get {
-                return ResourceManager.GetString("Driving", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لا يوجد اتصال، يتم عرض المسار المباشر.
-        /// </summary>
-        internal static string OfflineRouteWarning {
-            get {
-                return ResourceManager.GetString("OfflineRouteWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to خط العرض.
-        /// </summary>
-        internal static string Latitude {
-            get {
-                return ResourceManager.GetString("Latitude", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to خط الطول.
-        /// </summary>
-        internal static string Longitude {
-            get {
-                return ResourceManager.GetString("Longitude", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to بيت الله الحرام، محور الطواف.
-        /// </summary>
-        internal static string KaabaDesc {
-            get {
-                return ResourceManager.GetString("KaabaDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to موقف عرفة، ركن الحج الأعظم.
-        /// </summary>
-        internal static string ArafatDesc {
-            get {
-                return ResourceManager.GetString("ArafatDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to مزدلفة، مبيت وجمع الحصى.
-        /// </summary>
-        internal static string MuzdalifahDesc {
-            get {
-                return ResourceManager.GetString("MuzdalifahDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to منى، مبيت ورمي الجمرات.
-        /// </summary>
-        internal static string MinaDesc {
-            get {
-                return ResourceManager.GetString("MinaDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to معلومات المسار.
-        /// </summary>
-        internal static string RouteInfo {
-            get {
-                return ResourceManager.GetString("RouteInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 📖 اقرأ المزيد.
-        /// </summary>
-        internal static string ReadMore {
-            get {
-                return ResourceManager.GetString("ReadMore", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to مواقيت الصلاة.
-        /// </summary>
-        internal static string PrayerTimes {
-            get {
-                return ResourceManager.GetString("PrayerTimes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الفجر.
-        /// </summary>
-        internal static string Fajr {
-            get {
-                return ResourceManager.GetString("Fajr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الشروق.
-        /// </summary>
-        internal static string Shurooq {
-            get {
-                return ResourceManager.GetString("Shurooq", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الظهر.
-        /// </summary>
-        internal static string Dhuhr {
-            get {
-                return ResourceManager.GetString("Dhuhr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to العصر.
-        /// </summary>
-        internal static string Asr {
-            get {
-                return ResourceManager.GetString("Asr", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to المغرب.
-        /// </summary>
-        internal static string Maghrib {
-            get {
-                return ResourceManager.GetString("Maghrib", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to العشاء.
-        /// </summary>
-        internal static string Isha {
-            get {
-                return ResourceManager.GetString("Isha", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الصلاة القادمة.
-        /// </summary>
-        internal static string NextPrayer {
-            get {
-                return ResourceManager.GetString("NextPrayer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to التوقيت المحلي للمدينة.
-        /// </summary>
-        internal static string CityLocalTime {
-            get {
-                return ResourceManager.GetString("CityLocalTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تنبيهات الصلاة.
-        /// </summary>
-        internal static string PrayerNotifications {
-            get {
-                return ResourceManager.GetString("PrayerNotifications", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to طريقة الحساب.
-        /// </summary>
-        internal static string CalculationMethod {
-            get {
-                return ResourceManager.GetString("CalculationMethod", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to المذهب.
-        /// </summary>
-        internal static string Mathhab {
-            get {
-                return ResourceManager.GetString("Mathhab", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to جدول الأسبوع.
         /// </summary>
         internal static string WeeklySchedule {
@@ -1257,85 +1356,13 @@ namespace KhayratAlhaj.Resources.Localization {
                 return ResourceManager.GetString("WeeklySchedule", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to اليوم.
-        /// </summary>
-        internal static string TodaySchedule {
-            get {
-                return ResourceManager.GetString("TodaySchedule", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to عرض جدول الأسبوع.
-        /// </summary>
-        internal static string ShowWeeklySchedule {
-            get {
-                return ResourceManager.GetString("ShowWeeklySchedule", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to إخفاء جدول الأسبوع.
-        /// </summary>
-        internal static string HideWeeklySchedule {
-            get {
-                return ResourceManager.GetString("HideWeeklySchedule", resourceCulture);
-            }
-        }
         
         /// <summary>
-        ///   Looks up a localized string similar to ابحث عن مدينة....
+        ///   Looks up a localized string similar to 📍 موقعك.
         /// </summary>
-        internal static string SearchCity {
+        internal static string YourLocation {
             get {
-                return ResourceManager.GetString("SearchCity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to الإمساك.
-        /// </summary>
-        internal static string Imsaak {
-            get {
-                return ResourceManager.GetString("Imsaak", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to حان وقت صلاة {0}.
-        /// </summary>
-        internal static string PrayerTimeFor {
-            get {
-                return ResourceManager.GetString("PrayerTimeFor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 🕌 حان الآن وقت صلاة {0}.
-        /// </summary>
-        internal static string PrayerTimeNotifBody {
-            get {
-                return ResourceManager.GetString("PrayerTimeNotifBody", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تعديل التاريخ الهجري.
-        /// </summary>
-        internal static string HijriDateAdjustment {
-            get {
-                return ResourceManager.GetString("HijriDateAdjustment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to تعديل (−2 إلى +2 أيام) لمطابقة التقويم المحلي.
-        /// </summary>
-        internal static string HijriDateAdjustmentHint {
-            get {
-                return ResourceManager.GetString("HijriDateAdjustmentHint", resourceCulture);
+                return ResourceManager.GetString("YourLocation", resourceCulture);
             }
         }
     }

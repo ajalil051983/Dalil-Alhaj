@@ -36,8 +36,10 @@
                                IsVisible="True"
                                Info="OnMapInfo" />
             
-            <!-- Walking/Driving Route Toggle -->
-            <Border HorizontalOptions="Start"
+                <!-- Walking/Driving Route Toggle -->
+                <Border x:Name="RouteToggleContainer"
+                    IsVisible="False"
+                    HorizontalOptions="Start"
                     VerticalOptions="Start"
                     Margin="20"
                     StrokeShape="RoundRectangle 20"
@@ -47,27 +49,27 @@
                     Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=5, Offset='0,2'}">
                 <HorizontalStackLayout Spacing="4">
                     <Button x:Name="WalkingButton"
-                            Text="{x:Static res:AppResources.Walking}"
-                            Clicked="OnWalkingClicked"
-                            BackgroundColor="{AppThemeBinding Light=#3498DB, Dark=#2980B9}"
-                            TextColor="White"
-                            CornerRadius="16"
-                            HeightRequest="36"
-                            FontSize="12"
-                            FontAttributes="Bold"
-                            Padding="12,0" />
+                        Text="{x:Static res:AppResources.Walking}"
+                        Clicked="OnWalkingClicked"
+                        BackgroundColor="{AppThemeBinding Light=#3498DB, Dark=#2980B9}"
+                        TextColor="White"
+                        CornerRadius="16"
+                        HeightRequest="36"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        Padding="12,0" />
                     <Button x:Name="DrivingButton"
-                            Text="{x:Static res:AppResources.Driving}"
-                            Clicked="OnDrivingClicked"
-                            BackgroundColor="Transparent"
-                            TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#BDC3C7}"
-                            CornerRadius="16"
-                            HeightRequest="36"
-                            FontSize="12"
-                            FontAttributes="Bold"
-                            Padding="12,0" />
+                        Text="{x:Static res:AppResources.Driving}"
+                        Clicked="OnDrivingClicked"
+                        BackgroundColor="Transparent"
+                        TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#BDC3C7}"
+                        CornerRadius="16"
+                        HeightRequest="36"
+                        FontSize="12"
+                        FontAttributes="Bold"
+                        Padding="12,0" />
                 </HorizontalStackLayout>
-            </Border>
+                </Border>
 
             <!-- Route Info Overlay -->
             <Border x:Name="RouteInfoPanel"
@@ -121,37 +123,32 @@
                 </Grid>
             </Border>
 
-            <!-- My Location Button -->
-            <Button x:Name="MyLocationButton"
+                <!-- Floating action buttons -->
+                <VerticalStackLayout HorizontalOptions="End"
+                         VerticalOptions="End"
+                         Margin="20,20,20,80"
+                         Spacing="12">
+                <Button x:Name="MyLocationButton"
                     AutomationId="MyLocationButtonID"
-                    Text="📍"
+                    ImageSource="my_location_target.svg"
                     Clicked="OnMyLocationClicked"
-                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2C3E50}"
-                    TextColor="{AppThemeBinding Light=#2C3E50, Dark=#FFFFFF}"
+                    BackgroundColor="#FFFFFF"
                     CornerRadius="25"
                     HeightRequest="50"
                     WidthRequest="50"
-                    FontSize="22"
-                    HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="20,20,20,80"
+                    Padding="10"
                     Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,4'}" />
 
-            <!-- Share Location Button -->
-            <Button x:Name="ShareLocationButton"
-                    Text="{x:Static res:AppResources.ShareLocation}"
+                <Button x:Name="ShareLocationButton"
+                    ImageSource="share_location_icon.svg"
                     Clicked="OnShareLocationClicked"
-                    BackgroundColor="{AppThemeBinding Light=#2196F3, Dark=#1976D2}"
-                    TextColor="White"
+                    BackgroundColor="#FFFFFF"
                     CornerRadius="25"
                     HeightRequest="50"
-                    WidthRequest="180"
-                    FontSize="14"
-                    FontAttributes="Bold"
-                    HorizontalOptions="End"
-                    VerticalOptions="End"
-                    Margin="20"
+                    WidthRequest="50"
+                    Padding="10"
                     Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,4'}" />
+                </VerticalStackLayout>
 
             <!-- Location Info Popup Overlay -->
             <Border x:Name="LocationPopup"
@@ -202,14 +199,24 @@
                         </HorizontalStackLayout>
                     </HorizontalStackLayout>
 
-                    <Button x:Name="ViewGuideButton"
-                            Grid.Row="3" Grid.ColumnSpan="2"
+                        <Grid Grid.Row="3" Grid.ColumnSpan="2" ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button x:Name="ViewGuideButton"
+                            Grid.Column="0"
                             Text="{x:Static res:AppResources.ViewGuide}"
                             BackgroundColor="{AppThemeBinding Light=#27AE60, Dark=#2ECC71}"
                             TextColor="White"
                             CornerRadius="10"
                             HeightRequest="40"
                             Clicked="OnViewGuideClicked" />
+
+                        <Button x:Name="GetDirectionsButton"
+                            Grid.Column="1"
+                            BackgroundColor="{AppThemeBinding Light=#2980B9, Dark=#2471A3}"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="40"
+                            Clicked="OnGetDirectionsClicked" />
+                        </Grid>
 
                     <!-- Guide summary (shown after tapping View Guide) -->
                     <Label x:Name="GuideSummaryLabel"

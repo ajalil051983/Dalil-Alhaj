@@ -5,8 +5,6 @@ namespace KhayratAlhaj
 {
     public partial class App : Application
     {
-        private const string NotificationPermissionRequestedKey = "notification_permission_requested";
-
         public App()
         {
             InitializeComponent();
@@ -159,8 +157,7 @@ namespace KhayratAlhaj
         {
             try
             {
-                await RequestNotificationPermissionOnceAsync();
-
+                // Permission already requested in LoadingPage on first app startup
                 if (!Services.NotificationService.IsEnabled) return;
 
                 // Compute prayer times on background thread to avoid blocking UI
@@ -192,36 +189,7 @@ namespace KhayratAlhaj
             }
         }
 
-        /// <summary>
-        /// Ask for notification authorization only once after install.
-        /// Android 13+ shows runtime notification prompt on first request.
-        /// </summary>
-        private static async Task RequestNotificationPermissionOnceAsync()
-        {
-            if (Preferences.Get(NotificationPermissionRequestedKey, false))
-            {
-                return;
-            }
 
-            var requestCompleted = false;
-
-            try
-            {
-                var granted = await Services.NotificationService.RequestPermissionAsync();
-                requestCompleted = true;
-                System.Diagnostics.Debug.WriteLine($"[App] Notification permission first request result: {granted}");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[App] Notification permission request failed: {ex.Message}");
-            }
-
-            if (requestCompleted)
-            {
-                // Mark as requested even if denied/error to avoid repeatedly prompting.
-                Preferences.Set(NotificationPermissionRequestedKey, true);
-            }
-        }
 #if !DEBUG && ANDROID
         /// <summary>
         /// Runtime integrity checks to deter reverse engineering.

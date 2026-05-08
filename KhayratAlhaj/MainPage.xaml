@@ -34,7 +34,8 @@
                         VerticalOptions="Center" />
                 
                 <!-- App title (now visible) -->
-                <Label Grid.Column="1"
+                  <Label Grid.Column="1"
+                      x:Name="AppTitleLabel"
                        Text="{x:Static res:AppResources.AppTitle}"
                        FontSize="20"
                        FontAttributes="Bold"
@@ -72,7 +73,8 @@
                       ColumnSpacing="10"
                       RowDefinitions="Auto,Auto,Auto"
                       RowSpacing="10">
-                    <Button Grid.Column="0" Grid.Row="0"
+                        <Button Grid.Column="0" Grid.Row="0"
+                            x:Name="MapButton"
                             Clicked="OnMapClicked"
                             AutomationId="MapButtonID"
                             BackgroundColor="#E67E22"

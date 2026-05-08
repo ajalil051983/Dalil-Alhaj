@@ -15,12 +15,16 @@ namespace KhayratAlhaj.Pages
     public partial class MapPage : ContentPage
     {
         private ILayer? userLocationLayer;
+        private ImageStyle? _userLocationImageStyle;
+        private double _currentHeading;
         private ILayer? _routeLayer;
+        private ILayer? _userRouteLayer;
         private bool _isMapInitialized = false;
         private Microsoft.Maui.Devices.Sensors.Location? _userLocation;
         private string? _selectedLocationName;
         private string? _selectedLocationKey;
-        private string _routeProfile = "foot";
+        private (double Lat, double Lon, string Name)? _directionsTarget;
+        private string _userRouteProfile = "foot";
         private readonly Services.RoutingService _routingService = new();
 
         // Cached guide data for Read More navigation
@@ -65,11 +69,15 @@ namespace KhayratAlhaj.Pages
         {
             InitializeComponent();
             FlowDirection = Services.LocalizationService.GetFlowDirection();
+            GetDirectionsButton.Text = AppResources.GetDirections;
+            UpdateRouteToggleUI();
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            FlowDirection = Services.LocalizationService.GetFlowDirection();
+            GetDirectionsButton.Text = AppResources.GetDirections;
             
             if (!_isMapInitialized)
             {
@@ -92,6 +100,8 @@ namespace KhayratAlhaj.Pages
 
         private void Compass_ReadingChanged(object? sender, CompassChangedEventArgs e)
         {
+            _currentHeading = e.Reading.HeadingMagneticNorth;
+
             // Calculate Qibla bearing (approximate bearing from current location to Kaaba)
             // For simplicity, we use a fixed bearing if user location is unknown, 
             // or calculate it if we have the user's location.
@@ -110,6 +120,13 @@ namespace KhayratAlhaj.Pages
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 CompassNeedle.Rotation = rotation;
+
+                if (_userLocationImageStyle != null)
+                {
+                    // Keep the location icon aligned with device orientation.
+                    _userLocationImageStyle.SymbolRotation = _currentHeading;
+                    HajjMapControl?.Map?.Refresh();
+                }
             });
         }
 
@@ -243,6 +260,34 @@ namespace KhayratAlhaj.Pages
             };
         }
 
+        private MemoryLayer CreateUserRouteLayer(List<(double Lat, double Lon)> routeCoords, bool isDriving)
+        {
+            var coordinates = routeCoords
+                .Select(p => SphericalMercator.FromLonLat(p.Lon, p.Lat))
+                .Select(coord => new Coordinate(coord.x, coord.y))
+                .ToArray();
+
+            var lineString = new LineString(coordinates);
+            var feature = new GeometryFeature { Geometry = lineString };
+
+            feature.Styles.Add(new VectorStyle
+            {
+                Line = new Pen(
+                    Mapsui.Styles.Color.FromString(isDriving ? "#F39C12" : "#E91E63"), 5)
+                {
+                    PenStyle = isDriving ? PenStyle.Solid : PenStyle.Dash,
+                    PenStrokeCap = PenStrokeCap.Round
+                }
+            });
+
+            return new MemoryLayer
+            {
+                Name = "User Directions",
+                Features = new[] { feature },
+                Style = null
+            };
+        }
+
         private MemoryLayer CreatePinLayer()
         {
             // Define Hajj locations with colors and location keys for guide mapping
@@ -368,7 +413,7 @@ namespace KhayratAlhaj.Pages
             });
 
             // Pilgrim-style user marker with layered styles
-            AddFallbackPilgrimStyle(feature);
+            _userLocationImageStyle = AddFallbackPilgrimStyle(feature);
 
             // Create memory layer
             return new MemoryLayer
@@ -379,18 +424,22 @@ namespace KhayratAlhaj.Pages
             };
         }
 
-        private static void AddFallbackPilgrimStyle(PointFeature feature)
+        private ImageStyle AddFallbackPilgrimStyle(PointFeature feature)
         {
-            // Pilgrim icon using Mapsui v5 ImageStyle with embedded SVG resource
-            feature.Styles.Add(new ImageStyle
+            // Compass icon using Mapsui v5 ImageStyle with embedded SVG resource.
+            var imageStyle = new ImageStyle
             {
                 Image = new Mapsui.Styles.Image
                 {
                     Source = "embedded://KhayratAlhaj.Resources.Images.pilgrim_location.svg",
                 },
-                SymbolScale = 0.8,
-                RelativeOffset = new RelativeOffset(0.0, 0.35),
-            });
+                SymbolScale = 0.9,
+                RelativeOffset = new RelativeOffset(0.0, 0.0),
+                SymbolRotation = _currentHeading,
+            };
+
+            feature.Styles.Add(imageStyle);
+            return imageStyle;
         }
 
         protected override void OnDisappearing()
@@ -449,6 +498,7 @@ namespace KhayratAlhaj.Pages
                             {
                                 var pinLat = Convert.ToDouble(feature["lat"]);
                                 var pinLon = Convert.ToDouble(feature["lon"]);
+                                _directionsTarget = (pinLat, pinLon, name);
                                 
                                 var distanceKm = Microsoft.Maui.Devices.Sensors.Location.CalculateDistance(
                                     _userLocation.Latitude, _userLocation.Longitude,
@@ -477,6 +527,13 @@ namespace KhayratAlhaj.Pages
                             }
                             else
                             {
+                                if (feature["lat"] != null && feature["lon"] != null)
+                                {
+                                    var pinLat = Convert.ToDouble(feature["lat"]);
+                                    var pinLon = Convert.ToDouble(feature["lon"]);
+                                    _directionsTarget = (pinLat, pinLon, name);
+                                }
+
                                 PopupDistance.Text = "--";
                                 PopupETA.Text = "--";
                             }
@@ -604,9 +661,8 @@ namespace KhayratAlhaj.Pages
                     return;
                 }
 
-                // Show loading indicator
+                // Keep icon-only button state stable while processing.
                 ShareLocationButton.IsEnabled = false;
-                ShareLocationButton.Text = AppResources.GettingLocation;
 
                 // Get current location
                 var location = await Geolocation.GetLocationAsync(new GeolocationRequest
@@ -663,7 +719,6 @@ namespace KhayratAlhaj.Pages
             {
                 // Restore button state
                 ShareLocationButton.IsEnabled = true;
-                ShareLocationButton.Text = AppResources.ShareLocation;
             }
         }
 
@@ -671,23 +726,31 @@ namespace KhayratAlhaj.Pages
 
         private async void OnWalkingClicked(object? sender, EventArgs e)
         {
-            if (_routeProfile == "foot") return;
-            _routeProfile = "foot";
+            if (_userRouteProfile == "foot") return;
+            _userRouteProfile = "foot";
             UpdateRouteToggleUI();
-            await LoadOsrmRouteAsync();
+
+            if (_directionsTarget != null)
+            {
+                await LoadUserDirectionsAsync();
+            }
         }
 
         private async void OnDrivingClicked(object? sender, EventArgs e)
         {
-            if (_routeProfile == "car") return;
-            _routeProfile = "car";
+            if (_userRouteProfile == "car") return;
+            _userRouteProfile = "car";
             UpdateRouteToggleUI();
-            await LoadOsrmRouteAsync();
+
+            if (_directionsTarget != null)
+            {
+                await LoadUserDirectionsAsync();
+            }
         }
 
         private void UpdateRouteToggleUI()
         {
-            var isWalking = _routeProfile == "foot";
+            var isWalking = _userRouteProfile == "foot";
             WalkingButton.BackgroundColor = isWalking
                 ? Microsoft.Maui.Graphics.Color.FromArgb("#3498DB")
                 : Colors.Transparent;
@@ -706,7 +769,7 @@ namespace KhayratAlhaj.Pages
         {
             try
             {
-                var result = await _routingService.GetRouteAsync(HajjWaypoints, _routeProfile);
+                var result = await _routingService.GetRouteAsync(HajjWaypoints, "foot");
 
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
@@ -721,12 +784,12 @@ namespace KhayratAlhaj.Pages
                         if (result != null && result.Coordinates.Count > 1)
                         {
                             // Create route layer from OSRM geometry
-                            _routeLayer = CreateOsrmRouteLayer(result.Coordinates, _routeProfile == "car");
+                            _routeLayer = CreateOsrmRouteLayer(result.Coordinates, false);
                             HajjMapControl?.Map?.Layers.Insert(1, _routeLayer); // Insert above tile layer but below pins
 
                             // Show route info
                             RouteDistanceLabel.Text = result.FormattedDistance;
-                            RouteETALabel.Text = $"{result.FormattedDuration} {(_routeProfile == "foot" ? AppResources.Walking : AppResources.Driving)}";
+                            RouteETALabel.Text = $"{result.FormattedDuration} {AppResources.Walking}";
                             RouteInfoPanel.IsVisible = true;
                         }
                         else
@@ -767,6 +830,134 @@ namespace KhayratAlhaj.Pages
                     RouteInfoPanel.IsVisible = false;
                     HajjMapControl?.Map?.Refresh();
                 });
+            }
+        }
+
+        private async void OnGetDirectionsClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                GetDirectionsButton.IsEnabled = false;
+
+                if (_directionsTarget == null)
+                    return;
+
+                if (_userLocation == null)
+                {
+                    await RequestLocationPermissionAndShowUserLocationAsync();
+                }
+
+                if (_userLocation == null)
+                {
+                    await DisplayAlertAsync(
+                        AppResources.UnableToGetLocation,
+                        AppResources.LocationPermissionRequired,
+                        AppResources.OK);
+                    return;
+                }
+
+                RouteToggleContainer.IsVisible = true;
+                await LoadUserDirectionsAsync();
+            }
+            finally
+            {
+                GetDirectionsButton.IsEnabled = true;
+            }
+        }
+
+        private async Task LoadUserDirectionsAsync()
+        {
+            if (_userLocation == null || _directionsTarget == null)
+                return;
+
+            try
+            {
+                var waypoints = new List<(double Lat, double Lon)>
+                {
+                    (_userLocation.Latitude, _userLocation.Longitude),
+                    (_directionsTarget.Value.Lat, _directionsTarget.Value.Lon)
+                };
+
+                var result = await _routingService.GetRouteAsync(waypoints, _userRouteProfile);
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    try
+                    {
+                        if (_userRouteLayer != null && HajjMapControl?.Map?.Layers.Contains(_userRouteLayer) == true)
+                        {
+                            HajjMapControl.Map.Layers.Remove(_userRouteLayer);
+                        }
+
+                        if (result != null && result.Coordinates.Count > 1)
+                        {
+                            _userRouteLayer = CreateUserRouteLayer(result.Coordinates, _userRouteProfile == "car");
+                            HajjMapControl?.Map?.Layers.Insert(2, _userRouteLayer);
+
+                            RouteDistanceLabel.Text = result.FormattedDistance;
+                            RouteETALabel.Text = $"{result.FormattedDuration} {(_userRouteProfile == "foot" ? AppResources.Walking : AppResources.Driving)}";
+                            RouteInfoPanel.IsVisible = true;
+
+                            CenterMapOnRoute(result.Coordinates);
+                        }
+                        else
+                        {
+                            await DisplayAlertAsync(
+                                AppResources.RouteInfo,
+                                AppResources.OfflineRouteWarning,
+                                AppResources.OK);
+                        }
+
+                        HajjMapControl?.Map?.Refresh();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error updating user route layer: {ex.Message}");
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"User directions loading error: {ex.Message}");
+            }
+        }
+
+        private void CenterMapOnRoute(List<(double Lat, double Lon)> routeCoords)
+        {
+            if (HajjMapControl?.Map?.Navigator == null || routeCoords.Count == 0)
+                return;
+
+            try
+            {
+                var minLat = routeCoords.Min(p => p.Lat);
+                var maxLat = routeCoords.Max(p => p.Lat);
+                var minLon = routeCoords.Min(p => p.Lon);
+                var maxLon = routeCoords.Max(p => p.Lon);
+
+                var centerLat = (minLat + maxLat) / 2;
+                var centerLon = (minLon + maxLon) / 2;
+                var center = SphericalMercator.FromLonLat(centerLon, centerLat);
+
+                var maxDistanceKm = Microsoft.Maui.Devices.Sensors.Location.CalculateDistance(
+                    minLat, minLon, maxLat, maxLon, DistanceUnits.Kilometers);
+
+                var zoomLevel = maxDistanceKm switch
+                {
+                    < 0.5 => 17,
+                    < 1.5 => 15,
+                    < 4 => 14,
+                    < 10 => 12,
+                    < 25 => 11,
+                    < 60 => 10,
+                    _ => 9
+                };
+
+                HajjMapControl.Map.Navigator.CenterOn(new MPoint(center.x, center.y));
+                HajjMapControl.Map.Navigator.ZoomTo(zoomLevel);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error centering map on route: {ex.Message}");
             }
         }
 

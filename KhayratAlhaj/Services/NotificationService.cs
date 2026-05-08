@@ -129,31 +129,21 @@ namespace KhayratAlhaj.Services
         /// <summary>
         /// Request notification permission (required on Android 13+).
         /// Returns true if granted.
+        /// Must be called from the main thread or will marshal to main thread.
         /// </summary>
         public static async Task<bool> RequestPermissionAsync()
         {
             try
             {
+                // Ensure we're on the main thread where system dialogs can display
                 if (MainThread.IsMainThread)
                 {
                     return await LocalNotificationCenter.Current.RequestNotificationPermission();
                 }
 
-                var tcs = new TaskCompletionSource<bool>();
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    try
-                    {
-                        var result = await LocalNotificationCenter.Current.RequestNotificationPermission();
-                        tcs.TrySetResult(result);
-                    }
-                    catch
-                    {
-                        tcs.TrySetResult(false);
-                    }
-                });
-
-                return await tcs.Task.ConfigureAwait(false);
+                // Marshal to main thread and wait for result
+                return await MainThread.InvokeOnMainThreadAsync(async () =>
+                    await LocalNotificationCenter.Current.RequestNotificationPermission());
             }
             catch (Exception ex)
             {
@@ -185,7 +175,7 @@ namespace KhayratAlhaj.Services
 
             // --- 5-minute reminder ---
             var reminderTime = arrivalTime.AddMinutes(-ReminderMinutesBefore);
-            if (reminderTime > now)
+            if (reminderTime > now && prayerType != PrayerTimeType.Shurooq)
             {
                 var reminderId = BaseReminderNotificationId + (dayOffset * 10) + (int)prayerType;
                 var (reminderTitle, reminderBody) = GetReminderContent(prayerType, prayerTime);
@@ -223,7 +213,7 @@ namespace KhayratAlhaj.Services
             }
 
             // --- Arrival (adhan) notification ---
-            if (arrivalTime > now)
+            if (arrivalTime > now && prayerType != PrayerTimeType.Shurooq)
             {
                 var arrivalId = BaseNotificationId + (dayOffset * 10) + (int)prayerType;
                 var (arrivalTitle, arrivalBody) = GetArrivalContent(prayerType, prayerTime);

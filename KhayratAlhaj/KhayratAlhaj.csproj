@@ -54,6 +54,7 @@
 		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 		<AndroidUseFastDeployment>false</AndroidUseFastDeployment>
 		<AndroidEnableMarshalMethods>false</AndroidEnableMarshalMethods>
+		<SatelliteResourceLanguages>ar;en;fr</SatelliteResourceLanguages>
 		<DebugSymbols>false</DebugSymbols>
 		<AndroidIncludeDebugSymbols>false</AndroidIncludeDebugSymbols>
 		<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
@@ -84,7 +85,9 @@
 		<MauiSplashScreen Include="Resources\AppIcon\splash.svg" Color="#2C3E50" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" Exclude="Resources\Images\pilgrim_location.svg" />
+		<MauiImage Include="Resources\Images\*" Exclude="Resources\Images\pilgrim_location.svg;Resources\Images\tawaf.png;Resources\Images\sa3y.png" />
+		<MauiAsset Include="Resources\Images\tawaf.png" LogicalName="tawaf.png" />
+		<MauiAsset Include="Resources\Images\sa3y.png" LogicalName="sa3y.png" />
 		<!-- Pilgrim icon as embedded resource for Mapsui ImageStyle -->
 		<EmbeddedResource Include="Resources\Images\pilgrim_location.svg" />
 		
@@ -103,6 +106,10 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' AND '$(Configuration)' == 'ProguardOnly'">
+	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' AND '$(Configuration)' == 'Release'">
 	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
 	</ItemGroup>
 
@@ -150,5 +157,37 @@
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
 		<PackageReference Include="System.Drawing.Common" Version="10.0.4" />
 	</ItemGroup>
+
+	<!--
+		Fix for XA4304: When AndroidEnableProguard=false (our required setting to prevent MAUI
+		runtime class stripping), the build system still expects these 3 intermediate ProGuard
+		config files to exist but never generates them. Creating empty placeholders makes the
+		files exist so the SDK validation passes cleanly without suppressing the warning code.
+	-->
+	<!--
+		AfterTargets="PrepareForBuild" runs once per-RID sub-build (when RuntimeIdentifier is set)
+		AND once for the outer build (when RuntimeIdentifier is empty). We create placeholders for
+		all known Android RIDs unconditionally so the XA4304 validation always finds them.
+	-->
+	<Target Name="_CreateMissingProguardPlaceholders"
+	        AfterTargets="PrepareForBuild"
+	        Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
+		<PropertyGroup>
+			<_ProguardDir>$(IntermediateOutputPath)proguard\</_ProguardDir>
+		</PropertyGroup>
+		<MakeDir Directories="$(_ProguardDir);$(IntermediateOutputPath)android-arm64\proguard\;$(IntermediateOutputPath)android-x64\proguard\" />
+		<WriteLinesToFile File="$(_ProguardDir)proguard_xamarin.cfg"
+		                  Lines="# placeholder — ProGuard disabled"
+		                  Overwrite="false" />
+		<WriteLinesToFile File="$(_ProguardDir)proguard_project_primary.cfg"
+		                  Lines="# placeholder — ProGuard disabled"
+		                  Overwrite="false" />
+		<WriteLinesToFile File="$(IntermediateOutputPath)android-arm64\proguard\proguard_project_references.cfg"
+		                  Lines="# placeholder — ProGuard disabled"
+		                  Overwrite="false" />
+		<WriteLinesToFile File="$(IntermediateOutputPath)android-x64\proguard\proguard_project_references.cfg"
+		                  Lines="# placeholder — ProGuard disabled"
+		                  Overwrite="false" />
+	</Target>
 
 </Project>

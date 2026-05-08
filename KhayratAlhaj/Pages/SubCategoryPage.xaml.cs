@@ -13,6 +13,7 @@ namespace KhayratAlhaj.Pages
     {
         private readonly Category category;
         private readonly DataService dataService;
+        private string? lastLoadedLanguage;
         private bool isApplyingTheme = false;
         private AppTheme? lastAppliedTheme = null;
 
@@ -22,6 +23,7 @@ namespace KhayratAlhaj.Pages
             FlowDirection = LocalizationService.GetFlowDirection();
             this.category = category;
             this.dataService = dataService;
+            lastLoadedLanguage = LocalizationService.GetCurrentLanguage();
             
             Title = category.Name;
             LoadSubCategories();
@@ -30,6 +32,16 @@ namespace KhayratAlhaj.Pages
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            FlowDirection = LocalizationService.GetFlowDirection();
+
+            var currentLanguage = LocalizationService.GetCurrentLanguage();
+            if (lastLoadedLanguage != currentLanguage)
+            {
+                lastLoadedLanguage = currentLanguage;
+                Title = category.Name;
+                LoadSubCategories();
+            }
+
             ApplyThemeColors();
             
             WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(this, async (recipient, message) =>

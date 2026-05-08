@@ -141,6 +141,9 @@
   <data name="ChooseLanguage" xml:space="preserve">
     <value>اختر اللغة</value>
   </data>
+  <data name="NavChevron" xml:space="preserve">
+    <value>›</value>
+  </data>
   <data name="Arabic" xml:space="preserve">
     <value>العربية</value>
   </data>
@@ -368,6 +371,9 @@
   </data>
   <data name="ViewGuide" xml:space="preserve">
     <value>📖 عرض الدليل</value>
+  </data>
+  <data name="GetDirections" xml:space="preserve">
+    <value>🧭 اعرض المسار</value>
   </data>
   <data name="GettingLocation" xml:space="preserve">
     <value>📍 جارٍ تحديد الموقع...</value>

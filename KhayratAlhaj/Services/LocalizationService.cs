@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using KhayratAlhaj.Resources.Localization;
 
 namespace KhayratAlhaj.Services
 {
@@ -14,6 +15,7 @@ namespace KhayratAlhaj.Services
             CultureInfo.CurrentUICulture = culture;
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
+            AppResources.Culture = culture;
         }
 
         public static string GetCurrentLanguage()

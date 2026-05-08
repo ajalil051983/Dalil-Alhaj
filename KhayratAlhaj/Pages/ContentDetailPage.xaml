@@ -151,11 +151,11 @@
                              Color="#3498DB" 
                              HorizontalOptions="Fill" />
 
-                    <Label x:Name="ContentText" 
-                           FontSize="17"
-                           LineHeight="1.6"
-                           LineBreakMode="WordWrap"
-                           TextColor="{AppThemeBinding Light=#2C3E50, Dark=#F5F5F5}" />
+                    <WebView x:Name="ContentWebView"
+                             HeightRequest="1"
+                             Navigated="OnContentWebViewNavigated"
+                             BackgroundColor="Transparent"
+                             HorizontalOptions="Fill" />
                 </VerticalStackLayout>
             </Border>
 

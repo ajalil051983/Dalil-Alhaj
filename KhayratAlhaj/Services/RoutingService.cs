@@ -15,13 +15,18 @@ namespace KhayratAlhaj.Services
             Timeout = TimeSpan.FromSeconds(15)
         };
 
-        private const string OsrmBaseUrl = "https://router.project-osrm.org/route/v1";
+        // The official OSRM demo server (router.project-osrm.org) only serves the "car"
+        // profile — foot/bike requests there silently return car routing. FOSSGIS hosts
+        // dedicated profile-specific endpoints that return real walking / biking geometry.
+        private const string OsrmCarBaseUrl = "https://router.project-osrm.org/route/v1/driving";
+        private const string OsrmFootBaseUrl = "https://routing.openstreetmap.de/routed-foot/route/v1/foot";
+        private const string OsrmBikeBaseUrl = "https://routing.openstreetmap.de/routed-bike/route/v1/bike";
 
         /// <summary>
         /// Fetches a route from OSRM for the given waypoints.
         /// </summary>
         /// <param name="waypoints">List of (Latitude, Longitude) waypoints in order.</param>
-        /// <param name="profile">"foot" for walking, "car" for driving.</param>
+        /// <param name="profile">"foot" for walking, "car"/"driving" for driving, "bike" for cycling.</param>
         /// <returns>A RouteResult with geometry coordinates, total distance, and duration. Null if the request fails.</returns>
         public async Task<RouteResult?> GetRouteAsync(List<(double Lat, double Lon)> waypoints, string profile = "foot")
         {
@@ -29,7 +34,13 @@ namespace KhayratAlhaj.Services
             {
                 // OSRM expects coordinates as lon,lat pairs separated by semicolons
                 var coordString = string.Join(";", waypoints.Select(w => $"{w.Lon:F6},{w.Lat:F6}"));
-                var url = $"{OsrmBaseUrl}/{profile}/{coordString}?overview=full&geometries=geojson";
+                var baseUrl = profile switch
+                {
+                    "foot" or "walking" => OsrmFootBaseUrl,
+                    "bike" or "cycling" => OsrmBikeBaseUrl,
+                    _ => OsrmCarBaseUrl,
+                };
+                var url = $"{baseUrl}/{coordString}?overview=full&geometries=geojson";
 
                 var response = await _httpClient.GetAsync(url);
                 if (!response.IsSuccessStatusCode)

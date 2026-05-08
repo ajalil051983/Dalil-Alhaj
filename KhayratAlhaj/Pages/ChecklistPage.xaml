@@ -74,7 +74,7 @@
                     <Border.Shadow>
                         <Shadow Brush="Black" Opacity="0.08" Radius="4" Offset="0,1" />
                     </Border.Shadow>
-                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
                         <CheckBox IsChecked="{Binding IsCompleted}"
                                   AutomationId="ChecklistItemCheckBox"
                                   CheckedChanged="OnCheckChanged"
@@ -93,6 +93,22 @@
                                    LineBreakMode="WordWrap"
                                    TextColor="{AppThemeBinding Light={StaticResource DescColorLight}, Dark={StaticResource DescColorDark}}" />
                         </VerticalStackLayout>
+
+                            <!-- Circular chevron: direction driven by language resource (› LTR, ‹ RTL). -->
+                            <Button Text="{x:Static res:AppResources.NavChevron}"
+                                    Clicked="OnNavigateClicked"
+                                    BackgroundColor="#27AE60"
+                                    TextColor="White"
+                                    FontSize="26"
+                                    FontAttributes="Bold"
+                                    CornerRadius="22"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    Padding="0"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding HasNavigationTarget}"
+                                    Grid.Column="2" />
                     </Grid>
                 </Border>
             </DataTemplate>

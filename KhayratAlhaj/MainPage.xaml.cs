@@ -30,9 +30,7 @@ namespace KhayratAlhaj
             {
                 InitializeComponent();
 
-                // Set button text with emoji prefixes (avoids XC0025 compiled binding warnings)
-                PrayerTimesButton.Text = $"🕌 {KhayratAlhaj.Resources.Localization.AppResources.PrayerTimes}";
-                FavoritesButton.Text = $"⭐ {KhayratAlhaj.Resources.Localization.AppResources.Favorites}";
+                RefreshStaticTexts();
 
                 // Set flow direction based on current language
                 FlowDirection = LocalizationService.GetFlowDirection();
@@ -77,6 +75,7 @@ namespace KhayratAlhaj
                 // Update flow direction in case language changed
                 FlowDirection = LocalizationService.GetFlowDirection();
                 System.Diagnostics.Debug.WriteLine($"MainPage.OnAppearing: FlowDirection set to {FlowDirection}");
+                RefreshStaticTexts();
                 
                 // Subscribe to theme changes
                 WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(this, async (recipient, message) =>
@@ -112,6 +111,16 @@ namespace KhayratAlhaj
                 System.Diagnostics.Debug.WriteLine($"Error in MainPage.OnAppearing: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
             }
+        }
+
+        private void RefreshStaticTexts()
+        {
+            AppTitleLabel.Text = KhayratAlhaj.Resources.Localization.AppResources.AppTitle;
+            SearchBar.Placeholder = KhayratAlhaj.Resources.Localization.AppResources.SearchPrompt;
+            MapButton.Text = KhayratAlhaj.Resources.Localization.AppResources.Map;
+            PrayerTimesButton.Text = $"🕌 {KhayratAlhaj.Resources.Localization.AppResources.PrayerTimes}";
+            FavoritesButton.Text = $"⭐ {KhayratAlhaj.Resources.Localization.AppResources.Favorites}";
+            ChooseTopicLabel.Text = KhayratAlhaj.Resources.Localization.AppResources.ChooseTopic;
         }
 
         private void UpdateChecklistProgress()
@@ -253,7 +262,7 @@ namespace KhayratAlhaj
 
         private async void OnChecklistClicked(object? sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ChecklistPage());
+            await Navigation.PushAsync(new ChecklistPage(dataService));
         }
 
         private async void OnFavoritesClicked(object? sender, EventArgs e)

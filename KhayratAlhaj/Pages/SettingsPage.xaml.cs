@@ -270,70 +270,8 @@ namespace KhayratAlhaj.Pages
                         KhayratAlhaj.Resources.Localization.AppResources.OK
                     );
                     
-                    System.Diagnostics.Debug.WriteLine("Alert dismissed, restarting application...");
-                    
-                    // Force complete application restart
-                    if (Application.Current != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Restarting application to apply language change...");
-                        
-#if ANDROID
-                        try
-                        {
-                            // On Android, restart the app automatically
-                            var context = Android.App.Application.Context;
-                            var packageManager = context.PackageManager;
-                            var intent = packageManager?.GetLaunchIntentForPackage(context.PackageName!);
-                            
-                            if (intent != null)
-                            {
-                                intent.AddFlags(Android.Content.ActivityFlags.ClearTop);
-                                intent.AddFlags(Android.Content.ActivityFlags.NewTask);
-                                intent.AddFlags(Android.Content.ActivityFlags.ClearTask);
-                                
-                                System.Diagnostics.Debug.WriteLine("Starting new activity with launch intent...");
-                                
-                                // Start the new activity first
-                                context.StartActivity(intent);
-                                
-                                // Small delay to let the intent process
-                                await Task.Delay(100);
-                                
-                                System.Diagnostics.Debug.WriteLine("Killing current process...");
-                                // Kill the process to force complete restart
-                                Java.Lang.JavaSystem.Exit(0);
-                            }
-                            else
-                            {
-                                System.Diagnostics.Debug.WriteLine("ERROR: Could not get launch intent!");
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"ERROR restarting app: {ex.Message}");
-                        }
-#elif IOS || MACCATALYST
-                        // On iOS/MacCatalyst, exit the app (user must reopen manually)
-                        System.Environment.Exit(0);
-#elif WINDOWS
-                        // On Windows, restart the application
-                        System.Diagnostics.Process.Start(System.Environment.ProcessPath!);
-                        System.Environment.Exit(0);
-#else
-                        // Fallback: recreate AppShell (may not refresh all resources)
-                        if (Application.Current.Windows.Count > 0)
-                        {
-                            var newShell = new AppShell();
-                            System.Diagnostics.Debug.WriteLine("New AppShell created, setting as main page...");
-                            Application.Current.Windows[0].Page = newShell;
-                            System.Diagnostics.Debug.WriteLine("AppShell set successfully!");
-                        }
-#endif
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("ERROR: Application.Current is null!");
-                    }
+                    System.Diagnostics.Debug.WriteLine("Alert dismissed, performing in-app restart...");
+                    RestartApplicationInPlace();
                 }
                 catch (Exception ex)
                 {
@@ -350,6 +288,27 @@ namespace KhayratAlhaj.Pages
                         System.Diagnostics.Debug.WriteLine($"Error navigating back: {navEx.Message}");
                     }
                 }
+            }
+        }
+
+        private static void RestartApplicationInPlace()
+        {
+            if (Application.Current == null || Application.Current.Windows.Count == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR: No active window available for in-app restart.");
+                return;
+            }
+
+            try
+            {
+                var window = Application.Current.Windows[0];
+                window.FlowDirection = LocalizationService.GetFlowDirection();
+                window.Page = new LoadingPage();
+                System.Diagnostics.Debug.WriteLine("In-app restart completed by resetting root page to LoadingPage.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ERROR during in-app restart: {ex.Message}");
             }
         }
 
