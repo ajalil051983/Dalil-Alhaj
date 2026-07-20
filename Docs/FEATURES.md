@@ -1,5 +1,5 @@
-# زاد الحاج - ميزات التطبيق
-## Zad Alhaj App - Features Documentation
+# خيرات الحاج - ميزات التطبيق
+## Khayrat Alhaj App - Features Documentation
 
 ### 📱 نظرة عامة / Overview
 تطبيق شامل لإرشاد الحجاج باللهجة المغربية (الدارجة)، يوفر دليل كامل لأداء مناسك الحج وفق المذهب المالكي.
@@ -110,7 +110,7 @@ MainPage (6 Categories) → SubCategoryPage (4 Subcategories) → ContentDetailP
 **Audio integration** for selected content:
 
 **Features:**
-- 🎵 Audio player appears for content with `hasAudio: true` flag
+- 🎵 Audio player appears for content with the current language audio flag (`hasAudioAr`, `hasAudioEn`, `hasAudioFr`)
 - ▶️ Play button (تشغيل)
 - ⏸️ Pause button (إيقاف)
 - Clean blue UI integrated with content
@@ -137,7 +137,7 @@ All 24 subcategories are flagged for future audio content.
 - Includes:
   - Subcategory title
   - Full content
-  - App attribution: "من تطبيق: زاد الحاج"
+  - App attribution: "من تطبيق: خيرات الحاج"
 - Works with: WhatsApp, Email, SMS, etc.
 
 ---
@@ -161,7 +161,7 @@ Three size options:
 - Persistent setting
 
 #### ℹ️ معلومات التطبيق / App Info:
-- App name: زاد الحاج
+- App name: خيرات الحاج
 - Version: 1.0.0
 - Developer: تطبيق إرشادي شامل للحجاج
 
@@ -206,7 +206,7 @@ Four prominent buttons in 2x2 grid:
 ### Architecture:
 - **MVVM-lite pattern**
 - **Service layer**: DataService, DatabaseService (new), FavoritesService
-- **SQLite data storage**: `ZadAlhaj.db3` (seeded from JSON on first launch)
+- **SQLite data storage**: `KhayratAlhaj.db3` (seeded from JSON on first launch)
 - **JSON bundles** (`categories.json`, `categories-en.json`, `categories-fr.json`): used only for first-run seeding
 - **Persistent settings**: Preferences API
 
@@ -214,7 +214,7 @@ Four prominent buttons in 2x2 grid:
 
 ## 📂 هيكل البيانات / Data Structure
 
-### SQLite Database (`ZadAlhaj.db3`):
+### SQLite Database (`KhayratAlhaj.db3`):
 
 Data is stored in a local SQLite database with two tables:
 
@@ -226,7 +226,7 @@ Id | NameAr | NameEn | NameFr | Icon | Color
 **SubCategories table:**
 ```sql
 Id | CategoryId | NameAr | NameEn | NameFr | Icon
-   | ContentAr  | ContentEn | ContentFr | HasAudio
+  | ContentAr  | ContentEn | ContentFr | HasAudioAr | HasAudioEn | HasAudioFr
 ```
 
 > All three language translations are stored in a single row.  

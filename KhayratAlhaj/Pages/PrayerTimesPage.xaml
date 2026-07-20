@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:KhayratAlhaj.Resources.Localization"
+             xmlns:local="clr-namespace:KhayratAlhaj.Pages"
+             xmlns:prayerModels="clr-namespace:KhayratAlhaj.Models.PrayerTimes"
+             x:Class="KhayratAlhaj.Pages.PrayerTimesPage"
+             Title="{x:Static res:AppResources.PrayerTimes}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}"
+             Shell.NavBarIsVisible="True">
+
+    <Grid RowDefinitions="Auto,*" x:Name="PageGrid">
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay"
+              Grid.RowSpan="2"
+              ZIndex="10"
+              AutomationId="LoadingOverlayID"
+              BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}"
+              IsVisible="True">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="16">
+                <ActivityIndicator IsRunning="True"
+                                   Color="#1ABC9C"
+                                   WidthRequest="50"
+                                   HeightRequest="50" />
+                <Label Text="🕌"
+                       FontSize="40"
+                       HorizontalOptions="Center" />
+                <Label x:Name="LoadingLabel"
+                       Text="{x:Static res:AppResources.Loading}"
+                       FontSize="16"
+                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Background="#1ABC9C"
+                StrokeShape="RoundRectangle 0,0,15,15"
+                StrokeThickness="0"
+                Padding="20,15">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Label Grid.Column="0"
+                       Text="🕌"
+                       FontSize="28"
+                       VerticalOptions="Center" />
+                <Label Grid.Column="1"
+                       x:Name="HeaderLabel"
+                       Text="{x:Static res:AppResources.PrayerTimes}"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center" />
+                <!-- Location button -->
+                <Label Grid.Column="2"
+                       x:Name="LocationButton"
+                       AutomationId="LocationButtonID"
+                       Text="📍"
+                       FontSize="24"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center">
+                    <Label.Shadow>
+                        <Shadow Brush="White" Offset="0,2" Radius="6" Opacity="0.6" />
+                    </Label.Shadow>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUseCurrentLocationClicked" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Row="1" x:Name="MainScrollView">
+            <VerticalStackLayout Padding="15" Spacing="12">
+
+                <!-- Location & Search Section (toggled by location button) -->
+                <Border x:Name="SearchSection"
+                        AutomationId="SearchSectionID"
+                        IsVisible="False"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="10"
+                        Background="{AppThemeBinding Light={StaticResource InputBackgroundColorLight}, Dark={StaticResource InputBackgroundColorDark}}"
+                        Shadow="5,5,10,Black">
+                    <VerticalStackLayout Spacing="8">
+                        <SearchBar x:Name="CitySearchBar"
+                                   AutomationId="CitySearchBarID"
+                                   Placeholder="{x:Static res:AppResources.SearchCity}"
+                                   BackgroundColor="Transparent"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                   PlaceholderColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                   TextChanged="OnCitySearchTextChanged"
+                                   SearchButtonPressed="OnCitySearchPressed" />
+                        <CollectionView x:Name="CityResults"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnCitySelected"
+                                        HeightRequest="200"
+                                        IsVisible="False">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="prayerModels:LocationEntry">
+                                    <Grid Padding="10,8" ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0"
+                                               Text="{Binding Name}"
+                                               FontSize="16"
+                                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                               VerticalOptions="Center" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding CountryCode}"
+                                               FontSize="14"
+                                               TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                               VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Current Location Display -->
+                <Border StrokeShape="RoundRectangle 10"
+                        Padding="12"
+                        Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}">
+                    <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                        <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLocationDisplayClicked" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <Label Text="📍" FontSize="16" VerticalOptions="Center" />
+                            <Label x:Name="CityNameLabel"
+                                   AutomationId="CityNameLabelID"
+                                   Text="..."
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                   VerticalOptions="Center" />
+                            <Label x:Name="CountryLabel"
+                                   Text=""
+                                   FontSize="14"
+                                   TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                   VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+
+                        <Label x:Name="LocationModeLabel"
+                               AutomationId="LocationModeLabelID"
+                               Text=""
+                               FontSize="12"
+                               HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- City Local Time Card (shown only when city timezone differs from device) -->
+                <Border x:Name="CityTimeBorder"
+                        IsVisible="False"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12"
+                        Background="#0E8C6E">
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="🕐"
+                               FontSize="18"
+                               VerticalOptions="Center"
+                               TextColor="White" />
+                        <Label x:Name="CityLocalTimePrefixLabel"
+                               Text=""
+                               FontSize="13"
+                               TextColor="White"
+                               Opacity="0.85"
+                               VerticalOptions="Center" />
+                        <Label x:Name="CityTimeLabel"
+                               Text="--:--:--"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               VerticalOptions="Center" />
+                        <Label x:Name="CityUtcOffsetLabel"
+                               Text=""
+                               FontSize="12"
+                               TextColor="White"
+                               Opacity="0.7"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Today's Date Card -->
+                <Border StrokeShape="RoundRectangle 10"
+                        Padding="12"
+                        Background="#1ABC9C">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label x:Name="DateLabel"
+                               AutomationId="DateLabelID"
+                               Text=""
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="HijriDateLabel"
+                               AutomationId="HijriDateLabelID"
+                               Text=""
+                               FontSize="14"
+                               TextColor="White"
+                               Opacity="0.9"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Next Prayer Countdown -->
+                <Border x:Name="CountdownBorder"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="15"
+                        Background="{AppThemeBinding Light={StaticResource SurfaceBackgroundColorLight}, Dark={StaticResource SurfaceBackgroundColorDark}}">
+                    <VerticalStackLayout Spacing="4" HorizontalOptions="Center">
+                        <Label x:Name="NextPrayerLabel"
+                               Text="{x:Static res:AppResources.NextPrayer}"
+                               FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="NextPrayerNameLabel"
+                               AutomationId="NextPrayerNameLabelID"
+                               Text="..."
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                               HorizontalOptions="Center" />
+                        <Label x:Name="CountdownLabel"
+                               AutomationId="CountdownLabelID"
+                               Text="--:--"
+                               FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="#1ABC9C"
+                               HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- View Switcher: Today / Weekly -->
+                <Border StrokeShape="RoundRectangle 10"
+                        Padding="15,12"
+                        Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                        Margin="0,10,0,5">
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                        <Label Grid.Column="0"
+                               Text="{x:Static res:AppResources.TodaySchedule}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                               HorizontalOptions="End"
+                               VerticalOptions="Center" />
+
+                        <Grid Grid.Column="1" VerticalOptions="Center">
+                            <Switch x:Name="WeeklyToggleSwitch"
+                                    AutomationId="WeeklyToggleSwitchID"
+                                    OnColor="#1ABC9C"
+                                    ThumbColor="White"
+                                    Toggled="OnWeeklyToggled"
+                                    VerticalOptions="Center" />
+                            <ActivityIndicator x:Name="WeeklyLoadingSpinner"
+                                               IsRunning="False"
+                                               IsVisible="False"
+                                               Color="#1ABC9C"
+                                               WidthRequest="25"
+                                               HeightRequest="25"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                        </Grid>
+
+                        <Label Grid.Column="2"
+                               Text="{x:Static res:AppResources.WeeklySchedule}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Today's Prayer Times Grid -->
+                <Border StrokeShape="RoundRectangle 10"
+                        Padding="15"
+                        Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                        Shadow="5,5,10,Black">
+                    <VerticalStackLayout Spacing="0" x:Name="PrayerTimesStack">
+                        <!-- Fajr -->
+                        <Border x:Name="FajrRow" StrokeShape="RoundRectangle 8" Padding="12,10" Margin="0,2" StrokeThickness="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="🌙" FontSize="20" VerticalOptions="Center" />
+                                <Label Grid.Column="1" x:Name="FajrLabel"
+                                       Text="{x:Static res:AppResources.Fajr}"
+                                       FontSize="17" FontAttributes="Bold" Margin="10,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="2" x:Name="FajrTimeLabel" AutomationId="FajrTimeLabelID" Text="--:--"
+                                       FontSize="18" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                        <!-- Shurooq -->
+                        <Border x:Name="ShurooqRow" StrokeShape="RoundRectangle 8" Padding="12,10" Margin="0,2" StrokeThickness="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="🌅" FontSize="20" VerticalOptions="Center" />
+                                <Label Grid.Column="1" x:Name="ShurooqLabel"
+                                       Text="{x:Static res:AppResources.Shurooq}"
+                                       FontSize="17" FontAttributes="Bold" Margin="10,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="2" x:Name="ShurooqTimeLabel" AutomationId="ShurooqTimeLabelID" Text="--:--"
+                                       FontSize="18" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                        <!-- Dhuhr -->
+                        <Border x:Name="DhuhrRow" StrokeShape="RoundRectangle 8" Padding="12,10" Margin="0,2" StrokeThickness="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="☀️" FontSize="20" VerticalOptions="Center" />
+                                <Label Grid.Column="1" x:Name="DhuhrLabel"
+                                       Text="{x:Static res:AppResources.Dhuhr}"
+                                       FontSize="17" FontAttributes="Bold" Margin="10,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="2" x:Name="DhuhrTimeLabel" AutomationId="DhuhrTimeLabelID" Text="--:--"
+                                       FontSize="18" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                        <!-- Asr -->
+                        <Border x:Name="AsrRow" StrokeShape="RoundRectangle 8" Padding="12,10" Margin="0,2" StrokeThickness="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="🌤️" FontSize="20" VerticalOptions="Center" />
+                                <Label Grid.Column="1" x:Name="AsrLabel"
+                                       Text="{x:Static res:AppResources.Asr}"
+                                       FontSize="17" FontAttributes="Bold" Margin="10,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="2" x:Name="AsrTimeLabel" AutomationId="AsrTimeLabelID" Text="--:--"
+                                       FontSize="18" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                        <!-- Maghrib -->
+                        <Border x:Name="MaghribRow" StrokeShape="RoundRectangle 8" Padding="12,10" Margin="0,2" StrokeThickness="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="🌇" FontSize="20" VerticalOptions="Center" />
+                                <Label Grid.Column="1" x:Name="MaghribLabel"
+                                       Text="{x:Static res:AppResources.Maghrib}"
+                                       FontSize="17" FontAttributes="Bold" Margin="10,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="2" x:Name="MaghribTimeLabel" AutomationId="MaghribTimeLabelID" Text="--:--"
+                                       FontSize="18" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                        <!-- Isha -->
+                        <Border x:Name="IshaRow" StrokeShape="RoundRectangle 8" Padding="12,10" Margin="0,2" StrokeThickness="0">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Label Grid.Column="0" Text="🌙" FontSize="20" VerticalOptions="Center" />
+                                <Label Grid.Column="1" x:Name="IshaLabel"
+                                       Text="{x:Static res:AppResources.Isha}"
+                                       FontSize="17" FontAttributes="Bold" Margin="10,0,0,0"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                                <Label Grid.Column="2" x:Name="IshaTimeLabel" AutomationId="IshaTimeLabelID" Text="--:--"
+                                       FontSize="18" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Weekly Schedule Section (hidden by default) -->
+                <Border x:Name="WeeklySection" AutomationId="WeeklySectionID" IsVisible="False"
+                        StrokeThickness="0"
+                        Padding="0">
+                    <VerticalStackLayout>
+                        <!-- Weekly Schedule Header -->
+                        <Label x:Name="WeeklyHeader"
+                               Text="{x:Static res:AppResources.WeeklySchedule}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                               Margin="0,5,0,5" />
+
+                        <!-- Weekly Schedule -->
+                        <CollectionView x:Name="WeeklyCollection"
+                                        SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="local:WeeklyDayItem">
+                                <Border StrokeShape="RoundRectangle 10"
+                                        Padding="12,10"
+                                        Margin="0,3"
+                                        Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}">
+                                    <VerticalStackLayout Spacing="6">
+                                        <!-- Day name -->
+                                        <Label Text="{Binding DayName}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               TextColor="#1ABC9C" />
+                                        <!-- Prayer times in a row -->
+                                        <Grid ColumnDefinitions="*,*,*,*,*,*"
+                                              ColumnSpacing="4">
+                                            <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                                <Label Text="{Binding FajrHeader}" FontSize="10"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                                <Label Text="{Binding FajrTime}" FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center">
+                                                <Label Text="{Binding ShurooqHeader}" FontSize="10"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                                <Label Text="{Binding ShurooqTime}" FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="2" HorizontalOptions="Center">
+                                                <Label Text="{Binding DhuhrHeader}" FontSize="10"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                                <Label Text="{Binding DhuhrTime}" FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="3" HorizontalOptions="Center">
+                                                <Label Text="{Binding AsrHeader}" FontSize="10"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                                <Label Text="{Binding AsrTime}" FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="4" HorizontalOptions="Center">
+                                                <Label Text="{Binding MaghribHeader}" FontSize="10"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                                <Label Text="{Binding MaghribTime}" FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Column="5" HorizontalOptions="Center">
+                                                <Label Text="{Binding IshaHeader}" FontSize="10"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PlaceholderTextColorLight}, Dark={StaticResource PlaceholderTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                                <Label Text="{Binding IshaTime}" FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}"
+                                                       HorizontalOptions="Center" />
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

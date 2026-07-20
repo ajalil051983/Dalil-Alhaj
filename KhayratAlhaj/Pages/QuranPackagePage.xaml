@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KhayratAlhaj.Pages.QuranPackagePage"
+             FlowDirection="RightToLeft"
+             Title="تنزيل المصحف"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="18" Spacing="14">
+            <Label Text="قبل قراءة السور، يجب تنزيل حزمة صفحات المصحف."
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+            <Label Text="يمكنك تنزيلها مباشرة من رابط ZIP أو اختيار ملف ZIP من جهازك."
+                   FontSize="14"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+
+            <Border StrokeThickness="1"
+                    Stroke="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="12"
+                    Background="{AppThemeBinding Light=#FFF8E7, Dark=#2D271E}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="رابط الحزمة (ZIP)"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}" />
+                    <Entry x:Name="PackageUrlEntry"
+                           Placeholder="warsh-pages.zip"
+                           Keyboard="Url"
+                           HorizontalTextAlignment="Start" />
+                    <Button Text="تنزيل وتثبيت"
+                            Clicked="OnDownloadAndInstallClicked" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="اختيار ملف ZIP من الجهاز"
+                    Clicked="OnPickZipClicked"
+                    BackgroundColor="#2E7D32"
+                    TextColor="White" />
+
+            <ProgressBar x:Name="InstallProgressBar"
+                         Progress="0"
+                         IsVisible="False" />
+
+            <Label x:Name="StatusLabel"
+                   Text=""
+                   FontSize="13"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,184 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0-android</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.26100.0</TargetFrameworks>
+		<TargetFrameworks Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">net10.0-android</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+
+		<!-- Note for MacCatalyst:
+		The default runtime is maccatalyst-x64, except in Release config, in which case the default is maccatalyst-x64;maccatalyst-arm64.
+		When specifying both architectures, use the plural <RuntimeIdentifiers> instead of the singular <RuntimeIdentifier>.
+		The Mac App Store will NOT accept apps with ONLY maccatalyst-arm64 indicated;
+		either BOTH runtimes must be indicated or ONLY macatalyst-x64. -->
+		<!-- For example: <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers> -->
+
+		<OutputType>Exe</OutputType>
+		<RootNamespace>KhayratAlhaj</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<!-- Display name -->
+		<ApplicationTitle>Khayrat Alhaj</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.ilafalkhayr.zadalhaj</ApplicationId>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
+		<WindowsPackageType>None</WindowsPackageType>
+
+		<!-- <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>-->
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">26.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+	<!-- Release: AAB for Google Play, R8 obfuscation, no debug symbols -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
+		<AndroidPackageFormat>aab</AndroidPackageFormat>
+		<AndroidLinkTool>d8</AndroidLinkTool>
+		<AndroidEnableProguard>false</AndroidEnableProguard>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+		<AndroidUseFastDeployment>false</AndroidUseFastDeployment>
+		<AndroidEnableMarshalMethods>false</AndroidEnableMarshalMethods>
+		<SatelliteResourceLanguages>ar;en;fr</SatelliteResourceLanguages>
+		<DebugSymbols>false</DebugSymbols>
+		<AndroidIncludeDebugSymbols>false</AndroidIncludeDebugSymbols>
+		<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+		<!-- Disable IL trimming and AOT: ILLink (IL1012) crashes with .NET 10 + MAUI.
+		     R8 handles Android code shrinking/obfuscation instead. -->
+		<PublishTrimmed>false</PublishTrimmed>
+		<RunAOTCompilation>false</RunAOTCompilation>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Debug'">
+		<EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+		<PublishTrimmed>false</PublishTrimmed>
+		<DebugSymbols>true</DebugSymbols>
+		<AndroidIncludeDebugSymbols>true</AndroidIncludeDebugSymbols>
+		<!-- Use d8 in Debug to avoid R8 stripping MAUI runtime classes -->
+		<AndroidLinkTool>d8</AndroidLinkTool>
+		<AndroidEnableProguard>false</AndroidEnableProguard>
+			<!-- Suppress harmless warnings in Debug: fast deploy + code reducer recommendation (XA0119), missing ProGuard configs (XA4304) -->
+			<NoWarn>$(NoWarn);XA0119;XA4304</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon: adaptive icon with separate foreground and background -->
+		<MauiIcon Include="Resources\AppIcon\kaaba.svg" ForegroundFile="Resources\AppIcon\kaaba_foreground.svg" BackgroundFile="Resources\AppIcon\kaaba_background.svg" />
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\AppIcon\splash.svg" Color="#2C3E50" BaseSize="128,128" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" Exclude="Resources\Images\pilgrim_location.svg;Resources\Images\tawaf.png;Resources\Images\sa3y.png" />
+		<MauiAsset Include="Resources\Images\tawaf.png" LogicalName="tawaf.png" />
+		<MauiAsset Include="Resources\Images\sa3y.png" LogicalName="sa3y.png" />
+		<!-- Pilgrim icon as embedded resource for Mapsui ImageStyle -->
+		<EmbeddedResource Include="Resources\Images\pilgrim_location.svg" />
+		
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" Exclude="Resources\Raw\categories.json;Resources\Raw\categories-en.json;Resources\Raw\categories-fr.json;Resources\Raw\locdata.bin" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<!-- Pre-built encrypted app database (opaque binary name to avoid easy identification) -->
+		<MauiAsset Include="Resources\Data\appdata.bin" LogicalName="appdata.bin" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AndroidResource Include="Platforms\Android\Resources\drawable\notification_icon.xml" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' AND '$(Configuration)' == 'ProguardOnly'">
+	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' AND '$(Configuration)' == 'Release'">
+	  <ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\Localization\AppResources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Localization\AppResources.en.resx">
+			<DependentUpon>AppResources.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Localization\AppResources.fr.resx">
+			<DependentUpon>AppResources.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Resources\Localization\AppResources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>AppResources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Mapsui" Version="5.0.2" />
+		<PackageReference Include="Mapsui.Maui" Version="5.0.2" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.51" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="8.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="SourceGear.sqlite3" Version="3.50.4.5" />
+		<!-- SQLite support -->
+		<!-- Local notifications for prayer times -->
+		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
+		<PackageReference Include="sqlite-net-base" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.3" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<PackageReference Include="Xamarin.AndroidX.LocalBroadcastManager" Version="1.1.0.24" />
+		<PackageReference Include="System.Formats.Nrbf" Version="10.0.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">
+		<PackageReference Include="System.Drawing.Common" Version="10.0.4" />
+	</ItemGroup>
+
+	<!--
+		Fix for XA4304: When AndroidEnableProguard=false (our required setting to prevent MAUI
+		runtime class stripping), the build system still expects these 3 intermediate ProGuard
+		config files to exist but never generates them. Creating empty placeholders makes the
+		files exist so the SDK validation passes cleanly without suppressing the warning code.
+	-->
+	<!--
+		AfterTargets="PrepareForBuild" runs once per-RID sub-build (when RuntimeIdentifier is set)
+		AND once for the outer build (when RuntimeIdentifier is empty). We create placeholders for
+		all known Android RIDs unconditionally so the XA4304 validation always finds them.
+	-->
+	<Target Name="_CreateMissingProguardPlaceholders" AfterTargets="PrepareForBuild" Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
+		<PropertyGroup>
+			<_ProguardDir>$(IntermediateOutputPath)proguard\</_ProguardDir>
+		</PropertyGroup>
+		<MakeDir Directories="$(_ProguardDir);$(IntermediateOutputPath)android-arm64\proguard\;$(IntermediateOutputPath)android-x64\proguard\" />
+		<WriteLinesToFile File="$(_ProguardDir)proguard_xamarin.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+		<WriteLinesToFile File="$(_ProguardDir)proguard_project_primary.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+		<WriteLinesToFile File="$(IntermediateOutputPath)android-arm64\proguard\proguard_project_references.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+		<WriteLinesToFile File="$(IntermediateOutputPath)android-x64\proguard\proguard_project_references.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+	</Target>
+
+</Project>

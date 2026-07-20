@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:KhayratAlhaj.Resources.Localization"
+             x:Class="KhayratAlhaj.Pages.SettingsPage"
+             Title="{x:Static res:AppResources.SettingsTitle}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <!-- Header -->
+            <Border Background="#9B59B6"
+                    StrokeShape="RoundRectangle 15"
+                    Padding="20"
+                    Shadow="5,5,10,Black">
+                <Label x:Name="HeaderLabel"
+                       Text="{x:Static res:AppResources.SettingsTitle}" 
+                       FontSize="24" 
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
+            </Border>
+
+            <!-- Language Selection -->
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="20"
+                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                    Shadow="5,5,10,Black">
+                <VerticalStackLayout Spacing="15">
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="🌐" 
+                               FontSize="24" />
+                        <Label x:Name="LanguageLabel"
+                               Text="{x:Static res:AppResources.Language}" 
+                               FontSize="18"
+                               TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Picker x:Name="LanguagePicker"
+                            AutomationId="LanguagePickerID"
+                            Title="{x:Static res:AppResources.ChooseLanguage}"
+                            SelectedIndexChanged="OnLanguageChanged"
+                            FontSize="16">
+                        <Picker.Items>
+                            <x:String>العربية</x:String>
+                            <x:String>English</x:String>
+                            <x:String>Français</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Dark Mode -->
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="20"
+                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                    Shadow="5,5,10,Black">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Label Text="🌙" 
+                           FontSize="24"
+                           VerticalOptions="Center"
+                           Grid.Column="0" />
+                    <Label Text="{x:Static res:AppResources.DarkMode}" 
+                           FontSize="18"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                           VerticalOptions="Center"
+                           Grid.Column="1" />
+                    <Switch x:Name="DarkModeSwitch"
+                            AutomationId="DarkModeSwitchID"
+                            Toggled="OnDarkModeToggled"
+                            OnColor="#9B59B6"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End"
+                            Grid.Column="2" />
+                </Grid>
+            </Border>
+
+            <!-- Prayer Time Settings -->
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="20"
+                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                    Shadow="5,5,10,Black">
+                <VerticalStackLayout Spacing="15">
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="🕌" FontSize="24" />
+                        <Label Text="{x:Static res:AppResources.PrayerTimes}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <!-- Prayer Notifications Toggle -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Grid.Column="0"
+                               Text="{x:Static res:AppResources.PrayerNotifications}"
+                               FontSize="16"
+                               TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                               VerticalOptions="Center" />
+                        <Switch Grid.Column="1"
+                                x:Name="PrayerNotificationSwitch"
+                                AutomationId="PrayerNotificationSwitchID"
+                                OnColor="#1ABC9C"
+                                Toggled="OnPrayerNotificationToggled"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End" />
+                    </Grid>
+
+                    <!-- Calculation Method -->
+                    <Label Text="{x:Static res:AppResources.CalculationMethod}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}" />
+                    <Picker x:Name="CalculationMethodPicker"
+                            AutomationId="CalculationMethodPickerID"
+                            SelectedIndexChanged="OnCalculationMethodChanged"
+                            FontSize="14">
+                        <Picker.Items>
+                            <x:String>Auto</x:String>
+                            <x:String>Morocco (MHSA)</x:String>
+                            <x:String>Egypt (New)</x:String>
+                            <x:String>Palestine</x:String>
+                            <x:String>Karachi (Hanafi)</x:String>
+                            <x:String>North America (ISNA)</x:String>
+                            <x:String>Muslim World League</x:String>
+                            <x:String>Paris (UOIF 12°)</x:String>
+                            <x:String>Umm Al-Qura</x:String>
+                            <x:String>Umm Al-Qura (Ramadan)</x:String>
+                            <x:String>UAE (GCAA)</x:String>
+                            <x:String>UOIF (France)</x:String>
+                            <x:String>Algeria (MARA)</x:String>
+                            <x:String>Tunisia</x:String>
+                            <x:String>Kuwait</x:String>
+                            <x:String>Diyanet (Turkey)</x:String>
+                            <x:String>IGMG (Germany)</x:String>
+                            <x:String>Belgium Embassy</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <!-- Mathhab -->
+                    <Label Text="{x:Static res:AppResources.Mathhab}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}" />
+                    <Picker x:Name="MathhabPicker"
+                            AutomationId="MathhabPickerID"
+                            SelectedIndexChanged="OnMathhabChanged"
+                            FontSize="14">
+                        <Picker.Items>
+                            <x:String>الشافعي / Shafi'i</x:String>
+                            <x:String>الحنفي / Hanafi</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <!-- Hijri Date Adjustment -->
+                    <Label Text="{x:Static res:AppResources.HijriDateAdjustment}"
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}" />
+                    <Label Text="{x:Static res:AppResources.HijriDateAdjustmentHint}"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource SubtleTextColorLight}, Dark={StaticResource SubtleTextColorDark}}" />
+                    <Picker x:Name="HijriAdjustmentPicker"
+                            AutomationId="HijriAdjustmentPickerID"
+                            SelectedIndexChanged="OnHijriAdjustmentChanged"
+                            FontSize="14">
+                        <Picker.Items>
+                            <x:String>-2</x:String>
+                            <x:String>-1</x:String>
+                            <x:String>0</x:String>
+                            <x:String>+1</x:String>
+                            <x:String>+2</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Font Size -->
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="20"
+                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                    Shadow="5,5,10,Black">
+                <VerticalStackLayout Spacing="15">
+                    <HorizontalStackLayout Spacing="15">
+                        <Label Text="🔤" 
+                               FontSize="24" />
+                        <Label Text="{x:Static res:AppResources.FontSize}" 
+                               FontSize="18"
+                               TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10"
+                                           HorizontalOptions="Center">
+                        <Button AutomationId="FontSizeSmallID"
+                                Text="{x:Static res:AppResources.FontSmall}"
+                                Clicked="OnFontSizeClicked"
+                                CommandParameter="14"
+                                BackgroundColor="#95A5A6"
+                                TextColor="White"
+                                CornerRadius="20"
+                                Padding="20,10" />
+                        <Button AutomationId="FontSizeMediumID"
+                                Text="{x:Static res:AppResources.FontMedium}"
+                                Clicked="OnFontSizeClicked"
+                                CommandParameter="17"
+                                BackgroundColor="#3498DB"
+                                TextColor="White"
+                                CornerRadius="20"
+                                Padding="20,10" />
+                        <Button AutomationId="FontSizeLargeID"
+                                Text="{x:Static res:AppResources.FontLarge}"
+                                Clicked="OnFontSizeClicked"
+                                CommandParameter="20"
+                                BackgroundColor="#27AE60"
+                                TextColor="White"
+                                CornerRadius="20"
+                                Padding="20,10" />
+                    </HorizontalStackLayout>
+
+                    <Label x:Name="PreviewLabel"
+                           Text="{x:Static res:AppResources.FontExample}"
+                           FontSize="17"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                           Padding="10" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- About -->
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="20"
+                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                    Shadow="5,5,10,Black">
+                <VerticalStackLayout Spacing="10">
+                    <Label x:Name="AboutTitleLabel"
+                           Text="{x:Static res:AppResources.SettingsTitle}" 
+                           FontSize="18"
+                           TextColor="{AppThemeBinding Light={StaticResource LabelTextColorLight}, Dark={StaticResource LabelTextColorDark}}"
+                           FontAttributes="Bold" />
+                    <Label x:Name="AboutSubtitleLabel"
+                           Text="{x:Static res:AppResources.AppSubtitle}" 
+                           FontSize="16"
+                           TextColor="{AppThemeBinding Light={StaticResource SubtleTextColorLight}, Dark={StaticResource SubtleTextColorDark}}" />
+                    <Label x:Name="AboutVersionLabel"
+                           Text="{x:Static res:AppResources.Version}" 
+                           FontSize="14"
+                           TextColor="{AppThemeBinding Light={StaticResource SubtleTextColorLight}, Dark={StaticResource SubtleTextColorDark}}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
