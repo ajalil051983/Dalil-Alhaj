@@ -23,6 +23,7 @@ namespace KhayratAlhaj
         private bool isDisposed = false;
         private bool isApplyingTheme = false; // Prevent redundant theme applications
         private AppTheme? lastAppliedTheme = null; // Track last applied theme
+        private readonly QuranPackageInstallerService quranPackageInstallerService = new();
 
         public MainPage()
         {
@@ -246,6 +247,32 @@ namespace KhayratAlhaj
         {
             if (e.Parameter is Category category)
             {
+                if (category.Id == 4)
+                {
+                    if (!quranPackageInstallerService.HasInstalledPages())
+                    {
+                        var shouldInstall = await DisplayAlertAsync(
+                            "مصحف غير مثبت",
+                            "يجب تنزيل صفحات المصحف أولاً قبل فتح السور.",
+                            "تنزيل الآن",
+                            "إلغاء");
+
+                        if (!shouldInstall)
+                        {
+                            return;
+                        }
+
+                        await Navigation.PushAsync(new QuranPackagePage(async () =>
+                        {
+                            await Navigation.PushAsync(new QuranSurahListPage(category, dataService));
+                        }));
+                        return;
+                    }
+
+                    await Navigation.PushAsync(new QuranSurahListPage(category, dataService));
+                    return;
+                }
+
                 await Navigation.PushAsync(new SubCategoryPage(category, dataService));
             }
         }

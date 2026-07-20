@@ -1,4 +1,5 @@
 ﻿using KhayratAlhaj.Models.PrayerTimes;
+using System.Collections.Concurrent;
 
 namespace KhayratAlhaj.Services.PrayerTimes
 {
@@ -9,6 +10,7 @@ namespace KhayratAlhaj.Services.PrayerTimes
     public class PrayerTimeService
     {
         private readonly LocationRepository _locationRepo = new();
+        private static readonly ConcurrentDictionary<string, DayPrayerTimes> PrayerTimesCache = new();
         private static readonly LocationEntry DefaultMakkahLocation = new()
         {
             Name = "Makkah",
@@ -34,7 +36,18 @@ namespace KhayratAlhaj.Services.PrayerTimes
         /// </summary>
         public async Task<DayPrayerTimes?> GetPrayerTimesAsync(DateTime date)
         {
-            var location = await GetStoredOrGpsLocationAsync();
+            return await GetPrayerTimesAsync(date, allowGpsFallback: true);
+        }
+
+        /// <summary>
+        /// Get prayer times for a specific date with optional GPS fallback.
+        /// When GPS fallback is disabled, only stored location data is used.
+        /// </summary>
+        public async Task<DayPrayerTimes?> GetPrayerTimesAsync(DateTime date, bool allowGpsFallback)
+        {
+            var location = allowGpsFallback
+                ? await GetStoredOrGpsLocationAsync()
+                : GetStoredLocationOnly();
             if (location == null) return null;
 
             var method = GetCalculationMethod();
@@ -51,6 +64,12 @@ namespace KhayratAlhaj.Services.PrayerTimes
             // European DST transitions, etc.
             var gmtOffset = GetCityUtcOffset(location.CountryCode, location.LongitudeActual, date);
 
+            var cacheKey = BuildPrayerTimesCacheKey(date, location, resolvedMethod, gmtOffset, allowGpsFallback);
+            if (PrayerTimesCache.TryGetValue(cacheKey, out var cachedResult))
+            {
+                return cachedResult;
+            }
+
             var result = PrayerTimeCalculator.Calculate(
                 date,
                 location.LatitudeActual,
@@ -62,6 +81,8 @@ namespace KhayratAlhaj.Services.PrayerTimes
             result.LocationName = location.Name;
             result.CountryCode = location.CountryCode;
             result.UtcOffsetHours = gmtOffset;
+
+            PrayerTimesCache[cacheKey] = result;
 
             return result;
         }
@@ -118,6 +139,37 @@ namespace KhayratAlhaj.Services.PrayerTimes
         }
 
         /// <summary>
+        /// Returns true when the user has a real location (stored city or GPS success),
+        /// false when only the Makkah fallback would be used.
+        /// Use this to guard notification scheduling so we never fire alerts
+        /// based on the default Makkah location.
+        /// </summary>
+        public async Task<bool> HasUserLocationAsync()
+        {
+            // 1) Stored city?
+            var storedName = Preferences.Get(CityNameKey, string.Empty);
+            if (!string.IsNullOrEmpty(storedName))
+                return true;
+
+            // 2) Can we get GPS right now?
+            try
+            {
+                var gpsTask = MainThread.InvokeOnMainThreadAsync(() =>
+                    Geolocation.Default.GetLocationAsync(
+                        new GeolocationRequest(GeolocationAccuracy.Low, TimeSpan.FromSeconds(3))));
+                var completed = await Task.WhenAny(gpsTask, Task.Delay(TimeSpan.FromSeconds(4)));
+                if (completed == gpsTask)
+                {
+                    var loc = await gpsTask;
+                    return loc != null;
+                }
+            }
+            catch { /* GPS unavailable */ }
+
+            return false;
+        }
+
+        /// <summary>
         /// Get the stored city name, or null if none stored.
         /// </summary>
         public string? GetStoredCityName()
@@ -136,6 +188,7 @@ namespace KhayratAlhaj.Services.PrayerTimes
             Preferences.Remove(CityLatKey);
             Preferences.Remove(CityLonKey);
             Preferences.Remove(CityAltKey);
+            ClearPrayerTimesCache();
         }
 
         /// <summary>
@@ -183,14 +236,7 @@ namespace KhayratAlhaj.Services.PrayerTimes
             var storedName = Preferences.Get(CityNameKey, string.Empty);
             if (!useCurrentLocation && !string.IsNullOrEmpty(storedName))
             {
-                return new LocationEntry
-                {
-                    Name = storedName,
-                    CountryCode = Preferences.Get(CityCountryKey, ""),
-                    Latitude = Preferences.Get(CityLatKey, 0),
-                    Longitude = Preferences.Get(CityLonKey, 0),
-                    Altitude = Preferences.Get(CityAltKey, 0)
-                };
+                return GetStoredLocationOnly();
             }
 
             // Fall back to GPS
@@ -237,14 +283,7 @@ namespace KhayratAlhaj.Services.PrayerTimes
             // Fallback to previously stored city if GPS is unavailable.
             if (!string.IsNullOrEmpty(storedName))
             {
-                return new LocationEntry
-                {
-                    Name = storedName,
-                    CountryCode = Preferences.Get(CityCountryKey, ""),
-                    Latitude = Preferences.Get(CityLatKey, 0),
-                    Longitude = Preferences.Get(CityLonKey, 0),
-                    Altitude = Preferences.Get(CityAltKey, 0)
-                };
+                return GetStoredLocationOnly();
             }
 
             // Absolute fallback: Makkah (works even when LocationEntity table is missing)
@@ -258,6 +297,47 @@ namespace KhayratAlhaj.Services.PrayerTimes
                 System.Diagnostics.Debug.WriteLine($"Prayer fallback error: {ex.Message}");
                 return DefaultMakkahLocation;
             }
+        }
+
+        private LocationEntry? GetStoredLocationOnly()
+        {
+            var storedName = Preferences.Get(CityNameKey, string.Empty);
+            if (string.IsNullOrEmpty(storedName))
+            {
+                return null;
+            }
+
+            return new LocationEntry
+            {
+                Name = storedName,
+                CountryCode = Preferences.Get(CityCountryKey, ""),
+                Latitude = Preferences.Get(CityLatKey, 0),
+                Longitude = Preferences.Get(CityLonKey, 0),
+                Altitude = Preferences.Get(CityAltKey, 0)
+            };
+        }
+
+        private static string BuildPrayerTimesCacheKey(
+            DateTime date,
+            LocationEntry location,
+            CalculationMethod method,
+            double utcOffset,
+            bool allowGpsFallback)
+        {
+            return string.Join("|",
+                date.Date.ToString("yyyy-MM-dd"),
+                location.CountryCode,
+                location.Name,
+                location.LatitudeActual.ToString("F4"),
+                location.LongitudeActual.ToString("F4"),
+                ((int)method).ToString(),
+                utcOffset.ToString("F2"),
+                allowGpsFallback ? "gps" : "stored");
+        }
+
+        private static void ClearPrayerTimesCache()
+        {
+            PrayerTimesCache.Clear();
         }
 
         /// <summary>

@@ -109,3 +109,4 @@ PublishProfiles/
 # Sensitive scripts (never commit)
 generate_keystore.ps1
 generate_keystore_jks.ps1
+Docs/w_320.pdf

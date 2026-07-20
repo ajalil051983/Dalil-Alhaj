@@ -60,7 +60,7 @@
                             </Border.GestureRecognizers>
                             
                             <VerticalStackLayout Spacing="10"
-                                                 HeightRequest="120">
+                                        MinimumHeightRequest="150">
                                 <Label Text="{Binding Icon}" 
                                        FontSize="32"
                                        HorizontalOptions="Center" />
@@ -72,6 +72,36 @@
                                        HorizontalOptions="Center"
                                        HorizontalTextAlignment="Center"
                                        LineBreakMode="WordWrap" />
+
+                                <Border HorizontalOptions="Center"
+                                        VerticalOptions="EndAndExpand"
+                                        WidthRequest="56"
+                                        HeightRequest="56"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 28"
+                                        IsVisible="False">
+                                    <Border.Shadow>
+                                        <Shadow Radius="14"
+                                                Opacity="0.30"
+                                                Offset="0,6"
+                                                Brush="#220B132B" />
+                                    </Border.Shadow>
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Id}" Value="301">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding Id}" Value="302">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+
+                                    <Button Text="▶"
+                                            Style="{StaticResource DhikrLaunchCardButtonStyle}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill"
+                                            CommandParameter="{Binding .}"
+                                            Clicked="OnDhikrButtonClicked" />
+                                </Border>
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>

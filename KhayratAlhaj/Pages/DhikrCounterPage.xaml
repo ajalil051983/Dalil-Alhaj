@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KhayratAlhaj.Pages.DhikrCounterPage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}"
+             Padding="0">
+
+    <ScrollView>
+        <Grid Padding="20"
+              RowDefinitions="Auto,Auto,*,Auto,Auto,Auto"
+              RowSpacing="18">
+
+            <Label x:Name="TitleLabel"
+                   Grid.Row="0"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}" />
+
+            <Label x:Name="ProgressLabel"
+                   Grid.Row="1"
+                   FontSize="14"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+
+            <Border Grid.Row="2"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 20"
+                    Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                    Padding="20"
+                    MinimumHeightRequest="250"
+                    VerticalOptions="Center">
+                <Grid>
+                    <Label x:Name="DhikrTextLabel"
+                           FontSize="{OnIdiom Phone=24, Tablet=30, Desktop=32}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           LineBreakMode="WordWrap"
+                           MaxLines="10"
+                           TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}" />
+                </Grid>
+            </Border>
+
+            <Button x:Name="CounterButton"
+                    Grid.Row="3"
+                    Style="{StaticResource DhikrLaunchRoundButtonStyle}"
+                    WidthRequest="{OnIdiom Phone=100, Tablet=120, Desktop=130}"
+                    HeightRequest="{OnIdiom Phone=100, Tablet=120, Desktop=130}"
+                    CornerRadius="65"
+                    FontSize="{OnIdiom Phone=34, Tablet=40, Desktop=42}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Clicked="OnCounterButtonClicked" />
+
+                                        <Grid Grid.Row="4"
+                                            ColumnDefinitions="*,*"
+                                            ColumnSpacing="12"
+                                            HorizontalOptions="Fill">
+                    <Button x:Name="PreviousButton"
+                        Grid.Column="0"
+                                                HorizontalOptions="Fill"
+                                                HeightRequest="48"
+                                                CornerRadius="14"
+                                                FontSize="16"
+                                                FontAttributes="Bold"
+                                                Padding="14,8"
+                        Clicked="OnPreviousButtonClicked" />
+
+                    <Button x:Name="NextButton"
+                                                Grid.Column="1"
+                                                HorizontalOptions="Fill"
+                                                HeightRequest="48"
+                                                CornerRadius="14"
+                                                FontSize="16"
+                                                FontAttributes="Bold"
+                                                Padding="14,8"
+                        Clicked="OnNextButtonClicked" />
+                    </Grid>
+
+                    <Label x:Name="HintLabel"
+                       Grid.Row="5"
+                   FontSize="13"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

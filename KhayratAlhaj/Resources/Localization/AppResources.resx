@@ -282,6 +282,9 @@
   <data name="Loading" xml:space="preserve">
     <value>جاري التحميل...</value>
   </data>
+  <data name="QuranNoInternet" xml:space="preserve">
+    <value>يتطلب تحميل السورة اتصالاً بالإنترنت. يرجى التحقق من الاتصال ثم المحاولة مرة أخرى.</value>
+  </data>
   <data name="Copyright" xml:space="preserve">
     <value>© IlafAlkhayr 2026</value>
   </data>
@@ -369,11 +372,17 @@
   <data name="MyLocation" xml:space="preserve">
     <value>موقعي</value>
   </data>
+  <data name="SelectedPointTitle" xml:space="preserve">
+    <value>📌 النقطة المختارة</value>
+  </data>
   <data name="ViewGuide" xml:space="preserve">
     <value>📖 عرض الدليل</value>
   </data>
   <data name="GetDirections" xml:space="preserve">
     <value>🧭 اعرض المسار</value>
+  </data>
+  <data name="ResetDirections" xml:space="preserve">
+    <value>إعادة ضبط المسار</value>
   </data>
   <data name="GettingLocation" xml:space="preserve">
     <value>📍 جارٍ تحديد الموقع...</value>

@@ -44,9 +44,38 @@ namespace KhayratAlhaj.Services
         /// <summary>French content text.</summary>
         public string ContentFr { get; set; } = string.Empty;
 
+        public int? SurahNumber { get; set; }
+        public string ApiLookupName { get; set; } = string.Empty;
+
         public bool HasAudioAr { get; set; }
         public bool HasAudioEn { get; set; }
         public bool HasAudioFr { get; set; }
+    }
+
+    // ---------------------------------------------------------------------------
+    // SQLite entity – DhikrEntity table
+    // ---------------------------------------------------------------------------
+    [Table("DhikrEntity")]
+    internal class DhikrEntity
+    {
+        [PrimaryKey]
+        [Column("id")]
+        public int Id { get; set; }
+
+        [Column("type")]
+        public string Type { get; set; } = string.Empty;
+
+        [Column("text")]
+        public string Text { get; set; } = string.Empty;
+
+        [Column("enTranslation")]
+        public string EnTranslation { get; set; } = string.Empty;
+
+        [Column("frTranslation")]
+        public string FrTranslation { get; set; } = string.Empty;
+
+        [Column("times")]
+        public int Times { get; set; }
     }
 
     // ---------------------------------------------------------------------------
@@ -63,7 +92,14 @@ namespace KhayratAlhaj.Services
     {
         internal const string FileName = "appdata.bin";
         private static readonly string[] RequiredTables = { "Categories", "SubCategories", "LocationEntity" };
-        private const int MinimumCategoryCount = 8;
+        private const int MinimumCategoryCount = 4;
+
+        /// <summary>
+        /// Bump this number every time the bundled appdata.bin content changes.
+        /// When the app detects a mismatch with the stored value, the local DB is
+        /// replaced with the fresh bundled copy.
+        /// </summary>
+        private const int BundledDbVersion = 3;
 
         private static SQLiteAsyncConnection? _connection;
         private static readonly SemaphoreSlim _lock = new(1, 1);
@@ -81,21 +117,34 @@ namespace KhayratAlhaj.Services
                 System.Diagnostics.Debug.WriteLine(
                     $"[AppDb] {dbPath} (exists: {File.Exists(dbPath)})");
 
+                var needsCopy = false;
+
                 if (!File.Exists(dbPath))
                 {
-                    await CopyBundledDatabaseAsync(dbPath);
-                    System.Diagnostics.Debug.WriteLine("[AppDb] Database copied to app storage.");
+                    needsCopy = true;
+                    System.Diagnostics.Debug.WriteLine("[AppDb] No local database found.");
                 }
                 else if (!IsDatabaseCompatible(dbPath))
                 {
-                    System.Diagnostics.Debug.WriteLine("[AppDb] Existing local database is stale/incompatible. Replacing with bundled database.");
-                    File.Delete(dbPath);
+                    needsCopy = true;
+                    System.Diagnostics.Debug.WriteLine("[AppDb] Existing local database is stale/incompatible.");
+                }
+                else if (IsBundledDbNewer())
+                {
+                    needsCopy = true;
+                    System.Diagnostics.Debug.WriteLine("[AppDb] Bundled database is newer than local copy.");
+                }
+
+                if (needsCopy)
+                {
+                    if (File.Exists(dbPath)) File.Delete(dbPath);
                     await CopyBundledDatabaseAsync(dbPath);
-                    System.Diagnostics.Debug.WriteLine("[AppDb] Local database replaced with bundled database.");
+                    Preferences.Default.Set("db_version", BundledDbVersion);
+                    System.Diagnostics.Debug.WriteLine($"[AppDb] Database replaced with bundled version {BundledDbVersion}.");
                 }
 
                 _connection = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.ReadWrite);
-                await EnsureSubCategoriesAudioColumnsAsync(_connection);
+                await EnsureSubCategoriesSchemaAsync(_connection);
             }
             finally
             {
@@ -135,9 +184,15 @@ namespace KhayratAlhaj.Services
             }
         }
 
-        private static async Task EnsureSubCategoriesAudioColumnsAsync(SQLiteAsyncConnection connection)
+        private static bool IsBundledDbNewer()
         {
-            const int targetVersion = 2;
+            var storedVersion = Preferences.Default.Get("db_version", 0);
+            return BundledDbVersion > storedVersion;
+        }
+
+        private static async Task EnsureSubCategoriesSchemaAsync(SQLiteAsyncConnection connection)
+        {
+            const int targetVersion = 3;
 
             var versionRows = await connection.QueryAsync<PragmaIntResult>("PRAGMA user_version;");
             var version = versionRows.FirstOrDefault()?.Value ?? 0;
@@ -149,8 +204,12 @@ namespace KhayratAlhaj.Services
             var tableInfo = await connection.QueryAsync<PragmaTableInfoResult>("PRAGMA table_info(SubCategories);");
             var columnNames = new HashSet<string>(tableInfo.Select(x => x.Name), StringComparer.OrdinalIgnoreCase);
 
-            if (columnNames.Contains("HasAudioAr") && columnNames.Contains("HasAudioEn") && columnNames.Contains("HasAudioFr"))
+            var hasAllAudioColumns = columnNames.Contains("HasAudioAr") && columnNames.Contains("HasAudioEn") && columnNames.Contains("HasAudioFr");
+            var hasSurahColumns = columnNames.Contains("SurahNumber") && columnNames.Contains("ApiLookupName");
+
+            if (hasAllAudioColumns && hasSurahColumns)
             {
+                await PopulateQuranMetadataFallbackAsync(connection);
                 await connection.ExecuteAsync($"PRAGMA user_version = {targetVersion};");
                 return;
             }
@@ -158,40 +217,60 @@ namespace KhayratAlhaj.Services
             await connection.ExecuteAsync("BEGIN TRANSACTION;");
             try
             {
-                await connection.ExecuteAsync(@"
-                    CREATE TABLE IF NOT EXISTS SubCategories_new (
-                        Id INTEGER PRIMARY KEY,
-                        CategoryId INTEGER NOT NULL,
-                        NameAr TEXT NOT NULL DEFAULT '',
-                        NameEn TEXT NOT NULL DEFAULT '',
-                        NameFr TEXT NOT NULL DEFAULT '',
-                        Icon TEXT NOT NULL DEFAULT '📖',
-                        ContentAr TEXT NOT NULL DEFAULT '',
-                        ContentEn TEXT NOT NULL DEFAULT '',
-                        ContentFr TEXT NOT NULL DEFAULT '',
-                        HasAudioAr INTEGER NOT NULL DEFAULT 0,
-                        HasAudioEn INTEGER NOT NULL DEFAULT 0,
-                        HasAudioFr INTEGER NOT NULL DEFAULT 0
-                    );
-                ");
+                if (!hasAllAudioColumns)
+                {
+                    await connection.ExecuteAsync(@"
+                        CREATE TABLE IF NOT EXISTS SubCategories_new (
+                            Id INTEGER PRIMARY KEY,
+                            CategoryId INTEGER NOT NULL,
+                            NameAr TEXT NOT NULL DEFAULT '',
+                            NameEn TEXT NOT NULL DEFAULT '',
+                            NameFr TEXT NOT NULL DEFAULT '',
+                            Icon TEXT NOT NULL DEFAULT '📖',
+                            ContentAr TEXT NOT NULL DEFAULT '',
+                            ContentEn TEXT NOT NULL DEFAULT '',
+                            ContentFr TEXT NOT NULL DEFAULT '',
+                            SurahNumber INTEGER NULL,
+                            ApiLookupName TEXT NOT NULL DEFAULT '',
+                            HasAudioAr INTEGER NOT NULL DEFAULT 0,
+                            HasAudioEn INTEGER NOT NULL DEFAULT 0,
+                            HasAudioFr INTEGER NOT NULL DEFAULT 0
+                        );
+                    ");
 
-                var hasLegacyHasAudio = columnNames.Contains("HasAudio");
-                var selectHasAudioAr = columnNames.Contains("HasAudioAr") ? "HasAudioAr" : (hasLegacyHasAudio ? "HasAudio" : "0");
-                var selectHasAudioEn = columnNames.Contains("HasAudioEn") ? "HasAudioEn" : "0";
-                var selectHasAudioFr = columnNames.Contains("HasAudioFr") ? "HasAudioFr" : "0";
+                    var hasLegacyHasAudio = columnNames.Contains("HasAudio");
+                    var selectHasAudioAr = columnNames.Contains("HasAudioAr") ? "HasAudioAr" : (hasLegacyHasAudio ? "HasAudio" : "0");
+                    var selectHasAudioEn = columnNames.Contains("HasAudioEn") ? "HasAudioEn" : "0";
+                    var selectHasAudioFr = columnNames.Contains("HasAudioFr") ? "HasAudioFr" : "0";
+                    var selectSurahNumber = columnNames.Contains("SurahNumber") ? "SurahNumber" : "NULL";
+                    var selectApiLookupName = columnNames.Contains("ApiLookupName") ? "ApiLookupName" : "''";
 
-                await connection.ExecuteAsync($@"
-                    INSERT INTO SubCategories_new
-                    (Id, CategoryId, NameAr, NameEn, NameFr, Icon, ContentAr, ContentEn, ContentFr, HasAudioAr, HasAudioEn, HasAudioFr)
-                    SELECT
-                    Id, CategoryId, NameAr, NameEn, NameFr, Icon, ContentAr, ContentEn, ContentFr,
-                    IFNULL({selectHasAudioAr}, 0), IFNULL({selectHasAudioEn}, 0), IFNULL({selectHasAudioFr}, 0)
-                    FROM SubCategories;
-                ");
+                    await connection.ExecuteAsync($@"
+                        INSERT INTO SubCategories_new
+                        (Id, CategoryId, NameAr, NameEn, NameFr, Icon, ContentAr, ContentEn, ContentFr, SurahNumber, ApiLookupName, HasAudioAr, HasAudioEn, HasAudioFr)
+                        SELECT
+                        Id, CategoryId, NameAr, NameEn, NameFr, Icon, ContentAr, ContentEn, ContentFr,
+                        {selectSurahNumber}, IFNULL({selectApiLookupName}, ''),
+                        IFNULL({selectHasAudioAr}, 0), IFNULL({selectHasAudioEn}, 0), IFNULL({selectHasAudioFr}, 0)
+                        FROM SubCategories;
+                    ");
 
-                await connection.ExecuteAsync("DROP TABLE SubCategories;");
-                await connection.ExecuteAsync("ALTER TABLE SubCategories_new RENAME TO SubCategories;");
-                await connection.ExecuteAsync("CREATE INDEX IF NOT EXISTS IX_SubCategories_CategoryId ON SubCategories(CategoryId);");
+                    await connection.ExecuteAsync("DROP TABLE SubCategories;");
+                    await connection.ExecuteAsync("ALTER TABLE SubCategories_new RENAME TO SubCategories;");
+                    await connection.ExecuteAsync("CREATE INDEX IF NOT EXISTS IX_SubCategories_CategoryId ON SubCategories(CategoryId);");
+                }
+
+                if (!columnNames.Contains("SurahNumber"))
+                {
+                    await connection.ExecuteAsync("ALTER TABLE SubCategories ADD COLUMN SurahNumber INTEGER NULL;");
+                }
+
+                if (!columnNames.Contains("ApiLookupName"))
+                {
+                    await connection.ExecuteAsync("ALTER TABLE SubCategories ADD COLUMN ApiLookupName TEXT NOT NULL DEFAULT '';");
+                }
+
+                await PopulateQuranMetadataFallbackAsync(connection);
                 await connection.ExecuteAsync($"PRAGMA user_version = {targetVersion};");
                 await connection.ExecuteAsync("COMMIT;");
             }
@@ -201,6 +280,24 @@ namespace KhayratAlhaj.Services
                 throw;
             }
         }
+
+                private static async Task PopulateQuranMetadataFallbackAsync(SQLiteAsyncConnection connection)
+                {
+                        await connection.ExecuteAsync(@"
+                                UPDATE SubCategories
+                                SET SurahNumber = Id - 400
+                                WHERE CategoryId = 4
+                                    AND Id BETWEEN 401 AND 514
+                                    AND (SurahNumber IS NULL OR SurahNumber = 0);
+                        ");
+
+                        await connection.ExecuteAsync(@"
+                                UPDATE SubCategories
+                                SET ApiLookupName = NameEn
+                                WHERE CategoryId = 4
+                                    AND (ApiLookupName IS NULL OR ApiLookupName = '');
+                        ");
+                }
 
         private class PragmaTableInfoResult
         {
@@ -287,6 +384,28 @@ namespace KhayratAlhaj.Services
             return se == null ? null : MapSubCategory(se, language);
         }
 
+        /// <summary>
+        /// Returns Dhikr entries filtered by type (e.g., Morning/Evening) with localized text.
+        /// </summary>
+        public async Task<List<DhikrItem>> GetDhikrsByTypeAsync(string dhikrType, string language)
+        {
+            var db = await GetDatabaseAsync();
+
+            if (string.IsNullOrWhiteSpace(dhikrType))
+            {
+                return new List<DhikrItem>();
+            }
+
+            var normalizedType = dhikrType.Trim();
+
+            var entities = await db.Table<DhikrEntity>()
+                .Where(d => d.Type == normalizedType)
+                .OrderBy(d => d.Id)
+                .ToListAsync();
+
+            return entities.Select(d => MapDhikrItem(d, language)).ToList();
+        }
+
         // -----------------------------------------------------------------------
         // Mapping helpers
         // -----------------------------------------------------------------------
@@ -327,9 +446,24 @@ namespace KhayratAlhaj.Services
                 NameFr = se.NameFr,
                 Icon = se.Icon,
                 Content = content,
+                SurahNumber = se.SurahNumber,
+                ApiLookupName = se.ApiLookupName,
                 HasAudioAr = se.HasAudioAr,
                 HasAudioEn = se.HasAudioEn,
                 HasAudioFr = se.HasAudioFr
+            };
+        }
+
+        private static DhikrItem MapDhikrItem(DhikrEntity entity, string language)
+        {
+            return new DhikrItem
+            {
+                Id = entity.Id,
+                Type = entity.Type,
+                Text = entity.Text,
+                EnTranslation = entity.EnTranslation,
+                FrTranslation = entity.FrTranslation,
+                InitialTimes = entity.Times > 0 ? entity.Times : 1
             };
         }
     }

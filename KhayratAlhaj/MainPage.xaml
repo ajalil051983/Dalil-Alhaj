@@ -149,7 +149,7 @@
                                 Padding="0"
                                 Margin="0">
                                 <Border.Shadow>
-                                    <Shadow Brush="Black" Opacity="0.3" Radius="8" Offset="0,2" />
+                                    <Shadow Brush="Black" Opacity="0.3" Radius="2" Offset="0,1" />
                                 </Border.Shadow>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnCategoryTapped" 

@@ -160,6 +160,20 @@ namespace KhayratAlhaj
                 // Permission already requested in LoadingPage on first app startup
                 if (!Services.NotificationService.IsEnabled) return;
 
+                // Don't schedule notifications when no real location is set
+                // (prevents firing Makkah-based times for users elsewhere)
+                var locationCheck = new Services.PrayerTimes.PrayerTimeService();
+                if (!await locationCheck.HasUserLocationAsync()) 
+                {
+                    // Cancel any stale notifications left over from a previous session
+                    // that may have used the Makkah fallback
+                    var cancel = new Services.NotificationService();
+                    await cancel.CancelAllAsync().ConfigureAwait(false);
+                    System.Diagnostics.Debug.WriteLine(
+                        "[App] Cancelled stale notifications — no user location set yet");
+                    return;
+                }
+
                 // Compute prayer times on background thread to avoid blocking UI
                 var multiDayTimes = await Task.Run(async () =>
                 {

@@ -25,6 +25,11 @@ import subprocess
 import shutil
 from pathlib import Path
 
+# ── Absolute paths ─────────────────────────────────────────────────────────
+CATEGORIES_JSON = Path(r'd:\Ai workspace\Khayrat Alhaj\AIAudioGenerationFromText\categories.json')
+AUDIO_OUTPUT_DIR = Path(r'D:\Ai workspace\Khayrat Alhaj\KhayratAlhaj\Resources\Raw\audio')
+# ───────────────────────────────────────────────────────────────────────────
+
 
 def _require_ffmpeg() -> bool:
     """Return True if ffmpeg is available on PATH."""
@@ -139,12 +144,12 @@ async def generate_audio_edge():
     if not _require_ffmpeg():
         return
 
-    with open('categories.json', 'r', encoding='utf-8') as f:
+    with open(str(CATEGORIES_JSON), 'r', encoding='utf-8') as f:
         categories = json.load(f)
     validate_audio_flags(categories)
 
-    audio_dir = Path('audio')
-    audio_dir.mkdir(exist_ok=True)
+    audio_dir = AUDIO_OUTPUT_DIR
+    audio_dir.mkdir(parents=True, exist_ok=True)
 
     # Available Arabic voices (choose one):
     # "ar-SA-HamedNeural"   - Male,   Saudi Arabia
@@ -153,36 +158,51 @@ async def generate_audio_edge():
     # "ar-EG-ShakirNeural"  - Male,   Egypt
     VOICE = "ar-SA-HamedNeural"  # Male Saudi voice — formal and clear
 
-    count = 0
+    # Collect needed files
+    needed_entries = []
     for category in categories:
         cat_id = category['id']
         for subcategory in category.get('subcategories', []):
             sub_id = subcategory['id']
-
             if not subcategory.get('hasAudioAr', False):
                 continue
-
             title = subcategory.get('nameAr', '')
             content = _html_to_plain_text(subcategory.get('contentAr', '') or subcategory.get('content', ''))
-            full_text = f"{title}. {content}"
+            needed_entries.append((cat_id, sub_id, f"{title}. {content}"))
 
-            ogg_file = audio_dir / f'{cat_id}_{sub_id}.ogg'
-            tmp_mp3  = audio_dir / f'{cat_id}_{sub_id}_tmp.mp3'
+    # Delete old/unused audio files
+    needed_names = {f'{c}_{s}.ogg' for c, s, _ in needed_entries} | {'README.txt'}
+    deleted = 0
+    for f in audio_dir.iterdir():
+        if f.is_file() and f.name not in needed_names:
+            f.unlink()
+            print(f"  Deleted old: {f.name}")
+            deleted += 1
+    if deleted:
+        print(f"  Removed {deleted} old file(s)\n")
 
-            print(f"Generating {ogg_file.name}...")
-            try:
-                communicate = edge_tts.Communicate(full_text, VOICE)
-                await communicate.save(str(tmp_mp3))
-                _mp3_to_ogg(tmp_mp3, ogg_file)
-                count += 1
-                print(f"  ✓ Created {ogg_file.name}")
-            except Exception as e:
-                print(f"  ✗ Failed {ogg_file.name}: {e}")
-                if tmp_mp3.exists():
-                    tmp_mp3.unlink()
+    # Generate new audio
+    count = 0
+    total = len(needed_entries)
+    for i, (cat_id, sub_id, full_text) in enumerate(needed_entries, 1):
+        ogg_file = audio_dir / f'{cat_id}_{sub_id}.ogg'
+        tmp_mp3  = audio_dir / f'{cat_id}_{sub_id}_tmp.mp3'
 
-    print(f"\n✓ Generated {count} OGG files in '{audio_dir}' folder")
-    print("Copy these files to: KhayratAlhaj/Resources/Raw/audio/")
+        print(f"[{i}/{total}] {ogg_file.name} ...", end=' ', flush=True)
+        try:
+            communicate = edge_tts.Communicate(full_text, VOICE)
+            await communicate.save(str(tmp_mp3))
+            _mp3_to_ogg(tmp_mp3, ogg_file)
+            size_kb = ogg_file.stat().st_size // 1024
+            count += 1
+            print(f"OK  ({size_kb} KB)")
+        except Exception as e:
+            print(f"FAILED  {e}")
+            if tmp_mp3.exists():
+                tmp_mp3.unlink()
+
+    print(f"\n  Generated {count}/{total} OGG files")
+    print(f"  Location: {audio_dir}")
 
 
 # ============================================================================
@@ -249,18 +269,29 @@ def generate_audio_pyttsx3():
 # Main Menu
 # ============================================================================
 if __name__ == "__main__":
-    print("=" * 70)
-    print("Audio Generator for Khayrat AlHaj  (output: OGG Vorbis)")
-    print("=" * 70)
-    print("\nChoose TTS engine:")
-    print("1. gTTS (Google)    - Simple, free, good quality")
-    print("2. Edge-TTS (Microsoft) - RECOMMENDED - Best quality, multiple voices")
-    print("3. pyttsx3 (Offline)    - Requires system Arabic TTS")
-    print()
+    import sys
 
-    choice = input("Enter choice (1/2/3) [2]: ").strip() or "2"
+    # Allow --option N from command line (used by generate_audio.ps1)
+    cli_choice = None
+    if "--option" in sys.argv:
+        idx = sys.argv.index("--option")
+        if idx + 1 < len(sys.argv):
+            cli_choice = sys.argv[idx + 1]
 
-    print("\nStarting audio generation...\n")
+    if cli_choice:
+        choice = cli_choice
+        print(f"\nRunning Option {choice}...\n")
+    else:
+        print("=" * 70)
+        print("Audio Generator for Khayrat AlHaj  (output: OGG Vorbis)")
+        print("=" * 70)
+        print("\nChoose TTS engine:")
+        print("1. gTTS (Google)    - Simple, free, good quality")
+        print("2. Edge-TTS (Microsoft) - RECOMMENDED - Best quality, multiple voices")
+        print("3. pyttsx3 (Offline)    - Requires system Arabic TTS")
+        print()
+        choice = input("Enter choice (1/2/3) [2]: ").strip() or "2"
+        print("\nStarting audio generation...\n")
 
     if choice == "1":
         generate_audio_gtts()
@@ -271,7 +302,5 @@ if __name__ == "__main__":
     else:
         print("Invalid choice")
 
-    print("\nDone! Next steps:")
-    print("1. Check the 'audio' folder for generated .ogg files")
-    print("2. Copy files to: KhayratAlhaj/Resources/Raw/audio/")
-    print("3. Rebuild the app")
+    print("\nDone! Audio files saved to:")
+    print(f"  {AUDIO_OUTPUT_DIR}")

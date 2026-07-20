@@ -142,11 +142,12 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
 		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="8.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="SourceGear.sqlite3" Version="3.50.4.5" />
 		<!-- SQLite support -->
-		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
 		<!-- Local notifications for prayer times -->
 		<PackageReference Include="Plugin.LocalNotification" Version="14.1.0" />
+		<PackageReference Include="sqlite-net-base" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="3.0.3" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
@@ -169,25 +170,15 @@
 		AND once for the outer build (when RuntimeIdentifier is empty). We create placeholders for
 		all known Android RIDs unconditionally so the XA4304 validation always finds them.
 	-->
-	<Target Name="_CreateMissingProguardPlaceholders"
-	        AfterTargets="PrepareForBuild"
-	        Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
+	<Target Name="_CreateMissingProguardPlaceholders" AfterTargets="PrepareForBuild" Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
 		<PropertyGroup>
 			<_ProguardDir>$(IntermediateOutputPath)proguard\</_ProguardDir>
 		</PropertyGroup>
 		<MakeDir Directories="$(_ProguardDir);$(IntermediateOutputPath)android-arm64\proguard\;$(IntermediateOutputPath)android-x64\proguard\" />
-		<WriteLinesToFile File="$(_ProguardDir)proguard_xamarin.cfg"
-		                  Lines="# placeholder — ProGuard disabled"
-		                  Overwrite="false" />
-		<WriteLinesToFile File="$(_ProguardDir)proguard_project_primary.cfg"
-		                  Lines="# placeholder — ProGuard disabled"
-		                  Overwrite="false" />
-		<WriteLinesToFile File="$(IntermediateOutputPath)android-arm64\proguard\proguard_project_references.cfg"
-		                  Lines="# placeholder — ProGuard disabled"
-		                  Overwrite="false" />
-		<WriteLinesToFile File="$(IntermediateOutputPath)android-x64\proguard\proguard_project_references.cfg"
-		                  Lines="# placeholder — ProGuard disabled"
-		                  Overwrite="false" />
+		<WriteLinesToFile File="$(_ProguardDir)proguard_xamarin.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+		<WriteLinesToFile File="$(_ProguardDir)proguard_project_primary.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+		<WriteLinesToFile File="$(IntermediateOutputPath)android-arm64\proguard\proguard_project_references.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
+		<WriteLinesToFile File="$(IntermediateOutputPath)android-x64\proguard\proguard_project_references.cfg" Lines="# placeholder — ProGuard disabled" Overwrite="false" />
 	</Target>
 
 </Project>

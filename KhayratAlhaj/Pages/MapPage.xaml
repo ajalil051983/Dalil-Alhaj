@@ -139,6 +139,18 @@
                     Padding="10"
                     Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,4'}" />
 
+                <Button x:Name="ResetDirectionsFloatingButton"
+                    IsVisible="False"
+                    AutomationId="ResetDirectionsButtonID"
+                    ImageSource="reset_directions_icon.svg"
+                    Clicked="OnResetDirectionsClicked"
+                    BackgroundColor="{AppThemeBinding Light=#E74C3C, Dark=#C0392B}"
+                    CornerRadius="25"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    Padding="11"
+                    Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,4'}" />
+
                 <Button x:Name="ShareLocationButton"
                     ImageSource="share_location_icon.svg"
                     Clicked="OnShareLocationClicked"
@@ -159,7 +171,7 @@
                     StrokeShape="RoundRectangle 15"
                     StrokeThickness="0"
                     Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,4'}">
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto" Padding="15">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto" Padding="15">
                     <Label x:Name="PopupTitle" 
                            Grid.Row="0" Grid.Column="0"
                            FontSize="18" 
@@ -218,10 +230,22 @@
                             Clicked="OnGetDirectionsClicked" />
                         </Grid>
 
+                    <Button x:Name="ResetDirectionsButton"
+                            Grid.Row="4" Grid.ColumnSpan="2"
+                            Text="{x:Static res:AppResources.ResetDirections}"
+                            BackgroundColor="{AppThemeBinding Light=#E74C3C, Dark=#C0392B}"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="38"
+                            Margin="0,8,0,0"
+                            IsVisible="False"
+                            Clicked="OnResetDirectionsClicked" />
+
                     <!-- Guide summary (shown after tapping View Guide) -->
                     <Label x:Name="GuideSummaryLabel"
-                           Grid.Row="4" Grid.ColumnSpan="2"
+                           Grid.Row="5" Grid.ColumnSpan="2"
                            FontSize="13"
+                              TextType="Html"
                            MaxLines="5"
                            LineBreakMode="TailTruncation"
                            TextColor="{AppThemeBinding Light=#34495E, Dark=#ECF0F1}"
@@ -230,7 +254,7 @@
 
                     <!-- Read More button (shown after tapping View Guide) -->
                     <Button x:Name="ReadMoreButton"
-                            Grid.Row="5" Grid.ColumnSpan="2"
+                            Grid.Row="6" Grid.ColumnSpan="2"
                             Text="{x:Static res:AppResources.ReadMore}"
                             BackgroundColor="Transparent"
                             TextColor="{AppThemeBinding Light=#3498DB, Dark=#5DADE2}"
@@ -241,6 +265,44 @@
                             Margin="0,4,0,0"
                             IsVisible="False"
                             Clicked="OnReadMoreClicked" />
+                </Grid>
+            </Border>
+
+            <!-- Selected Point Distances Popup (shown when tapping an empty spot on the map) -->
+            <Border x:Name="SelectedPointPopup"
+                    IsVisible="False"
+                    VerticalOptions="End"
+                    Margin="20,20,20,90"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2C3E50}"
+                    StrokeShape="RoundRectangle 15"
+                    StrokeThickness="0"
+                    Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=10, Offset='0,4'}">
+                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" Padding="15" RowSpacing="8">
+                    <Label x:Name="SelectedPointTitleLabel"
+                           Grid.Row="0" Grid.Column="0"
+                           Text="{x:Static res:AppResources.SelectedPointTitle}"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#2C3E50, Dark=#FFFFFF}" />
+
+                    <Button Text="✕"
+                            Grid.Row="0" Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#BDC3C7}"
+                            FontSize="16"
+                            Padding="0"
+                            WidthRequest="30" HeightRequest="30"
+                            Clicked="OnCloseSelectedPointPopupClicked" />
+
+                    <Label x:Name="SelectedPointCoordinatesLabel"
+                           Grid.Row="1" Grid.ColumnSpan="2"
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light=#7F8C8D, Dark=#BDC3C7}" />
+
+                    <VerticalStackLayout x:Name="SelectedPointDistancesList"
+                                         Grid.Row="2" Grid.ColumnSpan="2"
+                                         Spacing="6"
+                                         Margin="0,4,0,0" />
                 </Grid>
             </Border>
         </Grid>

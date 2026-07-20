@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:KhayratAlhaj.Pages"
+             x:Class="KhayratAlhaj.Pages.QuranBookmarksPage"
+             Title="Quran Bookmarks"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
+
+    <Grid>
+        <CollectionView x:Name="BookmarksCollection"
+                        Margin="16"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:QuranBookmarkViewItem">
+                    <Border Stroke="#BDC3C7"
+                            StrokeThickness="1"
+                            Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                            Padding="14"
+                            Margin="0,0,0,10"
+                            StrokeShape="RoundRectangle 12">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBookmarkTapped"
+                                                  CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding Title}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}" />
+                            <Label Text="{Binding Preview}"
+                                   FontSize="14"
+                                   LineBreakMode="TailTruncation"
+                                   MaxLines="2"
+                                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <VerticalStackLayout x:Name="EmptyState"
+                             IsVisible="False"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Spacing="12">
+            <Label Text="🔖" FontSize="54" HorizontalOptions="Center" />
+            <Label Text="No bookmarked verses yet"
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>

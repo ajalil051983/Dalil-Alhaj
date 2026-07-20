@@ -815,6 +815,15 @@ namespace KhayratAlhaj.Resources.Localization {
                 return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to يتطلب تحميل السورة اتصالاً بالإنترنت. يرجى التحقق من الاتصال ثم المحاولة مرة أخرى..
+        /// </summary>
+        internal static string QuranNoInternet {
+            get {
+                return ResourceManager.GetString("QuranNoInternet", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to تم رفض إذن الموقع.
@@ -966,6 +975,24 @@ namespace KhayratAlhaj.Resources.Localization {
         internal static string MyLocation {
             get {
                 return ResourceManager.GetString("MyLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 📌 النقطة المختارة.
+        /// </summary>
+        internal static string SelectedPointTitle {
+            get {
+                return ResourceManager.GetString("SelectedPointTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to إعادة ضبط المسار.
+        /// </summary>
+        internal static string ResetDirections {
+            get {
+                return ResourceManager.GetString("ResetDirections", resourceCulture);
             }
         }
         

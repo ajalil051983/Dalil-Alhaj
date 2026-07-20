@@ -34,25 +34,29 @@ namespace KhayratAlhaj.Pages
         private readonly DataService dataService;
 
         // (categoryId, subCategoryId) for each of the 16 default checklist items.
+        // Aligned with the current categories.json structure:
+        //   Category 1 "Preparation for Hajj": 101 Definition, 102 Preparation before flying
+        //     (health/clothing/hygiene/money/logistics/spiritual prep), 104 Documents & vaccinations.
+        //   Category 2 "Hajj Rituals": 201-208 cover the rites in chronological order.
         // subCategoryId == 0 means navigate to the category list page only.
         private static readonly (int CategoryId, int SubCategoryId)[] ItemNavMap =
         {
             (1, 101),  // 1  - Learn rules of Hajj
-            (1, 102),  // 2  - Repentance / preparation
+            (1, 102),  // 2  - Repentance / spiritual preparation
             (1, 104),  // 3  - Prepare documents
-            (2, 202),  // 4  - Prepare ihram clothes
-            (1, 104),  // 5  - Medicines & first aid
-            (2, 202),  // 6  - Ihram from miqat
-            (3, 303),  // 7  - Enter Mecca & Tawaf
-            (3, 304),  // 8  - Sa'i between Safa and Marwah
-            (4, 402),  // 9  - Go to Mina
-            (3, 302),  // 10 - Station at Arafat
-            (4, 401),  // 11 - Pass night at Muzdalifah
-            (4, 403),  // 12 - Stone Jamrat al-Aqabah
-            (4, 0),    // 13 - Shaving / shortening (no specific subcat)
-            (3, 303),  // 14 - Tawaf al-Ifadah
-            (4, 403),  // 15 - Stoning during days of Tashreeq
-            (4, 404),  // 16 - Farewell Tawaf
+            (1, 102),  // 4  - Prepare ihram clothes & luggage
+            (1, 102),  // 5  - Medicines & first aid
+            (2, 201),  // 6  - Ihram from miqat
+            (2, 202),  // 7  - Enter Mecca & Tawaf
+            (2, 202),  // 8  - Sa'i between Safa and Marwah
+            (2, 203),  // 9  - Go to Mina (Day of Tarwiyah)
+            (2, 204),  // 10 - Station at Arafat
+            (2, 205),  // 11 - Pass night at Muzdalifah
+            (2, 206),  // 12 - Stone Jamrat al-Aqabah (Day of Nahr)
+            (2, 206),  // 13 - Shaving / shortening (Day of Nahr)
+            (2, 206),  // 14 - Tawaf al-Ifadah (Day of Nahr)
+            (2, 207),  // 15 - Stoning during days of Tashreeq
+            (2, 208),  // 16 - Farewell Tawaf
         };
 
         public ChecklistPage(DataService dataService)

@@ -36,6 +36,15 @@ namespace KhayratAlhaj
                     if (!NotificationService.IsEnabled) return;
 
                     var prayerService = new PrayerTimeService();
+
+                    // Don't schedule if no real location is set
+                    if (!await prayerService.HasUserLocationAsync()) 
+                    {
+                        System.Diagnostics.Debug.WriteLine(
+                            "[BootReceiver] Skipping: no user location set");
+                        return;
+                    }
+
                     var notificationService = new NotificationService();
 
                     var multiDayTimes = new List<DayPrayerTimes>();

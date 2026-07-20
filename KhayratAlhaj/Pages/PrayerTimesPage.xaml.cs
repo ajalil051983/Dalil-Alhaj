@@ -153,6 +153,34 @@ namespace KhayratAlhaj.Pages
                 if (NotificationService.IsEnabled)
                 {
                     await NotificationService.RequestPermissionAsync();
+
+                    // Reschedule notifications with the real location just resolved.
+                    // This covers the case where startup skipped scheduling (no location yet)
+                    // and the user now has a valid location from this page.
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            var result = new List<Models.PrayerTimes.DayPrayerTimes>();
+                            for (int i = 0; i < NotificationService.DaysAhead; i++)
+                            {
+                                var t = await prayerService.GetPrayerTimesAsync(DateTime.Today.AddDays(i))
+                                    .ConfigureAwait(false);
+                                if (t != null) result.Add(t);
+                            }
+                            if (result.Count > 0)
+                            {
+                                await notificationService.ScheduleMultiDayNotificationsAsync(result)
+                                    .ConfigureAwait(false);
+                                Debug.WriteLine(
+                                    $"[PrayerTimesPage] Rescheduled notifications for {result.Count} day(s)");
+                            }
+                        }
+                        catch (Exception ex2)
+                        {
+                            Debug.WriteLine($"[PrayerTimesPage] Notification reschedule error: {ex2.Message}");
+                        }
+                    });
                 }
             }
             catch (Exception ex)

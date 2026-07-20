@@ -15,6 +15,7 @@ namespace KhayratAlhaj.Pages
     public partial class MapPage : ContentPage
     {
         private ILayer? userLocationLayer;
+        private ILayer? _selectedPointLayer;
         private ImageStyle? _userLocationImageStyle;
         private double _currentHeading;
         private ILayer? _routeLayer;
@@ -24,7 +25,9 @@ namespace KhayratAlhaj.Pages
         private string? _selectedLocationName;
         private string? _selectedLocationKey;
         private (double Lat, double Lon, string Name)? _directionsTarget;
+        private (double Lat, double Lon)? _routeOrigin;
         private string _userRouteProfile = "foot";
+        private bool _showResetAfterGetDirections;
         private readonly Services.RoutingService _routingService = new();
 
         // Cached guide data for Read More navigation
@@ -32,14 +35,16 @@ namespace KhayratAlhaj.Pages
         private Models.SubCategory? _guideSubCategory;
 
         // Direct mapping: locationKey -> (CategoryId, SubCategoryId)
+        // Aligned with the current categories.json structure: Category 2 "Hajj Rituals"
+        // owns subcategories 201-208 covering the rites in chronological order.
         private static readonly Dictionary<string, (int CatId, int SubId)> LocationGuideMap = new()
         {
-            { "kaaba",       (3, 303) },
-            { "arafat",      (3, 302) },
-            { "muzdalifah",  (4, 401) },
-            { "mina",        (4, 402) },
-            { "safa",        (3, 304) },
-            { "marwa",       (3, 304) }
+            { "kaaba",       (2, 202) }, // Tawaf and Sa'i
+            { "arafat",      (2, 204) }, // Standing at Arafat
+            { "muzdalifah",  (2, 205) }, // Stopping at Muzdalifah
+            { "mina",        (2, 203) }, // Day of Tarwiyah (heading to Mina)
+            { "safa",        (2, 202) }, // Tawaf and Sa'i
+            { "marwa",       (2, 202) }  // Tawaf and Sa'i
         };
 
         // Location key -> description resource
@@ -71,6 +76,7 @@ namespace KhayratAlhaj.Pages
             FlowDirection = Services.LocalizationService.GetFlowDirection();
             GetDirectionsButton.Text = AppResources.GetDirections;
             UpdateRouteToggleUI();
+            UpdateResetDirectionsButtonVisibility();
         }
 
         protected override async void OnAppearing()
@@ -83,8 +89,15 @@ namespace KhayratAlhaj.Pages
             {
                 await InitializeMapAsync();
                 _isMapInitialized = true;
-                _ = RequestLocationPermissionAndShowUserLocationAsync();
-                _ = LoadOsrmRouteAsync(); // Load OSRM route after map init
+                
+                // Defer location requests with a delay to avoid blocking main thread
+                // during other critical operations like Quran loading
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(500); // Give main thread time to process other events
+                    await RequestLocationPermissionAndShowUserLocationAsync();
+                    await LoadOsrmRouteAsync(); // Load OSRM route after location is ready
+                });
             }
             
             // Start compass
@@ -288,18 +301,24 @@ namespace KhayratAlhaj.Pages
             };
         }
 
+        // Known Hajj locations shown as pins and used as reference points for
+        // distance calculations from any point the user selects on the map.
+        private readonly record struct HajjLocation(string Name, string Key, double Lat, double Lon, string Color);
+
+        private static IEnumerable<HajjLocation> GetKnownLocations() => new[]
+        {
+            new HajjLocation(AppResources.Kaaba, "kaaba", 21.4225, 39.8262, "#E74C3C"), // Red
+            new HajjLocation(AppResources.Arafat, "arafat", 21.354070042012918, 39.98500670973953, "#3498DB"), // Blue
+            new HajjLocation(AppResources.Muzdalifah, "muzdalifah", 21.392408688619156, 39.91010931758093, "#9B59B6"), // Purple
+            new HajjLocation(AppResources.Mina, "mina", 21.413052539985806, 39.89021580688235, "#27AE60"), // Green
+            new HajjLocation(AppResources.Safa, "safa", 21.421814, 39.827207, "#E67E22"), // Orange
+            new HajjLocation(AppResources.Marwa, "marwa", 21.424796, 39.827194, "#1ABC9C") // Teal
+        };
+
         private MemoryLayer CreatePinLayer()
         {
             // Define Hajj locations with colors and location keys for guide mapping
-            var locations = new[]
-            {
-                new { Name = AppResources.Kaaba, Key = "kaaba", Lat = 21.4225, Lon = 39.8262, Color = "#E74C3C" }, // Red
-                new { Name = AppResources.Arafat, Key = "arafat", Lat = 21.354070042012918, Lon = 39.98500670973953, Color = "#3498DB" }, // Blue
-                new { Name = AppResources.Muzdalifah, Key = "muzdalifah", Lat = 21.392408688619156, Lon = 39.91010931758093, Color = "#9B59B6" }, // Purple
-                new { Name = AppResources.Mina, Key = "mina", Lat = 21.413052539985806, Lon = 39.89021580688235, Color = "#27AE60" }, // Green
-                new { Name = AppResources.Safa, Key = "safa", Lat = 21.421814, Lon = 39.827207, Color = "#E67E22" }, // Orange
-                new { Name = AppResources.Marwa, Key = "marwa", Lat = 21.424796, Lon = 39.827194, Color = "#1ABC9C" } // Teal
-            };
+            var locations = GetKnownLocations();
 
             var features = locations.Select(location =>
             {
@@ -485,6 +504,7 @@ namespace KhayratAlhaj.Pages
                         {
                             // Reset expanded guide state when opening a new pin
                             ResetGuidePopupState();
+                            HideSelectedPointPopup();
                             
                             PopupTitle.Text = name;
                             
@@ -538,6 +558,8 @@ namespace KhayratAlhaj.Pages
                                 PopupETA.Text = "--";
                             }
                             
+                            _showResetAfterGetDirections = false;
+                            UpdateResetDirectionsButtonVisibility();
                             LocationPopup.IsVisible = true;
                         });
                     }
@@ -549,6 +571,20 @@ namespace KhayratAlhaj.Pages
                             LocationPopup.IsVisible = false;
                         });
                     }
+                }
+                else if (mapInfo?.WorldPosition != null)
+                {
+                    // No pin was hit: treat the tap as a user-selected reference point and
+                    // show its distance to every known Hajj location. This works anywhere
+                    // in the world, so it is useful even when the device is not physically
+                    // near Makkah (where live GPS-based directions are not meaningful).
+                    var (lon, lat) = SphericalMercator.ToLonLat(mapInfo.WorldPosition.X, mapInfo.WorldPosition.Y);
+
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        LocationPopup.IsVisible = false;
+                        ShowSelectedPointDistances(lat, lon);
+                    });
                 }
                 else
                 {
@@ -564,10 +600,223 @@ namespace KhayratAlhaj.Pages
             }
         }
 
+        private void HideSelectedPointPopup()
+        {
+            SelectedPointPopup.IsVisible = false;
+            RemoveSelectedPointMarker();
+        }
+
+        private void OnCloseSelectedPointPopupClicked(object? sender, EventArgs e)
+        {
+            HideSelectedPointPopup();
+        }
+
+        private void ShowSelectedPointDistances(double lat, double lon)
+        {
+            UpdateSelectedPointMarker(lat, lon);
+
+            SelectedPointCoordinatesLabel.Text = $"{lat:F5}, {lon:F5}";
+
+            SelectedPointDistancesList.Children.Clear();
+            foreach (var location in GetKnownLocations())
+            {
+                SelectedPointDistancesList.Children.Add(CreateDistanceRow(location, lat, lon));
+            }
+
+            SelectedPointPopup.IsVisible = true;
+        }
+
+        private View CreateDistanceRow(HajjLocation destination, double originLat, double originLon)
+        {
+            var distanceKm = Microsoft.Maui.Devices.Sensors.Location.CalculateDistance(
+                originLat, originLon, destination.Lat, destination.Lon, DistanceUnits.Kilometers);
+
+            var row = new Grid
+            {
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition(GridLength.Star),
+                    new ColumnDefinition(GridLength.Auto),
+                    new ColumnDefinition(GridLength.Auto)
+                },
+                Padding = new Thickness(0, 4)
+            };
+
+            var nameLabel = new Label
+            {
+                Text = destination.Name,
+                FontSize = 14,
+                VerticalOptions = LayoutOptions.Center
+            };
+            nameLabel.SetAppThemeColor(Label.TextColorProperty,
+                Microsoft.Maui.Graphics.Color.FromArgb("#2C3E50"),
+                Microsoft.Maui.Graphics.Color.FromArgb("#ECF0F1"));
+
+            var distanceLabel = new Label
+            {
+                Text = FormatDistance(distanceKm),
+                FontSize = 14,
+                FontAttributes = FontAttributes.Bold,
+                HorizontalTextAlignment = TextAlignment.End,
+                VerticalOptions = LayoutOptions.Center,
+                Margin = new Thickness(8, 0)
+            };
+            distanceLabel.SetAppThemeColor(Label.TextColorProperty,
+                Microsoft.Maui.Graphics.Color.FromArgb("#3498DB"),
+                Microsoft.Maui.Graphics.Color.FromArgb("#5DADE2"));
+
+            var chevronLabel = new Label
+            {
+                Text = AppResources.NavChevron,
+                FontSize = 18,
+                FontAttributes = FontAttributes.Bold,
+                VerticalOptions = LayoutOptions.Center
+            };
+            chevronLabel.SetAppThemeColor(Label.TextColorProperty,
+                Microsoft.Maui.Graphics.Color.FromArgb("#BDC3C7"),
+                Microsoft.Maui.Graphics.Color.FromArgb("#7F8C8D"));
+
+            Grid.SetColumn(nameLabel, 0);
+            Grid.SetColumn(distanceLabel, 1);
+            Grid.SetColumn(chevronLabel, 2);
+            row.Children.Add(nameLabel);
+            row.Children.Add(distanceLabel);
+            row.Children.Add(chevronLabel);
+
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += async (s, e) => await DrawRouteFromSelectedPointAsync(originLat, originLon, destination);
+            row.GestureRecognizers.Add(tapGesture);
+
+            return row;
+        }
+
+        private async Task DrawRouteFromSelectedPointAsync(double originLat, double originLon, HajjLocation destination)
+        {
+            try
+            {
+                _showResetAfterGetDirections = true;
+                _routeOrigin = (originLat, originLon);
+                _directionsTarget = (destination.Lat, destination.Lon, destination.Name);
+
+                // Close the selected-point modal now that a destination was chosen.
+                SelectedPointPopup.IsVisible = false;
+
+                RouteToggleContainer.IsVisible = true;
+                await LoadUserDirectionsAsync();
+                UpdateResetDirectionsButtonVisibility();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error drawing route from selected point: {ex.Message}");
+            }
+        }
+
+        private static string FormatDistance(double distanceKm)
+        {
+            return distanceKm < 1 ? $"{distanceKm * 1000:F0} m" : $"{distanceKm:F1} km";
+        }
+
+        private void UpdateSelectedPointMarker(double lat, double lon)
+        {
+            if (HajjMapControl?.Map == null) return;
+
+            RemoveSelectedPointMarker();
+
+            var point = SphericalMercator.FromLonLat(lon, lat);
+            var feature = new PointFeature(point.ToMPoint());
+            feature["name"] = AppResources.SelectedPointTitle;
+            feature.Styles.Add(ImageStyles.CreatePinStyle(
+                fillColor: Mapsui.Styles.Color.FromString("#F1C40F"),
+                symbolScale: 1.2));
+
+            _selectedPointLayer = new MemoryLayer
+            {
+                Name = "Selected Point",
+                Features = new[] { feature },
+                Style = null
+            };
+
+            HajjMapControl.Map.Layers.Add(_selectedPointLayer);
+            HajjMapControl.Map.Refresh();
+        }
+
+        private void RemoveSelectedPointMarker()
+        {
+            if (_selectedPointLayer != null && HajjMapControl?.Map?.Layers.Contains(_selectedPointLayer) == true)
+            {
+                HajjMapControl.Map.Layers.Remove(_selectedPointLayer);
+                HajjMapControl.Map.Refresh();
+            }
+            _selectedPointLayer = null;
+        }
+
         private void OnClosePopupClicked(object? sender, EventArgs e)
         {
             LocationPopup.IsVisible = false;
             ResetGuidePopupState();
+        }
+
+        private bool HasActiveDirections()
+        {
+            return _userRouteLayer != null || _directionsTarget != null || _routeOrigin != null;
+        }
+
+        private void UpdateResetDirectionsButtonVisibility()
+        {
+            var isVisible = _showResetAfterGetDirections && HasActiveDirections();
+
+            if (ResetDirectionsButton != null)
+            {
+                ResetDirectionsButton.IsVisible = false;
+            }
+
+            if (ResetDirectionsFloatingButton != null)
+            {
+                ResetDirectionsFloatingButton.IsVisible = isVisible;
+            }
+        }
+
+        private void OnResetDirectionsClicked(object? sender, EventArgs e)
+        {
+            try
+            {
+                _showResetAfterGetDirections = false;
+                _directionsTarget = null;
+                _routeOrigin = null;
+
+                if (_userRouteLayer != null && HajjMapControl?.Map?.Layers.Contains(_userRouteLayer) == true)
+                {
+                    HajjMapControl.Map.Layers.Remove(_userRouteLayer);
+                }
+
+                if (HajjMapControl?.Map != null)
+                {
+                    var orphanedDirectionLayers = HajjMapControl.Map.Layers
+                        .Where(l => string.Equals(l.Name, "User Directions", StringComparison.Ordinal))
+                        .ToList();
+
+                    foreach (var layer in orphanedDirectionLayers)
+                    {
+                        HajjMapControl.Map.Layers.Remove(layer);
+                    }
+                }
+
+                _userRouteLayer = null;
+
+                RouteInfoPanel.IsVisible = false;
+                RouteToggleContainer.IsVisible = false;
+                LocationPopup.IsVisible = false;
+                RouteDistanceLabel.Text = string.Empty;
+                RouteETALabel.Text = string.Empty;
+
+                HideSelectedPointPopup();
+                UpdateResetDirectionsButtonVisibility();
+                HajjMapControl?.Map?.Refresh();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error resetting directions: {ex.Message}");
+            }
         }
 
         private async void OnViewGuideClicked(object? sender, EventArgs e)
@@ -592,14 +841,8 @@ namespace KhayratAlhaj.Pages
                         _guideCategory = category;
                         _guideSubCategory = subCategory;
 
-                        // Truncate content for summary preview
-                        var content = subCategory.Content ?? string.Empty;
-                        var summary = content.Length > 200
-                            ? content[..200] + "\u2026"
-                            : content;
-
                         // Show summary + Read More, hide View Guide button
-                        GuideSummaryLabel.Text = summary;
+                        GuideSummaryLabel.Text = subCategory.Content ?? string.Empty;
                         GuideSummaryLabel.IsVisible = true;
                         ReadMoreButton.IsVisible = true;
                         ViewGuideButton.IsVisible = false;
@@ -842,6 +1085,10 @@ namespace KhayratAlhaj.Pages
                 if (_directionsTarget == null)
                     return;
 
+                // A direct "Get Directions" tap always routes from the device's real
+                // location, overriding any previously selected reference point.
+                _routeOrigin = null;
+
                 if (_userLocation == null)
                 {
                     await RequestLocationPermissionAndShowUserLocationAsync();
@@ -856,8 +1103,11 @@ namespace KhayratAlhaj.Pages
                     return;
                 }
 
+                _showResetAfterGetDirections = true;
                 RouteToggleContainer.IsVisible = true;
                 await LoadUserDirectionsAsync();
+                LocationPopup.IsVisible = false;
+                UpdateResetDirectionsButtonVisibility();
             }
             finally
             {
@@ -867,14 +1117,18 @@ namespace KhayratAlhaj.Pages
 
         private async Task LoadUserDirectionsAsync()
         {
-            if (_userLocation == null || _directionsTarget == null)
+            var origin = _routeOrigin ?? (_userLocation != null
+                ? (_userLocation.Latitude, _userLocation.Longitude)
+                : ((double Lat, double Lon)?)null);
+
+            if (origin == null || _directionsTarget == null)
                 return;
 
             try
             {
                 var waypoints = new List<(double Lat, double Lon)>
                 {
-                    (_userLocation.Latitude, _userLocation.Longitude),
+                    (origin.Value.Lat, origin.Value.Lon),
                     (_directionsTarget.Value.Lat, _directionsTarget.Value.Lon)
                 };
 
@@ -897,6 +1151,7 @@ namespace KhayratAlhaj.Pages
                             RouteDistanceLabel.Text = result.FormattedDistance;
                             RouteETALabel.Text = $"{result.FormattedDuration} {(_userRouteProfile == "foot" ? AppResources.Walking : AppResources.Driving)}";
                             RouteInfoPanel.IsVisible = true;
+                            UpdateResetDirectionsButtonVisibility();
 
                             CenterMapOnRoute(result.Coordinates);
                         }

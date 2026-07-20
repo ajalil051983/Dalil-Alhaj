@@ -10,16 +10,19 @@ namespace KhayratAlhaj.Services
     public class DataService
     {
         private readonly DatabaseService _db;
+        private readonly QuranService _quranService;
 
         /// <summary>
         /// Cache dictionary to store categories by language code.
         /// Key: language code (e.g., "en", "fr", "ar"), Value: list of categories for that language.
         /// </summary>
         private readonly Dictionary<string, List<Category>> _categoriesCache = new();
+        private readonly Dictionary<string, List<DhikrItem>> _dhikrCache = new();
 
         public DataService()
         {
             _db = new DatabaseService();
+            _quranService = new QuranService();
         }
 
         /// <summary>
@@ -55,6 +58,7 @@ namespace KhayratAlhaj.Services
         public void ClearCache()
         {
             _categoriesCache.Clear();
+            _dhikrCache.Clear();
         }
 
         /// <summary>
@@ -78,6 +82,48 @@ namespace KhayratAlhaj.Services
         {
             var category = await GetCategoryByIdAsync(categoryId);
             return category?.Subcategories.FirstOrDefault(sc => sc.Id == subCategoryId);
+        }
+
+        /// <summary>
+        /// Returns Dhikr entries by DhikrEntity type (e.g., Morning or Evening)
+        /// in the current app language.
+        /// </summary>
+        public async Task<List<DhikrItem>> GetDhikrsByTypeAsync(string dhikrType)
+        {
+            var currentLanguage = LocalizationService.GetCurrentLanguage();
+            var cacheKey = $"{currentLanguage}:{dhikrType.Trim()}";
+
+            if (_dhikrCache.TryGetValue(cacheKey, out var cachedDhikrs))
+            {
+                return cachedDhikrs;
+            }
+
+            try
+            {
+                var dhikrs = await _db.GetDhikrsByTypeAsync(dhikrType, currentLanguage);
+                _dhikrCache[cacheKey] = dhikrs;
+                return dhikrs;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DataService] Error loading dhikr entries: {ex.Message}");
+                return new List<DhikrItem>();
+            }
+        }
+
+        public Task<QuranSurahData?> GetQuranSurahAsync(int surahNumber, bool forceRefresh = false, string? editionIdentifier = null)
+        {
+            return _quranService.GetSurahAsync(surahNumber, forceRefresh, editionIdentifier);
+        }
+
+        public Task<QuranSurahData?> GetCachedQuranSurahAsync(int surahNumber, string? editionIdentifier = null)
+        {
+            return _quranService.GetSurahFromCacheAsync(surahNumber, editionIdentifier);
+        }
+
+        public Task<List<QuranSurahReference>> GetQuranSurahReferencesAsync(bool forceRefresh = false)
+        {
+            return _quranService.GetSurahReferencesAsync(forceRefresh);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace KhayratAlhaj.Pages
         private string? lastLoadedLanguage;
         private bool isApplyingTheme = false;
         private AppTheme? lastAppliedTheme = null;
+        private bool isNavigating;
 
         public SubCategoryPage(Category category, DataService dataService)
         {
@@ -214,8 +215,59 @@ namespace KhayratAlhaj.Pages
         {
             if (e.Parameter is SubCategory subCategory)
             {
+                await NavigateToSubCategoryAsync(subCategory);
+            }
+        }
+
+        private async void OnDhikrButtonClicked(object? sender, EventArgs e)
+        {
+            if (sender is Button button && button.CommandParameter is SubCategory subCategory)
+            {
+                await NavigateToSubCategoryAsync(subCategory);
+            }
+        }
+
+        private async Task NavigateToSubCategoryAsync(SubCategory subCategory)
+        {
+            // Guard against double taps pushing duplicate pages (e.g. tapping again while the
+            // Quran surah is still fetching, which would trigger a second concurrent load).
+            if (isNavigating)
+            {
+                return;
+            }
+
+            isNavigating = true;
+            try
+            {
+                if (category.Id == 4)
+                {
+                    var surahNumber = subCategory.SurahNumber;
+                    Task<QuranSurahData?>? surahTask = surahNumber is int validSurahNumber && validSurahNumber > 0
+                        ? dataService.GetQuranSurahAsync(validSurahNumber, editionIdentifier: QuranService.WarshEdition)
+                        : null;
+
+                    await Navigation.PushAsync(new QuranReaderPage(category, subCategory, dataService, preloadedSurahTask: surahTask));
+                    return;
+                }
+
+                if (IsDhikrCounterSubCategory(subCategory.Id))
+                {
+                    var dhikrType = subCategory.Id == 301 ? "Morning" : "Evening";
+                    await Navigation.PushAsync(new DhikrCounterPage(category, subCategory, dhikrType, dataService));
+                    return;
+                }
+
                 await Navigation.PushAsync(new ContentDetailPage(category, subCategory));
             }
+            finally
+            {
+                isNavigating = false;
+            }
+        }
+
+        private static bool IsDhikrCounterSubCategory(int subCategoryId)
+        {
+            return subCategoryId == 301 || subCategoryId == 302;
         }
     }
 }

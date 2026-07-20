@@ -42,6 +42,8 @@ namespace KhayratAlhaj.Models
         public string NameFr { get; set; } = string.Empty;
         public string Icon { get; set; } = "📖";
         public string Content { get; set; } = string.Empty;
+        public int? SurahNumber { get; set; }
+        public string ApiLookupName { get; set; } = string.Empty;
         public bool HasAudioAr { get; set; } = false;
         public bool HasAudioEn { get; set; } = false;
         public bool HasAudioFr { get; set; } = false;

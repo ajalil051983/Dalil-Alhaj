@@ -1,0 +1,594 @@
+[
+  {
+    "id": 1,
+    "nameAr": "التحضير للحج",
+    "nameEn": "Preparation for Hajj",
+    "nameFr": "Préparation pour le Hajj",
+    "icon": "✈️",
+    "color": "#3498DB",
+    "subcategories": [
+      {
+        "id": 101,
+        "nameAr": "فهم أهمية الحج",
+        "nameEn": "Understanding the Significance of Hajj",
+        "nameFr": "Comprendre l'importance du Hajj",
+        "icon": "✅",
+        "contentAr": "<h3>فهم أهمية الحج</h3><ul><li><strong>شرط صحة:</strong> الإسلام.</li><li><strong>شروط وجوب:</strong> التكليف، والحرية، والاستطاعة.</li><li>إذا حج الصغير أو المجنون صح حجهما مع وليهما، ولا يجزئهما عن الفرض، ويعيدان بعد البلوغ أو العقل.</li><li><strong>الاستطاعة:</strong> القدرة على الوصول إلى البيت الحرام في أمن على النفس والمال والدين، دون مشقة فادحة خارجة عن العادة، ماشيا أو راكبا.</li><li><strong>المرأة:</strong> لا تسافر للحج أو العمرة إلا مع زوج أو محرم، فإن لم تجد ووجدت رفقة مأمونة وجب عليها الحج إذا توفرت لها الاستطاعة.</li></ul>",
+        "contentEn": "<h3>Conditions of Hajj</h3><ul><li><strong>Condition of validity:</strong> Islam.</li><li><strong>Conditions of obligation:</strong> legal responsibility, freedom, and capability.</li><li>If a child or an insane person performs Hajj with a guardian, the Hajj is valid but does not fulfill the obligatory Hajj; it must be repeated after puberty or recovery of sanity.</li><li><strong>Capability:</strong> being able to reach the Sacred House with safety for life, property, and religion, without extraordinary hardship, whether walking or riding.</li><li><strong>Women:</strong> a woman does not travel for Hajj or Umrah except with a husband or mahram. If none is available but she finds a trustworthy group, Hajj becomes obligatory when she is capable.</li></ul>",
+        "contentFr": "<h3>Conditions du Hajj</h3><ul><li><strong>Condition de validité :</strong> l’islam.</li><li><strong>Conditions d’obligation :</strong> la responsabilité légale, la liberté et la capacité.</li><li>Si un enfant ou une personne privée de raison accomplit le Hajj avec son tuteur, son Hajj est valide mais ne remplace pas le Hajj obligatoire ; il devra être refait après la puberté ou le retour de la raison.</li><li><strong>Capacité :</strong> pouvoir atteindre la Maison sacrée en sécurité pour sa personne, ses biens et sa religion, sans difficulté excessive, à pied ou en monture.</li><li><strong>Femme :</strong> elle ne voyage pour le Hajj ou la Omra qu’avec un mari ou un mahram. Si elle n’en trouve pas mais trouve un groupe sûr, le Hajj devient obligatoire lorsqu’elle en a la capacité.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 102,
+        "nameAr": "خطوات الاستعداد للحج",
+        "nameEn": "Steps to Prepare for Hajj",
+        "nameFr": "Étapes pour se préparer au Hajj",
+        "icon": "🎒",
+        "contentAr": "<h3>خطوات الاستعداد للحج</h3><ul><li>إزالة الشعر المطلوب إزالته، وتقليم الأظافر، وتنظيف البدن.</li><li>الاغتسال كغسل الجنابة، وهو سنة لكل حاج وحاجة، ولو كان صغيرا أو حائضا، ولا يكفي عنه الوضوء.</li><li>لبس الرجل إزارا ورداء ونعلين، ولا تؤمر المرأة بالتجرد من المخيط، لكنها لا تلبس النقاب ولا القفازين ولا الخواتم.</li><li>صلاة ركعتين قبل الإحرام إن لم يكن الوقت وقت كراهة، يقرأ في الأولى الفاتحة والكافرون، وفي الثانية الفاتحة والإخلاص.</li><li>تكون نية النسك مع قول من أقوال الحج كالتلبية أو التكبير.</li></ul>",
+        "contentEn": "<h3>Preparation before ihram</h3><ul><li>Remove the hair that should be removed, trim the nails, and clean the body.</li><li>Perform ghusl like the ghusl of janabah. It is sunnah for every male or female pilgrim, even a child or menstruating woman, and wudu does not replace it.</li><li>Men wear an izar, rida, and sandals. Women do not have to remove sewn clothing, but they do not wear niqab, gloves, or rings.</li><li>Pray two rakahs before ihram when it is not a disliked prayer time: al-Fatihah with al-Kafirun in the first, and al-Fatihah with al-Ikhlas in the second.</li><li>The rite is intended with one of the Hajj utterances, such as talbiyah or takbir.</li></ul>",
+        "contentFr": "<h3>Préparation avant l’ihram</h3><ul><li>Enlever les poils à enlever, couper les ongles et nettoyer le corps.</li><li>Faire le ghusl comme celui de la janabah. C’est une sunna pour tout pèlerin ou pèlerine, même enfant ou femme en règles, et les ablutions ne le remplacent pas.</li><li>L’homme porte un izar, un rida et des sandales. La femme n’a pas à quitter les vêtements cousus, mais elle ne porte ni niqab, ni gants, ni bagues.</li><li>Prier deux rakahs avant l’ihram si ce n’est pas un temps déconseillé : al-Fatihah avec al-Kafirun dans la première, al-Fatihah avec al-Ikhlas dans la seconde.</li><li>L’intention du rite accompagne une parole du Hajj, comme la talbiyah ou le takbir.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 103,
+        "nameAr": "الأدعية والصلوات للحج",
+        "nameEn": "Supplications and Prayers for Hajj",
+        "nameFr": "Invocations et prières pour le Hajj",
+        "icon": "🤲",
+        "contentAr": "<h3>الأدعية والصلوات للحج</h3><ul><li>«بسم الله توكلت على الله، لا حول ولا قوة إلا بالله».</li><li>«اللهم بك أصول وبك أحول وبك أسير».</li><li>«اللهم إني أسألك في سفري هذا البر والتقوى، ومن العمل الصالح ما ترضى».</li><li>«اللهم هون علي سفري هذا، واطو عني بعده، اللهم أنت الصاحب في السفر، والخليفة في الأهل».</li><li>عند ركوب الطائرة يقول: «الحمد لله الذي سخر لنا هذا وما كنا له مقرنين، وإنا إلى ربنا لمنقلبون».</li></ul>",
+        "contentEn": "<h3>Travel supplications</h3><ul><li>“In the name of Allah, I trust in Allah; there is no power and no strength except with Allah.”</li><li>“O Allah, by You I move, by You I turn, and by You I travel.”</li><li>“O Allah, I ask You in this journey for righteousness, piety, and deeds that please You.”</li><li>“O Allah, make this journey easy for me and fold its distance. O Allah, You are the companion in travel and the caretaker of the family.”</li><li>When boarding a plane, say: “Praise be to Allah who subjected this to us, and we could not have subdued it; and to our Lord we shall return.”</li></ul>",
+        "contentFr": "<h3>Invocations de voyage</h3><ul><li>« Au nom d’Allah, je place ma confiance en Allah ; il n’y a de force ni de puissance qu’en Allah. »</li><li>« Ô Allah, par Toi je me meus, par Toi je m’oriente et par Toi je voyage. »</li><li>« Ô Allah, je Te demande dans ce voyage la piété, la crainte révérencielle et les œuvres qui Te plaisent. »</li><li>« Ô Allah, facilite-moi ce voyage et rapproche-m’en la distance. Ô Allah, Tu es le compagnon en voyage et le gardien de la famille. »</li><li>En montant dans l’avion : « Louange à Allah qui nous a soumis ceci alors que nous n’en étions pas capables ; et c’est vers notre Seigneur que nous retournerons. »</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 104,
+        "nameAr": "الوثائق والتطعيمات المطلوبة",
+        "nameEn": "Required Documents and Vaccinations",
+        "nameFr": "Documents et vaccinations requis",
+        "icon": "🧳",
+        "contentAr": "<h3>الوثائق والتطعيمات المطلوبة</h3><p>توصي وزارة الأوقاف والشؤون الإسلامية الحجاج بالتحقق من الوثائق منذ ما بعد القرعة، والاحتفاظ بالأصل والنسخ في مكان آمن.</p><ul><li><strong>جواز السفر:</strong> الاتصال بالمصالح الترابية لإعداده، ثم إنجاز نسخة منه بعد تسلم تذكرة السفر.</li><li><strong>تذكرة السفر:</strong> التأكد من تاريخ الذهاب والإياب، وإنجاز نسخة من التذكرة والاحتفاظ بها منفصلة عن الأصل.</li><li><strong>دفتر التلقيح:</strong> الاحتفاظ به ضمن الوثائق، والإدلاء به عند مطار الوصول في جدة أو المدينة.</li><li><strong>بطاقة الحاج أو الشارة:</strong> حملها بشكل مستمر على العنق، واستعمالها للتعرف على الحاج ومجموعته.</li><li><strong>بطاقة نسك :</strong> حملها بشكل مستمر على العنق، نسك يرافقك ويثري تجربتك في الحج والعمرة وزيارة الروضة الشريفة.</li><li><strong>بطاقات السكن والتنقل:</strong> الاحتفاظ ببطاقة الفندق، وبالبطاقة والإسورة المسلمتين من طرف المطوف، ووضعها مع الشارة عند الإقامة بمكة.</li><li><strong>الوثائق والأدوية الخاصة:</strong> وضع الوثائق اللازمة والأدوية الضرورية في الحقيبة اليدوية، مع احترام الحجم والوزن المسموح بهما.</li><li><strong>الأمتعة:</strong> كتابة الاسم والعنوان ورقم الهاتف على الحقائب ومن داخلها أو وضع علامة واضحة عليها؛ ولا يتجاوز وزن كل حقيبة من الحقيبتين المسموح بهما 23 كيلوغراما.</li></ul>",
+        "contentEn": "<h3>Required Hajj Documents</h3><p>The Ministry of Endowments and Islamic Affairs recommends that pilgrims check their documents from the post-lottery stage and keep the originals and copies in a safe place.</p><ul><li><strong>Passport:</strong> contact the territorial services to prepare it, then make a copy after receiving the travel ticket.</li><li><strong>Travel ticket:</strong> verify the departure and return dates, make a copy of the ticket, and keep it separate from the original.</li><li><strong>Vaccination record:</strong> keep it with the documents and present it at the arrival airport in Jeddah or Madinah.</li><li><strong>Pilgrim badge:</strong> wear it continuously around the neck, using it to identify the pilgrim and his group.</li><li><strong>Nusk card:</strong> wear it continuously around the neck; Nusk accompanies you and enriches your experience in Hajj, Umrah, and visiting the Noble Rawdah.</li><li><strong>Accommodation and transportation cards:</strong> keep the hotel card, and the card and bracelet given by the mutawwif, placing them with the badge during your stay in Mecca.</li><li><strong>Personal documents and medications:</strong> place necessary documents and essential medications in the carry-on bag, respecting the allowed size and weight.</li><li><strong>Luggage:</strong> write your name, address, and phone number on your suitcases and inside them or place a clear mark on them; each of the two allowed suitcases must not exceed 23 kg.</li></ul>",
+        "contentFr": "<h3>Documents requis pour le Hajj</h3><p>Le ministère des Endowments et des Affaires islamiques recommande aux pèlerins de vérifier leurs documents dès la phase post-loterie et de conserver les originaux et les copies en lieu sûr.</p><ul><li><strong>Passeport :</strong> contacter les services territoriaux pour le préparer, puis faire une copie après réception du billet de voyage.</li><li><strong>Billet de voyage :</strong> vérifier les dates de départ et de retour, faire une copie du billet et la garder séparée de l’original.</li><li><strong>Carnet de vaccination :</strong> le garder avec les documents et le présenter à l’aéroport d’arrivée à Jeddah ou Madinah.</li><li><strong>Badge de pèlerin :</strong> le porter en continu autour du cou, en l’utilisant pour identifier le pèlerin et son groupe.</li><li><strong>Carte Nusk :</strong> la porter en continu autour du cou ; Nusk vous accompagne et enrichit votre expérience dans le Hajj, la Omra et la visite de la Noble Rawdah.</li><li><strong>Cartes d’hébergement et de transport :</strong> garder la carte d’hôtel, ainsi que la carte et le bracelet donnés par le mutawwif, en les plaçant avec le badge pendant votre séjour à La Mecque.</li><li><strong>Documents personnels et médicaments :</strong> placer les documents nécessaires et les médicaments essentiels dans le bagage à main, en respectant la taille et le poids autorisés.</li><li><strong>Bagages :</strong> écrire votre nom, adresse et numéro de téléphone sur vos valises et à l’intérieur ou y placer une marque claire ; chacune des deux valises autorisées ne doit pas dépasser 23 kg.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nameAr": "مناسك الحج",
+    "nameEn": "Hajj Rituals",
+    "nameFr": "Rituels du Hajj",
+    "icon": "🕋",
+    "color": "#27AE60",
+    "subcategories": [
+      {
+        "id": 201,
+        "nameAr": "الإحرام من الميقات",
+        "nameEn": "Ihram from the Miqat",
+        "nameFr": "Ihram depuis le miqat",
+        "icon": "📍",
+        "contentAr": "<h3>الإحرام من الميقات</h3><h4>نظرة عامة</h4><p>هذه الصفحة تقدم دليلا عمليا لبداية النسك من الميقات، مع الصيغ المشروعة للنية والتلبية، ونصوص القرآن والحديث.</p><h4>المواقيت المكانية وأسماؤها المعروفة اليوم</h4><ul><li><strong>ذو الحليفة</strong> (أبيار علي): ميقات أهل المدينة ومن مر بهم.</li><li><strong>الجحفة</strong> (المعمول به غالبا: رابغ): ميقات أهل الشام ومصر والمغرب.</li><li><strong>قرن المنازل</strong> (السيل الكبير): ميقات أهل نجد.</li><li><strong>يلملم</strong> (السعدية): ميقات أهل اليمن ومن مر بطريقهم.</li><li><strong>ذات عرق</strong> (الضريبة): ميقات أهل العراق ومن جاء من جهتهم.</li></ul><h4>النية (النيّة) والتلبية حسب نوع النسك</h4><ul><li><strong>الإفراد:</strong> يقول عند الإحرام: لبيك حجا.</li><li><strong>القران:</strong> يقول: لبيك عمرة وحجا.</li><li><strong>التمتع:</strong> عند الميقات: لبيك عمرة، ثم يوم التروية من مكة: لبيك حجا.</li><li>ثم يأتي بصيغة التلبية المشهورة: لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك.</li></ul><h4>إذا تجاوز الميقات بلا إحرام</h4><ul><li>الأصل أن يرجع إلى الميقات إن أمكن فيحرم منه.</li><li>إن أحرم بعد تجاوزه ففيه دم عند جمهور الفقهاء، وتفاصيل السقوط أو اللزوم تختلف بين المذاهب.</li></ul><h4>أدلة من القرآن الكريم (النص)</h4><ul><li><strong>قال الله تعالى:</strong> وأتموا الحج والعمرة لله. (البقرة: 196)</li><li><strong>وقال تعالى:</strong> ولله على الناس حج البيت من استطاع إليه سبيلا ومن كفر فإن الله غني عن العالمين. (آل عمران: 97)</li><li><strong>وقال تعالى:</strong> وأذن في الناس بالحج يأتوك رجالا وعلى كل ضامر يأتين من كل فج عميق. (الحج: 27)</li></ul><h4>أحاديث صحيحة (النص)</h4><ul><li><strong>حديث المواقيت - في الصحيحين:</strong> وقت رسول الله صلى الله عليه وسلم لأهل المدينة ذا الحليفة، ولأهل الشام الجحفة، ولأهل نجد قرن المنازل، ولأهل اليمن يلملم، وقال: هن لهن ولمن أتى عليهن من غير أهلهن ممن أراد الحج والعمرة.</li><li><strong>حديث أنواع الإهلال - في الصحيحين:</strong> قالت عائشة رضي الله عنها: خرجنا مع رسول الله صلى الله عليه وسلم، فمنا من أهل بعمرة، ومنا من أهل بحج وعمرة، ومنا من أهل بالحج.</li><li><strong>حديث التلبية - في الصحيحين:</strong> أن النبي صلى الله عليه وسلم كان يلبي: لبيك اللهم لبيك، لبيك لا شريك لك لبيك، إن الحمد والنعمة لك والملك، لا شريك لك.</li></ul><h4>اختلاف الأئمة الأربعة (مثال: حكم تجاوز الميقات بلا إحرام)</h4><table><thead><tr><th>الإمام</th><th>الرأي</th><th>المرجع</th></tr></thead><tbody><tr><td>الإمام أبو حنيفة</td><td>يجب الرجوع للميقات إن أمكن، فإن أحرم بعده لزمه دم.</td><td>الفتاوى الهندية، باب المواقيت</td></tr><tr><td>الإمام مالك</td><td>الإحرام من الميقات واجب، ومن جاوزه وأحرم بعده فعليه دم عند المشهور.</td><td>المدونة الكبرى، كتاب الحج</td></tr><tr><td>الإمام الشافعي</td><td>يلزمه الرجوع ما لم يتلبس بالنسك، وإلا جبر بدم على تفصيل.</td><td>الأم، كتاب الحج</td></tr><tr><td>الإمام أحمد بن حنبل</td><td>من ترك الإحرام من الميقات ثم أحرم بعده فعليه دم، والرجوع قبل التلبس يسقطه عند كثير من الحنابلة.</td><td>المغني لابن قدامة، كتاب الحج</td></tr></tbody></table><aside>تنبيه: هذه خلاصة تعليمية مختصرة، والفتوى التفصيلية ترجع فيها إلى أهل العلم في بلدك.</aside>",
+        "contentEn": "<h3>Ihram from the Miqat</h3><h4>Overview</h4><p>This section gives practical guidance for entering ihram from miqat, including niyyah wording by ritual type, with Quran and sahih hadith texts.</p><h4>Miqat Locations and Common Modern Names</h4><ul><li><strong>Dhul Hulayfah</strong> (Abyar Ali): miqat for Madinah.</li><li><strong>Al-Juhfah</strong> (commonly aligned with Rabigh today): miqat for Sham, Egypt, and Maghreb pilgrims.</li><li><strong>Qarn al-Manazil</strong> (Al-Sayl al-Kabir): miqat for Najd.</li><li><strong>Yalamlam</strong> (Al-Sa'diyyah area): miqat for Yemen route.</li><li><strong>Dhat Irq</strong> (Al-Daribah): miqat for Iraq route.</li></ul><h4>Niyyah Wording by Hajj Type</h4><ul><li><strong>Ifrad:</strong> Labbayka Hajj-an.</li><li><strong>Qiran:</strong> Labbayka Umratan wa Hajj-an.</li><li><strong>Tamattu:</strong> at miqat: Labbayka Umrah; then on 8th Dhul Hijjah from Makkah: Labbayka Hajj-an.</li><li>Then continue with talbiyah: Labbayka Allahumma labbayk, labbayka la sharika laka labbayk, inna al-hamda wa al-ni'mata laka wa al-mulk, la sharika lak.</li></ul><h4>If Miqat Is Missed</h4><ul><li>Return to miqat if able and enter ihram there.</li><li>If ihram is entered after crossing, compensation (dam) is required according to the majority, with madhhab details.</li></ul><h4>Quran Evidence (Text)</h4><ul><li><strong>Quran 2:196:</strong> Complete Hajj and Umrah for Allah.</li><li><strong>Quran 3:97:</strong> Hajj to the House is a duty owed to Allah by those able to find a way.</li><li><strong>Quran 22:27:</strong> Proclaim Hajj to the people; they will come to you on foot and on every lean camel from every distant pass.</li></ul><h4>Sahih Hadith Evidence (Text)</h4><ul><li><strong>Miqat hadith (Bukhari and Muslim):</strong> The Messenger of Allah appointed Dhul Hulayfah for Madinah, Al-Juhfah for Sham, Qarn al-Manazil for Najd, and Yalamlam for Yemen, and said these are for them and for whoever passes by them intending Hajj or Umrah.</li><li><strong>Types of ihram (Bukhari and Muslim):</strong> Aishah reported: among us were those who entered ihram for Umrah, those who entered for Hajj and Umrah, and those who entered for Hajj.</li><li><strong>Talbiyah (Bukhari and Muslim):</strong> The Prophet's talbiyah was: Labbayka Allahumma labbayk, labbayka la sharika laka labbayk, inna al-hamda wa al-ni'mata laka wa al-mulk, la sharika lak.</li></ul><h4>Four Imams Differences (Missing Miqat Without Ihram)</h4><table><thead><tr><th>Imam</th><th>Opinion</th><th>Reference</th></tr></thead><tbody><tr><td>Imam Abu Hanifah</td><td>Return to miqat if possible; if ihram is entered after crossing, dam is due.</td><td>Al-Fatawa al-Hindiyyah, Miqat chapters</td></tr><tr><td>Imam Malik</td><td>Ihram from miqat is obligatory; crossing then entering later requires dam in the well-known view.</td><td>Al-Mudawwanah, Book of Hajj</td></tr><tr><td>Imam al-Shafi'i</td><td>Return is required before full engagement in rites; otherwise expiation by dam with detail.</td><td>Al-Umm, Book of Hajj</td></tr><tr><td>Imam Ahmad ibn Hanbal</td><td>Crossing miqat then entering ihram later requires dam; returning early may waive it in Hanbali detail.</td><td>Al-Mughni (Ibn Qudamah), Book of Hajj</td></tr></tbody></table><aside>Note: This is educational guidance; detailed fatwa should be taken from qualified scholars.</aside>",
+        "contentFr": "<h3>Ihram depuis le miqat</h3><h4>Vue d'ensemble</h4><p>Cette section donne une trame pratique: noms actuels des miqats, formules de niyyah selon le type de Hajj, et textes du Coran et des hadiths sahih.</p><h4>Miqats et appellations connues aujourd'hui</h4><ul><li><strong>Dhul Hulayfah</strong> (Abyar Ali): miqat de Médine.</li><li><strong>Al-Juhfah</strong> (souvent appliqué via Rabigh aujourd'hui): miqat du Cham, d'Égypte et du Maghreb.</li><li><strong>Qarn al-Manazil</strong> (Al-Sayl al-Kabir): miqat du Najd.</li><li><strong>Yalamlam</strong> (zone d'Al-Sa'diyyah): miqat de la route du Yémen.</li><li><strong>Dhat Irq</strong> (Al-Daribah): miqat de la route d'Irak.</li></ul><h4>Niyyah selon le type de rite</h4><ul><li><strong>Ifrad:</strong> Labbayka Hajj-an.</li><li><strong>Qiran:</strong> Labbayka Umratan wa Hajj-an.</li><li><strong>Tamattu:</strong> au miqat: Labbayka Umrah; puis le 8 Dhul Hijjah depuis La Mecque: Labbayka Hajj-an.</li><li>Puis la talbiyah connue: Labbayka Allahumma labbayk, labbayka la sharika laka labbayk, inna al-hamda wa al-ni'mata laka wa al-mulk, la sharika lak.</li></ul><h4>Si le miqat est dépassé sans ihram</h4><ul><li>Revenir au miqat si possible et y entrer en ihram.</li><li>Si l'ihram est pris après le dépassement, un dam est requis selon la majorité, avec détails selon les écoles.</li></ul><h4>Preuves du Coran (texte)</h4><ul><li><strong>Coran 2:196:</strong> Et accomplissez pour Allah le Hajj et la Omra.</li><li><strong>Coran 3:97:</strong> Le Hajj de la Maison est un devoir envers Allah pour celui qui en a la capacité.</li><li><strong>Coran 22:27:</strong> Et proclame aux gens le Hajj: ils viendront à toi à pied et sur toute monture élancée, de tout chemin éloigné.</li></ul><h4>Hadiths sahih (texte)</h4><ul><li><strong>Hadith des miqats (Bukhari et Muslim):</strong> Le Prophète a fixé Dhul Hulayfah pour Médine, Al-Juhfah pour le Cham, Qarn al-Manazil pour le Najd et Yalamlam pour le Yémen, et a dit qu'ils valent pour eux et pour quiconque y passe en voulant Hajj ou Omra.</li><li><strong>Hadith des types d'ihram (Bukhari et Muslim):</strong> Aishah rapporte: parmi nous, certains ont fait ihram pour Omra, d'autres pour Hajj et Omra, d'autres pour Hajj.</li><li><strong>Hadith de la talbiyah (Bukhari et Muslim):</strong> la talbiyah du Prophète était: Labbayka Allahumma labbayk, labbayka la sharika laka labbayk, inna al-hamda wa al-ni'mata laka wa al-mulk, la sharika lak.</li></ul><h4>Différences des quatre imams (dépassement du miqat sans ihram)</h4><table><thead><tr><th>Imam</th><th>Opinion</th><th>Reference</th></tr></thead><tbody><tr><td>Imam Abu Hanifah</td><td>Retour au miqat si possible; sinon dam après ihram tardif.</td><td>Al-Fatawa al-Hindiyyah, chapitres des miqats</td></tr><tr><td>Imam Malik</td><td>L'ihram depuis le miqat est obligatoire; dépassement puis ihram tardif implique dam (avis مشهور).</td><td>Al-Mudawwanah, Livre du Hajj</td></tr><tr><td>Imam al-Shafi'i</td><td>Retour exigé avant engagement complet; sinon dam selon détails.</td><td>Al-Umm, Livre du Hajj</td></tr><tr><td>Imam Ahmad ibn Hanbal</td><td>Dépassement puis ihram tardif: dam; retour précoce peut lever le dam selon détail hanbali.</td><td>Al-Mughni (Ibn Qudamah), Livre du Hajj</td></tr></tbody></table><aside>Note: résumé pédagogique; pour la fatwa détaillée, consulter des savants qualifiés.</aside>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 202,
+        "nameAr": "الطواف والسعي",
+        "nameEn": "Tawaf and Sa'i",
+        "nameFr": "Tawaf et sa'i",
+        "icon": "🔄",
+        "contentAr": "<h3>الطواف والسعي</h3><h4>الطواف</h4><ul><li>يطوف الحاج بالبيت سبعة أشواط مبتدئا من الحجر الأسود.</li><li>يجعل الكعبة عن يساره في جميع الأشواط.</li><li>يصلي ركعتين بعد الطواف إن تيسر.</li></ul><h4>السعي بين الصفا والمروة</h4><ul><li>يبدأ بالصفا وينتهي بالمروة سبعة أشواط.</li><li>الذهاب من الصفا إلى المروة شوط، والرجوع شوط آخر.</li><li>يكثر من الذكر والدعاء أثناء السعي.</li></ul><h4>أدلة من القرآن والسنة</h4><ul><li><strong>قال الله تعالى:</strong> إن الصفا والمروة من شعائر الله. (البقرة: 158)</li><li><strong>حديث صحيح:</strong> خذوا عني مناسككم.</li></ul>",
+        "contentEn": "<h3>Tawaf and Sa'i</h3><h4>Tawaf</h4><ul><li>The pilgrim performs seven circuits around the Kaaba, starting from the Black Stone.</li><li>The Kaaba remains on the left side throughout the circuits.</li><li>Two rakahs are prayed after tawaf when possible.</li></ul><h4>Sa'i between Safa and Marwah</h4><ul><li>Start at Safa and end at Marwah for seven circuits.</li><li>Safa to Marwah is one circuit, and return is another.</li><li>Increase remembrance and supplication during sa'i.</li></ul><h4>Quran and Hadith Evidence</h4><ul><li><strong>Quran:</strong> Indeed, Safa and Marwah are among the symbols of Allah. (2:158)</li><li><strong>Sahih hadith:</strong> Take your rites from me.</li></ul>",
+        "contentFr": "<h3>Tawaf et sa'i</h3><h4>Tawaf</h4><ul><li>Le pèlerin accomplit sept tours autour de la Kaaba en commençant par la Pierre Noire.</li><li>La Kaaba reste à sa gauche pendant tous les tours.</li><li>Il prie deux rakahs après le tawaf si possible.</li></ul><h4>Sa'i entre Safa et Marwah</h4><ul><li>Commencer à Safa et terminer à Marwah en sept circuits.</li><li>L'aller Safa-Marwah est un circuit, le retour en est un autre.</li><li>Multiplier le rappel et les invocations pendant le sa'i.</li></ul><h4>Preuves du Coran et du hadith</h4><ul><li><strong>Coran :</strong> Safa et Marwah font partie des rites d'Allah. (2:158)</li><li><strong>Hadith sahih :</strong> Prenez de moi vos rites.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 203,
+        "nameAr": "يوم التروية",
+        "nameEn": "Day of Tarwiyah",
+        "nameFr": "Jour de Tarwiyah",
+        "icon": "⛺",
+        "contentAr": "<h3>يوم التروية</h3><h4>لماذا سمي يوم التروية</h4><p>هو اليوم الثامن من ذي الحجة، وفيه يبدأ الحجاج الانتقال المنظم إلى منى استعدادا لعرفة.</p><h4>الأعمال في هذا اليوم</h4><ul><li>الإحرام بالحج للمتمتع من مكانه في مكة.</li><li>الخروج إلى منى والصلاة فيها.</li><li>المبيت بمنى إلى فجر يوم عرفة.</li></ul><h4>دليل</h4><ul><li><strong>حديث صحيح:</strong> أن النبي صلى الله عليه وسلم خرج إلى منى يوم التروية وصلى بها.</li></ul>",
+        "contentEn": "<h3>Day of Tarwiyah</h3><h4>Meaning of the day</h4><p>The 8th of Dhul Hijjah, when pilgrims move to Mina in preparation for Arafat.</p><h4>Main rituals</h4><ul><li>Tamattu pilgrims enter ihram for Hajj from Makkah.</li><li>Move to Mina and pray there.</li><li>Stay overnight in Mina until Fajr of Arafah day.</li></ul><h4>Evidence</h4><ul><li><strong>Sahih hadith:</strong> The Prophet went to Mina on the Day of Tarwiyah and prayed there.</li></ul>",
+        "contentFr": "<h3>Jour de Tarwiyah</h3><h4>Signification</h4><p>Le 8 Dhul Hijjah, où les pèlerins se dirigent vers Mina en préparation de Arafat.</p><h4>Rites principaux</h4><ul><li>Le pèlerin en tamattu entre en ihram pour le Hajj depuis La Mecque.</li><li>Départ vers Mina et prières sur place.</li><li>Nuitée à Mina jusqu'à l'aube de Arafah.</li></ul><h4>Preuve</h4><ul><li><strong>Hadith sahih :</strong> Le Prophète est allé à Mina le jour de Tarwiyah et y a prié.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 204,
+        "nameAr": "الوقوف بعرفة",
+        "nameEn": "Standing at Arafat",
+        "nameFr": "Station à Arafat",
+        "icon": "⛰️",
+        "contentAr": "<h3>الوقوف بعرفة</h3><h4>أهمية الوقوف بعرفة</h4><ul><li>الوقوف بعرفة ركن عظيم من أركان الحج.</li><li>قال النبي صلى الله عليه وسلم: الحج عرفة.</li></ul><h4>ما يفعل الحاج في عرفة</h4><ul><li>الاشتغال بالدعاء والذكر والتوبة.</li><li>استقبال القبلة ورفع اليدين في الدعاء.</li><li>البقاء داخل حدود عرفة حتى الغروب.</li></ul><h4>دليل من القرآن</h4><ul><li><strong>قال الله تعالى:</strong> فإذا أفضتم من عرفات فاذكروا الله عند المشعر الحرام. (البقرة: 198)</li></ul>",
+        "contentEn": "<h3>Standing at Arafat</h3><h4>Importance</h4><ul><li>Standing at Arafat is a major pillar of Hajj.</li><li>The Prophet said: Hajj is Arafat.</li></ul><h4>What pilgrims do at Arafat</h4><ul><li>Supplication, remembrance, and repentance.</li><li>Face the qiblah and raise hands in dua.</li><li>Remain within Arafat boundaries until sunset.</li></ul><h4>Quran evidence</h4><ul><li><strong>Quran:</strong> When you depart from Arafat, remember Allah at al-Mash'ar al-Haram. (2:198)</li></ul>",
+        "contentFr": "<h3>Station à Arafat</h3><h4>Importance</h4><ul><li>La station à Arafat est un pilier majeur du Hajj.</li><li>Le Prophète a dit : Le Hajj, c'est Arafat.</li></ul><h4>Ce que fait le pèlerin</h4><ul><li>Invocation, rappel d'Allah et repentir.</li><li>Se tourner vers la qiblah et lever les mains.</li><li>Rester dans les limites de Arafat jusqu'au coucher du soleil.</li></ul><h4>Preuve coranique</h4><ul><li><strong>Coran :</strong> Puis quand vous déferlez de Arafat, invoquez Allah au Mash'ar al-Haram. (2:198)</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 205,
+        "nameAr": "النزول بمزدلفة",
+        "nameEn": "Stopping at Muzdalifah",
+        "nameFr": "Arrêt à Muzdalifah",
+        "icon": "🌙",
+        "contentAr": "<h3>النزول بمزدلفة</h3><h4>نظرة عامة</h4><p>يتوجه الحاج إلى مزدلفة بعد عرفة وفق تنظيم الحشود والتعليمات الرسمية.</p><h4>أهم الأعمال</h4><ul><li>الجمع بين المغرب والعشاء.</li><li>المبيت والذكر والدعاء.</li><li>التهيؤ ليوم النحر.</li></ul><h4>أدلة</h4><ul><li><strong>القرآن:</strong> فاذكروا الله عند المشعر الحرام.</li><li><strong>السنة:</strong> ثبتت صفة نزوله صلى الله عليه وسلم بمزدلفة.</li></ul>",
+        "contentEn": "<h3>Stopping at Muzdalifah</h3><h4>Overview</h4><p>Pilgrims move to Muzdalifah after Arafat following crowd guidance and official instructions.</p><h4>Main rites</h4><ul><li>Combine Maghrib and Isha.</li><li>Overnight stay with remembrance and supplication.</li><li>Prepare for the Day of Nahr.</li></ul><h4>Evidence</h4><ul><li><strong>Quran:</strong> remember Allah at al-Mash'ar al-Haram.</li><li><strong>Sunnah:</strong> the Prophet's practice at Muzdalifah is established.</li></ul>",
+        "contentFr": "<h3>Arrêt à Muzdalifah</h3><h4>Vue d'ensemble</h4><p>Les pèlerins se dirigent vers Muzdalifah après Arafat en respectant l'organisation des foules et les consignes officielles.</p><h4>Rites principaux</h4><ul><li>Regrouper Maghrib et Isha.</li><li>Nuitée avec rappel et invocation.</li><li>Préparation au jour du Nahr.</li></ul><h4>Preuves</h4><ul><li><strong>Coran :</strong> rappel d'Allah au Mash'ar al-Haram.</li><li><strong>Sunna :</strong> la pratique prophétique à Muzdalifah est établie.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 206,
+        "nameAr": "يوم النحر",
+        "nameEn": "Day of Nahr",
+        "nameFr": "Jour du Nahr",
+        "icon": "🎯",
+        "contentAr": "<h3>يوم النحر</h3><h4>الأعمال الأساسية</h4><ul><li>رمي جمرة العقبة.</li><li>النحر، ثم الحلق أو التقصير.</li><li>طواف الإفاضة.</li></ul><h4>إدارة الحشود والسلامة</h4><ul><li>الالتزام بخطط التفويج الرسمية.</li><li>تجنب أوقات الذروة ما أمكن.</li><li>اتباع تعليمات الأمن والصحة.</li></ul><aside>السلامة مقدمة، والالتزام بالأنظمة جزء من حفظ النفس.</aside>",
+        "contentEn": "<h3>Day of Nahr (10 Dhul Hijjah)</h3><h4>Core rites</h4><ul><li>Stoning Jamrat al-Aqabah.</li><li>Sacrifice, then shaving or trimming.</li><li>Tawaf al-Ifadah.</li></ul><h4>Crowd and safety logistics</h4><ul><li>Follow official crowd movement schedules.</li><li>Avoid peak congestion times when possible.</li><li>Comply with health and security instructions.</li></ul><aside>Safety first; compliance with regulations protects lives.</aside>",
+        "contentFr": "<h3>Jour du Nahr (10 Dhul Hijjah)</h3><h4>Rites essentiels</h4><ul><li>Lapidation de Jamrat al-Aqabah.</li><li>Sacrifice, puis rasage ou raccourcissement.</li><li>Tawaf al-Ifadah.</li></ul><h4>Logistique de foule et sécurité</h4><ul><li>Suivre les plans officiels de déplacement.</li><li>Éviter les heures de forte affluence si possible.</li><li>Respecter les consignes de santé et de sécurité.</li></ul><aside>La sécurité est prioritaire; respecter les règles protège les vies.</aside>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 207,
+        "nameAr": "أيام التشريق",
+        "nameEn": "Days of Tashreeq",
+        "nameFr": "Jours de Tashreeq",
+        "icon": "🗓️",
+        "contentAr": "<h3>أيام التشريق</h3><h4>البرنامج العام</h4><ul><li>المبيت بمنى.</li><li>رمي الجمرات بالترتيب.</li><li>الإكثار من الذكر والدعاء.</li></ul><h4>إدارة الحركة والسلامة</h4><ul><li>احترام مسارات الدخول والخروج.</li><li>الالتزام بجدول المجموعة والحملة.</li><li>التعاون مع الجهات المنظمة عند الطوارئ.</li></ul>",
+        "contentEn": "<h3>Days of Tashreeq (11-13 Dhul Hijjah)</h3><h4>General program</h4><ul><li>Overnight stay in Mina.</li><li>Stone the three jamarat in order.</li><li>Increase remembrance and supplication.</li></ul><h4>Movement and safety logistics</h4><ul><li>Respect entry and exit routing.</li><li>Follow your group movement schedule.</li><li>Cooperate with authorities during contingencies.</li></ul>",
+        "contentFr": "<h3>Jours de Tashreeq (11-13 Dhul Hijjah)</h3><h4>Programme général</h4><ul><li>Nuitée à Mina.</li><li>Lapider les trois jamarat dans l'ordre.</li><li>Multiplier le rappel et l'invocation.</li></ul><h4>Logistique de déplacement et sécurité</h4><ul><li>Respecter les circuits d'entrée et de sortie.</li><li>Suivre le planning du groupe.</li><li>Coopérer avec les autorités en cas d'urgence.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nameAr": "أركان الحج",
+    "nameEn": "Pillars of Hajj",
+    "nameFr": "Piliers du Hajj",
+    "icon": "📿",
+    "color": "#E74C3C",
+    "subcategories": [
+      {
+        "id": 301,
+        "nameAr": "أركان الحج الأربعة",
+        "nameEn": "Four Pillars of Hajj",
+        "nameFr": "Quatre piliers du Hajj",
+        "icon": "🙏",
+        "contentAr": "<h3>أركان الحج الأربعة</h3><ul><li>الإحرام.</li><li>طواف الإفاضة.</li><li>الوقوف بعرفة.</li><li>السعي بين الصفا والمروة.</li></ul><aside> هذه الأركان الأربعة لا تجبر بالدم (وهو الهدي).</aside><aside>وهذه الأركان لو نقص واحد منها بطل الحج.</aside>",
+        "contentEn": "<h3>Four pillars of Hajj</h3><ul><li>Ihram.</li><li>Tawaf al-Ifadah.</li><li>Standing at Arafah.</li><li>Sa’i between Safa and Marwah.</li></ul><aside>These four pillars are not compensated by a sacrifice, i.e., hady.</aside><aside>If any of these pillars is missing, the Hajj is invalid.</aside>",
+        "contentFr": "<h3>Quatre piliers du Hajj</h3><ul><li>Ihram.</li><li>Tawaf al-Ifadah.</li><li>Station à Arafah.</li><li>Sa’i entre Safa et Marwah.</li></ul><aside>Ces quatre piliers ne sont pas compensés par un sacrifice, c’est-à-dire hady.</aside><aside>Si l’un de ces piliers est manquant, le Hajj est invalide.</aside>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 302,
+        "nameAr": "الوقوف بعرفة",
+        "nameEn": "Standing at Arafah",
+        "nameFr": "Station à Arafah",
+        "icon": "⛰️",
+        "contentAr": "<h3>الوقوف بعرفة</h3><ul><li>الوقوف بعرفة يوم عرفة، التاسع من ذي الحجة، ركن من أركان الحج.</li><li>يشترط أن يكون الوقوف ليلة النحر في حق من وقف بها مستقرا مطمئنا.</li><li>من دفع وخرج من عرفة قبل الغروب فحجه غير صحيح، ومن مر بعد الإمام ولم يقف مستقرا فله شروط في الإجزاء.</li><li>من فاته الوقوف قبل غروب الشمس ولم يأت إلا بعد الغروب فحجه صحيح وعليه الهدي، ومن فاته حتى فجر يوم العيد فقد فاته الحج.</li><li>يقف الحاج داخل حدود عرفة، ولا يلزمه الصعود إلى الجبل المعروف بجبل الرحمة.</li></ul>",
+        "contentEn": "<h3>Standing at Arafah</h3><ul><li>Standing at Arafah on the ninth of Dhul Hijjah is a pillar of Hajj.</li><li>The standing must occur on the night of Nahr for one who stands there calmly and settled.</li><li>Whoever leaves Arafah before sunset has an invalid Hajj; one who merely passes after the imam without settled standing has conditions for validity.</li><li>Whoever misses standing before sunset but arrives after sunset has a valid Hajj with hady due; whoever misses it until dawn of Eid has missed Hajj.</li><li>The pilgrim may stand anywhere inside Arafah and is not required to climb the mountain called Jabal al-Rahmah.</li></ul>",
+        "contentFr": "<h3>Station à Arafah</h3><ul><li>La station à Arafah le neuvième jour de Dhul Hijjah est un pilier du Hajj.</li><li>Elle doit avoir lieu durant la nuit du Nahr pour celui qui s’y tient de façon stable et paisible.</li><li>Celui qui quitte Arafah avant le coucher du soleil a un Hajj invalide ; celui qui ne fait que passer après l’imam sans station stable a des conditions de validité.</li><li>Celui qui manque la station avant le coucher du soleil mais arrive après a un Hajj valide avec hady ; celui qui la manque jusqu’à l’aube de l’Aïd a manqué le Hajj.</li><li>Le pèlerin se tient n’importe où dans les limites de Arafah et n’a pas à monter sur le mont appelé Jabal al-Rahmah.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 303,
+        "nameAr": "طواف الإفاضة",
+        "nameEn": "Tawaf al-Ifadah",
+        "nameFr": "Tawaf al-Ifadah",
+        "icon": "🔄",
+        "contentAr": "<h3>طواف الإفاضة</h3><p>طواف الإفاضة ركن من أركان الحج، وهو الطواف الذي يؤديه الحاج بعد رجوعه من عرفة، ولا يتم حجه إلا به.</p><h4>أحكامه</h4><ul><li>الطواف الركن هو طواف العمرة، وطواف الإفاضة الذي يطوفه الحاج بعد رجوعه من عرفة.</li><li>من ترك طواف الإفاضة أو طافه فاسدا يرجع إليه من بلده ولو كان في أطراف الدنيا، ولا يجبر بالدم.</li></ul><h4>أوقاته</h4><ul><li><strong>وقت الفضيلة:</strong> يوم النحر عقب الحلق، وفي ثوبي الإحرام، ولا يصح قبل الفجر.</li><li><strong>وقت الجواز:</strong> يمتد إلى آخر شهر ذي الحجة.</li><li><strong>وقت القضاء:</strong> يكون بعد شهر ذي الحجة مع لزوم الهدي.</li></ul><figure style='margin-top:14px;text-align:center'><figcaption style='margin-bottom:8px'><strong>توضيح بصري لمسار الطواف</strong></figcaption><img src='tawaf.png' alt='توضيح بصري لمسار الطواف' style='width:78%;max-width:260px;height:auto' /></figure>",
+        "contentEn": "<h3>Tawaf al-Ifadah</h3><p>Tawaf al-Ifadah is one of the pillars of Hajj. It is the tawaf performed by the pilgrim after returning from Arafah, and Hajj is not complete without it.</p><h4>Rulings</h4><ul><li>The pillar tawaf is the tawaf of Umrah and Tawaf al-Ifadah, which the pilgrim performs after returning from Arafah.</li><li>Whoever leaves Tawaf al-Ifadah or performs it invalidly must return to it from wherever he is, even from the ends of the earth; it is not repaired by sacrifice.</li></ul><h4>Its Times</h4><ul><li><strong>Preferred time:</strong> on the Day of Nahr after shaving, while still in the ihram garments; it is not valid before dawn.</li><li><strong>Permissible time:</strong> extends until the end of Dhul Hijjah.</li><li><strong>Make-up time:</strong> after Dhul Hijjah, and it requires hady.</li></ul><figure style='margin-top:14px;text-align:center'><figcaption style='margin-bottom:8px'><strong>Visual tawaf guide</strong></figcaption><img src='tawaf.png' alt='Visual tawaf guide' style='width:78%;max-width:260px;height:auto' /></figure>",
+        "contentFr": "<h3>Tawaf al-Ifadah</h3><p>Le Tawaf al-Ifadah est un des piliers du Hajj. C’est le tawaf accompli par le pèlerin après son retour de Arafah, et le Hajj n’est pas complet sans lui.</p><h4>Règles</h4><ul><li>Le tawaf pilier est le tawaf de la Omra et le Tawaf al-Ifadah, que le pèlerin accomplit après son retour de Arafah.</li><li>Celui qui l’abandonne ou le fait de manière invalide doit y revenir où qu’il soit, même des confins du monde ; il n’est pas compensé par un sacrifice.</li></ul><h4>Ses temps</h4><ul><li><strong>Temps préférable :</strong> le jour du Nahr après le rasage, avec les vêtements d’ihram ; il n’est pas valide avant l’aube.</li><li><strong>Temps permis :</strong> s’étend jusqu’à la fin de Dhul Hijjah.</li><li><strong>Temps de rattrapage :</strong> après Dhul Hijjah, avec obligation de hady.</li></ul><figure style='margin-top:14px;text-align:center'><figcaption style='margin-bottom:8px'><strong>Schéma visuel du tawaf</strong></figcaption><img src='tawaf.png' alt='Schéma visuel du tawaf' style='width:78%;max-width:260px;height:auto' /></figure>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 304,
+        "nameAr": "السعي بين الصفا والمروة",
+        "nameEn": "Sa’i between Safa and Marwah",
+        "nameFr": "Sa’i entre Safa et Marwah",
+        "icon": "🚶",
+        "contentAr": "<h3>السعي بين الصفا والمروة</h3><p>السعي بين الصفا والمروة ركن من أركان الحج، ولا يجبر بالدم، ومن تركه أو ترك شوطا أو شرطا رجع له ولو عاد إلى بلده.</p><h4>كيف يكون السعي؟</h4><ul><li>السعي هو الذهاب من الصفا إلى المروة والرجوع من المروة إلى الصفا سبع مرات.</li><li>يبدأ السعي بالصفا وينتهي بالمروة، والمشي من الصفا إلى المروة شوط، والرجوع شوط آخر.</li><li>بعد الطواف يدعو الحاج بالملتزم إن تيسر، ثم يخرج إلى السعي من باب الصفا.</li><li>يصعد على الصفا والمروة، ويكبر ويهلل ويدعو، ويسرع الرجل بين العلمين الأخضرين.</li></ul><h4>شروطه</h4><ul><li>البدء بالصفا.</li><li>أن يكون بعد طواف صحيح.</li><li>إكمال سبعة أشواط.</li><li>الموالاة بين الأشواط.</li></ul><h4>ما يقال فيه</h4><p>عند اقتراب الساعي من الصفا يتلو قوله تعالى: “۞ إِنَّ ٱلصَّفَا وَٱلْمَرْوَةَ مِن شَعَآئِرِ ٱللَّهِ ۖ فَمَنْ حَجَّ ٱلْبَيْتَ أَوِ ٱعْتَمَرَ فَلَا جُنَاحَ عَلَيْهِ أَن يَطَّوَّفَ بِهِمَا ۚ وَمَن تَطَوَّعَ خَيْرًۭا فَإِنَّ ٱللَّهَ شَاكِرٌ عَلِيمٌ”.</p><ul><li>يردد هذا الدعاء ثلاث مرات: “الله أكبر، الله أكبر، الله أكبر، لا إله إلا الله وحده لا شريك له، له الملك، وله الحمد، يحيي ويميت وهو على كل شيء قدير، لا إله إلا الله وحده لا شريك له، أنجز وعده، ونصر عبده، وهزم الأحزاب وحده”.</li><li>يدعو في أثناء سعيه بين الصفا والمروة بما تيسر له من الدعاء، والله تعالى أعلم.</li></ul><figure style='margin-top:14px;text-align:center'><figcaption style='margin-bottom:8px'><strong>توضيح بصري لمسار السعي</strong></figcaption><img src='sa3y.png' alt='توضيح بصري لمسار السعي' style='width:78%;max-width:260px;height:auto' /></figure>",
+        "contentEn": "<h3>Sa’i between Safa and Marwah</h3><p>Sa’i between Safa and Marwah is one of the pillars of Hajj. It is not repaired by sacrifice, and whoever leaves it, a circuit of it, or one of its conditions must return to complete it even after going home.</p><h4>How it is performed</h4><ul><li>Sa’i is going from Safa to Marwah and returning from Marwah to Safa seven times.</li><li>It starts at Safa and ends at Marwah; going from Safa to Marwah is one circuit, and returning is another.</li><li>After tawaf, the pilgrim supplicates at al-Multazam if possible, then exits to sa’i through the gate of Safa.</li><li>He climbs Safa and Marwah, says takbir and tahlil, supplicates, and men hasten between the two green markers.</li></ul><h4>Its conditions</h4><ul><li>Starting at Safa.</li><li>Being after a valid tawaf.</li><li>Completing seven circuits.</li><li>Maintaining continuity between the circuits.</li></ul><h4>What is said during it</h4><p>When approaching Safa, the pilgrim recites the verse: “Indeed Safa and Marwah are among the symbols of Allah. So whoever makes Hajj to the House or performs Umrah, there is no blame upon him for walking between them. And whoever volunteers good, then Allah is Appreciative and Knowing.”</p><ul><li>He repeats three times: “Allah is greatest, Allah is greatest, Allah is greatest. There is no god but Allah alone with no partner. His is the dominion and His is the praise. He gives life and causes death, and He is powerful over all things. There is no god but Allah alone with no partner. He fulfilled His promise, gave victory to His servant, and defeated the confederates alone.”</li><li>During the sa’i between Safa and Marwah, he may supplicate with whatever is easy for him.</li></ul><figure style='margin-top:14px;text-align:center'><figcaption style='margin-bottom:8px'><strong>Visual sa’i guide</strong></figcaption><img src='sa3y.png' alt='Visual sa’i guide' style='width:78%;max-width:260px;height:auto' /></figure>",
+        "contentFr": "<h3>Sa’i entre Safa et Marwah</h3><p>Le sa’i entre Safa et Marwah est un des piliers du Hajj. Il n’est pas compensé par un sacrifice, et celui qui l’abandonne, ou abandonne un circuit ou une condition, doit y revenir même après être rentré chez lui.</p><h4>Comment il s’accomplit</h4><ul><li>Le sa’i consiste à aller de Safa à Marwah et à revenir de Marwah à Safa sept fois.</li><li>Il commence à Safa et se termine à Marwah ; l’aller est un circuit et le retour un autre.</li><li>Après le tawaf, le pèlerin invoque au Multazam si possible, puis sort vers le sa’i par la porte de Safa.</li><li>Il monte sur Safa et Marwah, prononce le takbir et le tahlil, invoque, et les hommes accélèrent entre les deux repères verts.</li></ul><h4>Ses conditions</h4><ul><li>Commencer par Safa.</li><li>Venir après un tawaf valide.</li><li>Accomplir sept circuits.</li><li>Garder la continuité entre les circuits.</li></ul><h4>Ce qui est dit pendant le sa’i</h4><p>En approchant de Safa, le pèlerin récite le verset : « Safa et Marwah sont parmi les rites d’Allah. Ainsi, quiconque accomplit le Hajj de la Maison ou la Omra ne commet aucune faute en faisant le parcours entre les deux. Et quiconque fait de bon gré une bonne œuvre, Allah est Reconnaissant et Omniscient. »</p><ul><li>Il répète trois fois : « Allah est le plus grand, Allah est le plus grand, Allah est le plus grand. Il n’y a de divinité qu’Allah seul, sans associé. À Lui la royauté et la louange. Il donne la vie et donne la mort, et Il est capable de toute chose. Il n’y a de divinité qu’Allah seul, sans associé. Il a accompli Sa promesse, donné la victoire à Son serviteur et vaincu seul les coalisés. »</li><li>Pendant son sa’i entre Safa et Marwah, il invoque avec ce qui lui est facile.</li></ul><figure style='margin-top:14px;text-align:center'><figcaption style='margin-bottom:8px'><strong>Schéma visuel du sa’i</strong></figcaption><img src='sa3y.png' alt='Schéma visuel du sa’i' style='width:78%;max-width:260px;height:auto' /></figure>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nameAr": "واجبات الحج",
+    "nameEn": "Obligations of Hajj",
+    "nameFr": "Obligations du Hajj",
+    "icon": "✅",
+    "color": "#F39C12",
+    "subcategories": [
+      {
+        "id": 401,
+        "nameAr": "النزول بمزدلفة والمبيت بها",
+        "nameEn": "Stopping at Muzdalifah and Overnight Stay",
+        "nameFr": "Arrêt à Muzdalifah et nuitée",
+        "icon": "🌙",
+        "contentAr": "<h3>النزول بمزدلفة والمبيت بها</h3><ul><li>لا يخرج الحاج من عرفة إلا بعد غروب الشمس ومضي جزء من الليل.</li><li>النزول بمزدلفة واجب، ومن تركه وجب عليه الهدي إلا أن يتركه لعذر.</li><li>النزول يكون بقدر حط الرحال، مع صلاة المغرب والعشاء جمع تأخير، وتناول أكل وشرب.</li><li>المبيت بمزدلفة سنة فقط، ولا دم على من تركه.</li><li>يستحب الارتحال بعد صلاة الصبح قبل الإسفار وانتشار الضوء، ويجوز للنساء والأطفال والعجزة الانصراف بعد تحقق النزول.</li><li>الوقوف بالمشعر الحرام مستحب ولا شيء على من تركه.</li></ul>",
+        "contentEn": "<h3>Muzdalifah: stopping and overnight stay</h3><ul><li>The pilgrim does not leave Arafah until after sunset and after part of the night has passed.</li><li>Stopping at Muzdalifah is obligatory; whoever leaves it must offer a hady unless there is an excuse.</li><li>The stop is enough to unload, combine Maghrib and Isha with delay, and eat and drink.</li><li>Staying overnight at Muzdalifah is only sunnah, and there is no sacrifice for leaving it.</li><li>It is recommended to leave after Fajr before daylight spreads. Women, children, and the weak may leave after the stop has been fulfilled.</li><li>Standing at al-Mash’ar al-Haram is recommended, with no penalty for leaving it.</li></ul>",
+        "contentFr": "<h3>Muzdalifah : arrêt et nuitée</h3><ul><li>Le pèlerin ne quitte pas Arafah avant le coucher du soleil et le passage d’une partie de la nuit.</li><li>S’arrêter à Muzdalifah est obligatoire ; celui qui le délaisse doit offrir un hady sauf excuse.</li><li>L’arrêt consiste à déposer les bagages, regrouper Maghrib et Isha en retard, manger et boire.</li><li>Passer la nuit à Muzdalifah est seulement une sunna, et aucun sacrifice n’est dû pour son abandon.</li><li>Il est recommandé de partir après Fajr avant la diffusion de la lumière. Les femmes, enfants et faibles peuvent partir après la réalisation de l’arrêt.</li><li>Se tenir à al-Mash’ar al-Haram est recommandé, sans pénalité si on le délaisse.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 402,
+        "nameAr": "المبيت بمنى",
+        "nameEn": "Overnight Stay at Mina",
+        "nameFr": "Nuitée à Mina",
+        "icon": "⛺",
+        "contentAr": "<h3>المبيت بمنى</h3><ul><li>المبيت بمنى ليلتين لمن تعجل، وثلاثا لمن تأخر.</li><li>هو واجب على كل حاج وحاجة.</li><li>من بات ليلة أو أكثر أو جل ليلة خارج منى فعليه هدي واحد فقط لجميع الليالي.</li><li>بعد الزوال في أيام التشريق يرمي الحاج الجمرات الثلاث بالترتيب.</li></ul>",
+        "contentEn": "<h3>Overnight stay in Mina during Tashreeq</h3><ul><li>The stay in Mina is two nights for those who hasten and three for those who delay.</li><li>It is obligatory for every male and female pilgrim.</li><li>Whoever spends one or more nights, or most of a night, outside Mina must offer one hady for all the nights.</li><li>After noon during the days of Tashreeq, the pilgrim stones the three jamarat in order.</li></ul>",
+        "contentFr": "<h3>Nuitées à Mina pendant Tashreeq</h3><ul><li>La nuitée à Mina est de deux nuits pour celui qui se hâte et de trois pour celui qui tarde.</li><li>Elle est obligatoire pour tout pèlerin et toute pèlerine.</li><li>Celui qui passe une ou plusieurs nuits, ou la majeure partie d’une nuit, hors de Mina doit un seul hady pour toutes les nuits.</li><li>Après midi durant les jours de Tashreeq, le pèlerin lapide les trois jamarat dans l’ordre.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 403,
+        "nameAr": "رمي الجمرات",
+        "nameEn": "Stoning the Jamarat",
+        "nameFr": "Lapidation des Jamarat",
+        "icon": "🎯",
+        "contentAr": "<h3>رمي الجمرات</h3><ul><li>بعد الرجوع إلى منى يوم العيد يبدأ الحاج برمي جمرة العقبة، ثم ينحر هديه، ثم يحلق رأسه أو يقصره، ثم يدخل مكة لطواف الإفاضة.</li><li>وقت رمي جمرة العقبة من طلوع فجر يوم العيد إلى غروب الشمس.</li><li>في اليوم الثاني والثالث والرابع بمنى يرمي الجمرات الثلاث: الصغرى ثم الوسطى ثم الكبرى، فإن عكس أعاد ما نكس.</li><li>كل جمرة ترمى بسبع حصيات، كل حصاة وحدها مع التكبير، ولا ترمى السبع دفعة واحدة.</li><li>من ترك الرمي كله أو ترك جمرة أو حصاة فعليه دم واحد. ومن رمى ليلا لغير عذر فعليه دم أقله شاة.</li><li>النيابة في الرمي جائزة للعاجز وممنوعة للقادر.</li><li>بعد رمي الجمرة الأولى الصغرى يقف الحاج مستقبل القبلة، فيدعو ويذكر الله تعالى، ويهلل ويسبح بقدر قراءة سورة البقرة، وكذا بعد رمي الجمرة الثانية الوسطى. أما بعد رمي الجمرة الثالثة، وهي جمرة العقبة الكبرى، فلا يدعو، ولكن ينصرف من الرمي وهو يقول: اللهم اجعله حجًا مبرورًا، وسعيًا مشكورًا، وذنبًا مغفورًا.</li></ul>",
+        "contentEn": "<h3>Stoning the Jamarat</h3><ul><li>After returning to Mina on Eid day, the pilgrim starts with Jamrat al-Aqabah, then sacrifices the hady, shaves or shortens hair, and enters Mecca for Tawaf al-Ifadah.</li><li>The time for Jamrat al-Aqabah is from dawn of Eid day until sunset.</li><li>On the second, third, and fourth days in Mina, he stones the three jamarat: the small, then the middle, then the large. If he reverses the order, he repeats what was reversed.</li><li>Each jamrah is stoned with seven pebbles, one by one with takbir; the seven are not thrown all at once.</li><li>Whoever leaves all stoning, a jamrah, or a pebble must offer one sacrifice. Night stoning without an excuse requires at least a sheep.</li><li>Deputizing someone to stone is allowed for the unable and forbidden for the capable.</li><li>After stoning the first jamrah, the small one, the pilgrim stands facing the qiblah and supplicates, remembers Allah, proclaims His oneness, and glorifies Him for about the time it takes to recite Surat al-Baqarah. He does likewise after stoning the second, the middle jamrah. After the third jamrah, Jamrat al-Aqabah al-Kubra, he does not supplicate, but leaves the stoning place saying: O Allah, make it an accepted Hajj, a thanked-for effort, and a forgiven sin.</li></ul>",
+        "contentFr": "<h3>Lapidation des Jamarat</h3><ul><li>Après le retour à Mina le jour de l’Aïd, le pèlerin commence par Jamrat al-Aqabah, puis sacrifie le hady, se rase ou raccourcit les cheveux, et entre à La Mecque pour le Tawaf al-Ifadah.</li><li>Le temps de Jamrat al-Aqabah va de l’aube du jour de l’Aïd au coucher du soleil.</li><li>Les deuxième, troisième et quatrième jours à Mina, il lapide les trois jamarat : la petite, puis la moyenne, puis la grande. S’il inverse l’ordre, il recommence ce qui a été inversé.</li><li>Chaque jamrah est lapidée avec sept cailloux, un par un avec takbir ; les sept ne sont pas lancés en une seule fois.</li><li>Celui qui abandonne toute la lapidation, une jamrah ou un caillou doit un sacrifice. La lapidation de nuit sans excuse exige au minimum un mouton.</li><li>La délégation de la lapidation est permise à l’incapable et interdite au capable.</li><li>Après avoir lapidé la première jamrah, la petite, le pèlerin se tient face à la qiblah, invoque Allah, Le mentionne, proclame Son unicité et Le glorifie pendant environ le temps de la récitation de la sourate al-Baqarah. Il fait de même après la deuxième, la jamrah moyenne. Quant à la troisième, Jamrat al-Aqabah al-Kubra, il n’y invoque pas, mais se retire de la lapidation en disant : Ô Allah, fais qu’il soit un Hajj accepté, un effort agréé et un péché pardonné.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 404,
+        "nameAr": "طواف الوداع",
+        "nameEn": "Tawaf al-Wada (Farewell Tawaf)",
+        "nameFr": "Tawaf al-Wada (Tawaf d’adieu)",
+        "icon": "👋",
+        "contentAr": "<h3>طواف الوداع</h3><ul><li>طواف الوداع هو الطواف الذي يقوم به الخارج من مكة إذا انتهى من حوائجه وعزم على الرحيل، يودع به البيت الحرام.</li><li>هو مستحب، ولا يجب بتركه شيء.</li><li>لا يسن هذا الطواف للحائض والنفساء.</li><li>يجب التعجيل بالخروج من مكة بعده، ويبطل بإقامة بعض يوم له بال.</li><li>لا يبطل بالاشتغال الخفيف ببيع أو شراء أو قضاء دين ونحو ذلك.</li></ul>",
+        "contentEn": "<h3>Tawaf al-Wada</h3><ul><li>Tawaf al-Wada is the tawaf performed by someone leaving Mecca after finishing his needs and deciding to depart, bidding farewell to the Sacred House.</li><li>It is recommended, and nothing is due for leaving it.</li><li>It is not prescribed for menstruating or postpartum women.</li><li>One should hasten to leave Mecca after it; staying for a meaningful part of a day invalidates it.</li><li>It is not invalidated by light activity such as buying, selling, paying a debt, or similar matters.</li></ul>",
+        "contentFr": "<h3>Tawaf al-Wada</h3><ul><li>Le Tawaf al-Wada est le tawaf accompli par celui qui quitte La Mecque après avoir terminé ses besoins et décidé de partir, en faisant ses adieux à la Maison sacrée.</li><li>Il est recommandé, et rien n’est dû si on le délaisse.</li><li>Il n’est pas prescrit à la femme en règles ou en lochies.</li><li>Il faut se hâter de quitter La Mecque après lui ; rester une partie significative d’une journée l’annule.</li><li>Il n’est pas annulé par une occupation légère comme acheter, vendre, régler une dette ou autre chose semblable.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nameAr": "الأخطاء الشائعة",
+    "nameEn": "Common Mistakes",
+    "nameFr": "Erreurs courantes",
+    "icon": "⚠️",
+    "color": "#9B59B6",
+    "subcategories": [
+      {
+        "id": 501,
+        "nameAr": "أخطاء في الإحرام",
+        "nameEn": "Mistakes in Ihram",
+        "nameFr": "Erreurs dans l’ihram",
+        "icon": "❌",
+        "contentAr": "<h3>أخطاء في الإحرام</h3><ul><li>تجاوز الميقات قبل الإحرام؛ فإن أحرم بعد تجاوزه لزمه الهدي.</li><li>لبس الرجل ما يحيط بالبدن أو العضو، أو تغطية الرأس أو الوجه بما يسترهما.</li><li>لبس المرأة النقاب أو القفازين أو الخواتم في الإحرام.</li><li>استعمال الطيب بعد الإحرام، أو حلق الشعر، أو تقليم الأظافر بغير عذر.</li><li>الجماع ومقدماته، وعقد الزواج، والصيد في حال الإحرام.</li></ul>",
+        "contentEn": "<h3>Ihram mistakes according to the guide</h3><ul><li>Passing the miqat before entering ihram; if ihram is entered after passing it, hady is due.</li><li>A man wearing clothing that surrounds the body or a limb, or covering the head or face.</li><li>A woman wearing niqab, gloves, or rings in ihram.</li><li>Using perfume after ihram, shaving hair, or trimming nails without an excuse.</li><li>Intercourse and its preliminaries, marriage contracts, and hunting while in ihram.</li></ul>",
+        "contentFr": "<h3>Erreurs d’ihram selon le guide</h3><ul><li>Dépasser le miqat avant l’ihram ; si l’ihram est pris après l’avoir dépassé, un hady est dû.</li><li>Pour l’homme, porter un vêtement qui entoure le corps ou un membre, ou couvrir la tête ou le visage.</li><li>Pour la femme, porter niqab, gants ou bagues en ihram.</li><li>Utiliser du parfum après l’ihram, se raser ou couper les ongles sans excuse.</li><li>Rapports et préliminaires, contrat de mariage et chasse en état d’ihram.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 502,
+        "nameAr": "أخطاء في الطواف",
+        "nameEn": "Mistakes in Tawaf",
+        "nameFr": "Erreurs dans le tawaf",
+        "icon": "🔁",
+        "contentAr": "<h3>أخطاء في الطواف</h3><ul><li>الطواف بغير طهارة الحدث أو الخبث، أو مع كشف العورة.</li><li>انتقاض الوضوء أو إصابة النجاسة أو انكشاف العورة أثناء الطواف ثم عدم استئنافه بعد التطهر والستر.</li><li>الطواف داخل البيت أو داخل الحجر، أو خارج المسجد.</li><li>ترك الموالاة بين الأشواط أو في أثنائها لغير عذر.</li><li>ترك طواف الإفاضة أو فعله فاسدا؛ فهذا لا يجبر بالدم بل يجب الرجوع إليه.</li></ul>",
+        "contentEn": "<h3>Tawaf mistakes according to the guide</h3><ul><li>Performing tawaf without purity from hadath or impurity, or with the awrah exposed.</li><li>Losing wudu, being affected by impurity, or exposing the awrah during tawaf and then not restarting after purification and covering.</li><li>Performing tawaf inside the Kaaba, inside al-Hijr, or outside the mosque.</li><li>Breaking continuity between or during circuits without an excuse.</li><li>Leaving Tawaf al-Ifadah or performing it invalidly; this is not repaired by sacrifice and requires returning to perform it.</li></ul>",
+        "contentFr": "<h3>Erreurs de tawaf selon le guide</h3><ul><li>Faire le tawaf sans pureté de l’état rituel ou de l’impureté, ou avec la awrah découverte.</li><li>Perdre les ablutions, être touché par une impureté ou découvrir la awrah pendant le tawaf sans recommencer après purification et couverture.</li><li>Faire le tawaf à l’intérieur de la Kaaba, dans al-Hijr ou hors de la mosquée.</li><li>Rompre la continuité entre les circuits ou pendant ceux-ci sans excuse.</li><li>Abandonner Tawaf al-Ifadah ou le faire invalidement ; cela n’est pas compensé par sacrifice et impose d’y revenir.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 503,
+        "nameAr": "أخطاء في السعي",
+        "nameEn": "Mistakes in Sa’i",
+        "nameFr": "Erreurs dans le sa’i",
+        "icon": "🚷",
+        "contentAr": "<h3>أخطاء في السعي</h3><ul><li>البدء من المروة؛ فمن بدأ بها ألغى ذلك الشوط ولا يعتد به.</li><li>السعي قبل طواف صحيح، أو السعي بعد طواف فاسد.</li><li>نقصان السعي عن سبعة أشواط، أو الشك في العدد وعدم البناء على الأقل المحقق.</li><li>تفريق الأشواط وترك الموالاة بينها وفي أثنائها.</li><li>الركوب في السعي بغير عذر؛ فمن ركب وهو قادر على المشي صح سعيه وعليه الدم.</li></ul>",
+        "contentEn": "<h3>Sa’i mistakes according to the guide</h3><ul><li>Starting from Marwah; that circuit is cancelled and not counted.</li><li>Performing sa’i before a valid tawaf, or after an invalid tawaf.</li><li>Doing fewer than seven circuits, or doubting the number without building on the lower certain number.</li><li>Separating the circuits and breaking continuity between or during them.</li><li>Riding during sa’i without an excuse; if a capable person rides, the sa’i is valid but sacrifice is due.</li></ul>",
+        "contentFr": "<h3>Erreurs de sa’i selon le guide</h3><ul><li>Commencer par Marwah ; ce circuit est annulé et ne compte pas.</li><li>Faire le sa’i avant un tawaf valide, ou après un tawaf invalide.</li><li>Faire moins de sept circuits, ou douter du nombre sans se baser sur le nombre certain le plus bas.</li><li>Séparer les circuits et rompre la continuité entre eux ou pendant eux.</li><li>Monter pendant le sa’i sans excuse ; si une personne capable monte, le sa’i est valide mais un sacrifice est dû.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 504,
+        "nameAr": "أخطاء في الوقوف بعرفة",
+        "nameEn": "Mistakes at Arafah",
+        "nameFr": "Erreurs à Arafah",
+        "icon": "⛔",
+        "contentAr": "<h3>أخطاء في الوقوف بعرفة</h3><ul><li>الخروج من عرفة قبل غروب الشمس؛ نص الدليل على أن من دفع وخرج قبل الغروب فحجه غير صحيح.</li><li>عدم الوقوف مستقرا مطمئنا في وقت الوقوف.</li><li>الجهل بأن المكان عرفة؛ فمن جهل المكان لم يجزئه الوقوف.</li><li>فوات الوقوف إلى فجر يوم العيد؛ فمن فاته الوقوف حتى ذلك الوقت فاته الحج.</li><li>اعتقاد وجوب صعود جبل الرحمة؛ الدليل يقرر أن الوقوف يصح في أي مكان داخل حدود عرفة ولا يجب الصعود إلى الجبل.</li></ul>",
+        "contentEn": "<h3>Arafah mistakes according to the guide</h3><ul><li>Leaving Arafah before sunset; the guide states that whoever leaves before sunset has an invalid Hajj.</li><li>Not standing there calmly and settled during the valid time.</li><li>Not knowing that the place is Arafah; ignorance of the place does not suffice.</li><li>Missing the standing until dawn of Eid day; whoever misses it until then has missed Hajj.</li><li>Believing that climbing Jabal al-Rahmah is required; the guide states that any place inside Arafah is valid and climbing the mountain is not required.</li></ul>",
+        "contentFr": "<h3>Erreurs à Arafah selon le guide</h3><ul><li>Quitter Arafah avant le coucher du soleil ; le guide affirme que celui qui part avant le coucher a un Hajj invalide.</li><li>Ne pas s’y tenir de manière stable et paisible pendant le temps valide.</li><li>Ignorer que le lieu est Arafah ; l’ignorance du lieu ne suffit pas.</li><li>Manquer la station jusqu’à l’aube du jour de l’Aïd ; celui qui la manque jusque-là a manqué le Hajj.</li><li>Croire que monter à Jabal al-Rahmah est obligatoire ; le guide indique que tout endroit dans les limites de Arafah est valide et que monter au mont n’est pas requis.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nameAr": "الأدعية المأثورة",
+    "nameEn": "Authentic Supplications",
+    "nameFr": "Invocations authentiques",
+    "icon": "🤲",
+    "color": "#1ABC9C",
+    "subcategories": [
+      {
+        "id": 601,
+        "nameAr": "دعاء دخول المسجد الحرام",
+        "nameEn": "Supplication for Entering the Sacred Mosque",
+        "nameFr": "Invocation pour entrer dans la Mosquée Sacrée",
+        "icon": "🕌",
+        "contentAr": "<h3>دعاء دخول المسجد الحرام</h3><ul><li>يدخل المسجد برجله اليمنى ويقول: «أعوذ بالله العظيم، وبوجهه الكريم، وسلطانه القديم من الشيطان الرجيم. بسم الله والسلام على رسول الله، السلام علينا وعلى عباد الله الصالحين. اللهم صل على محمد وعلى آل محمد. اللهم افتح لي أبواب رحمتك».</li><li>إذا رأى البيت يقول: «اللهم أنت السلام، ومنك السلام، فحينا ربنا بالسلام».</li></ul>",
+        "contentEn": "<h3>Supplication for entering the Sacred Mosque and seeing the Kaaba</h3><ul><li>Enter the mosque with the right foot and say: “I seek refuge with Allah the Magnificent, with His noble face and His eternal authority, from the accursed Satan. In the name of Allah, peace be upon the Messenger of Allah, peace be upon us and upon Allah’s righteous servants. O Allah, bless Muhammad and the family of Muhammad. O Allah, open for me the doors of Your mercy.”</li><li>When seeing the House, say: “O Allah, You are Peace and from You is peace, so greet us, our Lord, with peace.”</li></ul>",
+        "contentFr": "<h3>Invocation d’entrée dans la Mosquée sacrée et de vision de la Kaaba</h3><ul><li>Entrer avec le pied droit et dire : « Je cherche refuge auprès d’Allah le Magnifique, par Son noble visage et Son autorité éternelle, contre Satan le maudit. Au nom d’Allah, paix sur le Messager d’Allah, paix sur nous et sur les serviteurs vertueux d’Allah. Ô Allah, prie sur Muhammad et sur la famille de Muhammad. Ô Allah, ouvre-moi les portes de Ta miséricorde. »</li><li>En voyant la Maison, dire : « Ô Allah, Tu es la Paix et de Toi vient la paix ; fais-nous vivre, Seigneur, dans la paix. »</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 602,
+        "nameAr": "دعاء الطواف",
+        "nameEn": "Supplication during Tawaf",
+        "nameFr": "Invocation pendant le tawaf",
+        "icon": "🔄",
+        "contentAr": "<h3>دعاء الطواف</h3><p>يذكر الدليل أن طواف الحج أو العمرة سبعة أشواط، ولكل شوط أدعية مخصصة.</p><ul><li>من دعاء الشوط الأول: «سبحان الله والحمد لله ولا إله إلا الله والله أكبر، ولا حول ولا قوة إلا بالله العلي العظيم...».</li><li>يكثر الطائف من الذكر والدعاء والصلاة والسلام على رسول الله صلى الله عليه وسلم.</li><li>بعد الطواف يصلي ركعتي الطواف، فإن كان في وقت النهي أخرهما حتى تحل النافلة.</li></ul>",
+        "contentEn": "<h3>Supplication during tawaf</h3><p>The guide states that tawaf of Hajj or Umrah has seven circuits, and each circuit has recommended supplications.</p><ul><li>From the first-circuit supplication: “Glory be to Allah, praise be to Allah, there is no god but Allah, Allah is greatest, and there is no power and no strength except with Allah, the Most High, the Magnificent...”</li><li>The pilgrim increases remembrance, supplication, and blessings and peace upon the Messenger of Allah.</li><li>After tawaf, the pilgrim prays the two rakahs of tawaf; if it is a prohibited time for voluntary prayer, he delays them until voluntary prayer becomes allowed.</li></ul>",
+        "contentFr": "<h3>Invocation pendant le tawaf</h3><p>Le guide indique que le tawaf du Hajj ou de la Omra comporte sept circuits, chacun avec des invocations recommandées.</p><ul><li>Parmi l’invocation du premier circuit : « Gloire à Allah, louange à Allah, il n’y a de divinité qu’Allah, Allah est le plus grand, et il n’y a de force ni de puissance qu’en Allah, le Très-Haut, le Magnifique... »</li><li>Le pèlerin multiplie le rappel, l’invocation et les prières et salutations sur le Messager d’Allah.</li><li>Après le tawaf, il prie les deux rakahs du tawaf ; si c’est un temps interdit aux prières surérogatoires, il les retarde jusqu’à ce qu’elles soient permises.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 603,
+        "nameAr": "دعاء السعي",
+        "nameEn": "Supplication during Sa’i",
+        "nameFr": "Invocation pendant le sa’i",
+        "icon": "🚶",
+        "contentAr": "<h3>دعاء السعي</h3><ul><li>عندما يرتفع الحاج على درج الصفا يقول: «الله أكبر، الله أكبر، الله أكبر، ولله الحمد».</li><li>يبدأ على الصفا بما بدأ به الله ورسوله: «إن الصفا والمروة من شعائر الله...».</li><li>من دعاء الشوط الأول: «الله أكبر، الله أكبر، الله أكبر، الله أكبر كبيرا والحمد لله كثيرا...».</li><li>بعد تمام السعي ورد في الدليل دعاء: «ربنا تقبل منا وعافنا واعف عنا...».</li></ul>",
+        "contentEn": "<h3>Supplication during sa’i</h3><ul><li>When the pilgrim climbs the steps of Safa, he says: “Allah is greatest, Allah is greatest, Allah is greatest, and praise belongs to Allah.”</li><li>He begins at Safa with what Allah and His Messenger began with: “Indeed Safa and Marwah are among the symbols of Allah...”</li><li>From the first-circuit supplication: “Allah is greatest, Allah is greatest, Allah is greatest; Allah is very great and abundant praise is for Allah...”</li><li>After completing sa’i, the guide includes the supplication: “Our Lord, accept from us, grant us well-being, and pardon us...”</li></ul>",
+        "contentFr": "<h3>Invocation pendant le sa’i</h3><ul><li>Lorsque le pèlerin monte les marches de Safa, il dit : « Allah est le plus grand, Allah est le plus grand, Allah est le plus grand, et à Allah la louange. »</li><li>Il commence à Safa par ce par quoi Allah et Son Messager ont commencé : « Safa et Marwah sont parmi les rites d’Allah... »</li><li>Parmi l’invocation du premier circuit : « Allah est le plus grand, Allah est le plus grand, Allah est le plus grand ; Allah est très grand et la louange abondante appartient à Allah... »</li><li>Après l’achèvement du sa’i, le guide mentionne : « Notre Seigneur, accepte de nous, accorde-nous la santé et pardonne-nous... »</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 604,
+        "nameAr": "دعاء يوم عرفة",
+        "nameEn": "Supplication on the Day of Arafah",
+        "nameFr": "Invocation le jour d’Arafah",
+        "icon": "⛰️",
+        "contentAr": "<h3>دعاء يوم عرفة</h3><ul><li>للحاج أن يسأل الله تعالى ويدعوه بما يشاء لنفسه وأهله وأقاربه وأئمة المسلمين وعامتهم.</li><li>أفضل الدعاء دعاء يوم عرفة.</li><li>يكثر الحاج في عرفة من قول: «لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير».</li><li>ومما يدعو به: «اللهم لك الحمد كالذي تقول وخيرا مما نقول، اللهم لك صلاتي ونسكي ومحياي ومماتي وإليك مآبي...».</li></ul>",
+        "contentEn": "<h3>Supplication on the Day of Arafah</h3><ul><li>The pilgrim may ask Allah and supplicate as he wishes for himself, his family, relatives, the leaders of Muslims, and Muslims generally.</li><li>The best supplication is the supplication of the Day of Arafah.</li><li>At Arafah, the pilgrim frequently says: “There is no god but Allah alone, with no partner. His is the dominion and His is the praise, and He has power over all things.”</li><li>Among what he may supplicate: “O Allah, to You is praise as You say and better than what we say. O Allah, my prayer, my sacrifice, my life, my death, and my return are to You...”</li></ul>",
+        "contentFr": "<h3>Invocation du jour de Arafah</h3><ul><li>Le pèlerin peut demander à Allah et L’invoquer comme il veut pour lui-même, sa famille, ses proches, les responsables des musulmans et les musulmans en général.</li><li>La meilleure invocation est celle du jour de Arafah.</li><li>À Arafah, le pèlerin répète abondamment : « Il n’y a de divinité qu’Allah seul, sans associé ; à Lui la royauté et la louange, et Il est capable de toute chose. »</li><li>Parmi les invocations : « Ô Allah, à Toi la louange comme Tu dis et mieux que ce que nous disons. Ô Allah, ma prière, mon rite, ma vie, ma mort et mon retour sont à Toi... »</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nameAr": "الحج خطوة بخطوة",
+    "nameEn": "Hajj Step by Step",
+    "nameFr": "Le Hajj étape par étape",
+    "icon": "🧭",
+    "color": "#16A085",
+    "subcategories": [
+      {
+        "id": 701,
+        "nameAr": "الخطوة 1: الإحرام من الميقات",
+        "nameEn": "Step 1: Ihram from Miqat",
+        "nameFr": "Étape 1 : Ihram depuis le miqat",
+        "icon": "🚪",
+        "contentAr": "<h3>الخطوة 1: الإحرام من الميقات</h3><ul><li>يحرم الحاج من ميقاته ولا يتجاوزه قبل الإحرام.</li><li>قبل الإحرام يستحب إزالة الشعر وتقليم الأظافر والاغتسال ولبس لباس الإحرام.</li><li>يصلي ركعتي الإحرام إن لم يكن الوقت وقت كراهة.</li><li>ينوي النسك ويلبي؛ والتلبية واجبة مرة واحدة ويستحب الإكثار منها.</li><li>في التمتع يحرم بالعمرة أولا في أشهر الحج.</li></ul>",
+        "contentEn": "<h3>Step 1: Ihram from the miqat</h3><ul><li>The pilgrim enters ihram from his miqat and does not pass it before ihram.</li><li>Before ihram, it is recommended to remove hair, trim nails, perform ghusl, and wear ihram clothing.</li><li>He prays the two rakahs of ihram when it is not a disliked prayer time.</li><li>He intends the rite and recites talbiyah; talbiyah is obligatory once and recommended often.</li><li>In tamattu, he first enters ihram for Umrah during the months of Hajj.</li></ul>",
+        "contentFr": "<h3>Étape 1 : Ihram depuis le miqat</h3><ul><li>Le pèlerin entre en ihram depuis son miqat et ne le dépasse pas avant l’ihram.</li><li>Avant l’ihram, il est recommandé d’enlever les poils, couper les ongles, faire le ghusl et porter les vêtements d’ihram.</li><li>Il prie les deux rakahs de l’ihram si ce n’est pas un temps déconseillé.</li><li>Il formule l’intention et récite la talbiyah ; elle est obligatoire une fois et recommandée souvent.</li><li>Dans le tamattu, il entre d’abord en ihram pour la Omra pendant les mois du Hajj.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 702,
+        "nameAr": "الخطوة 2: الطواف والسعي (للحاج المتمتع والقارن)",
+        "nameEn": "Step 2: Tawaf and Sa’i (for Tamattu’ and Qiran)",
+        "nameFr": "Étape 2 : Tawaf et Sa’i (pour Tamattu’ et Qiran)",
+        "icon": "🔄",
+        "contentAr": "<h3>الخطوة 2: الطواف والسعي (للحاج المتمتع والقارن)</h3><ul><li>إذا وصل الحاج مكة فالأول أن يتوجه إلى البيت الحرام للطواف، ولا يشتغل بغيره.</li><li>يدخل المسجد بالقدم اليمنى ويدعو بدعاء الدخول، ثم إذا رأى البيت قال دعاء رؤية الكعبة.</li><li>يطوف سبعة أشواط، ثم يصلي ركعتي الطواف.</li><li>بعد الطواف يسعى بين الصفا والمروة سبعة أشواط، يبدأ بالصفا وينتهي بالمروة.</li><li>المتمتع إذا فرغ من العمرة يحلق أو يقصر، ثم يحرم بالحج من عامه قبل الرجوع إلى بلده.</li></ul>",
+        "contentEn": "<h3>Step 2: Tawaf and sa’i</h3><ul><li>When the pilgrim reaches Mecca, the first thing is to go to the Sacred House for tawaf and not be occupied with anything else.</li><li>He enters the mosque with the right foot and says the entrance supplication, then says the supplication for seeing the Kaaba.</li><li>He performs seven circuits of tawaf, then prays the two rakahs of tawaf.</li><li>After tawaf, he performs seven circuits of sa’i between Safa and Marwah, starting at Safa and ending at Marwah.</li><li>In tamattu, when he finishes Umrah, he shaves or shortens his hair, then enters ihram for Hajj in the same year before returning home.</li></ul>",
+        "contentFr": "<h3>Étape 2 : Tawaf et sa’i</h3><ul><li>Lorsque le pèlerin arrive à La Mecque, la première chose est de se diriger vers la Maison sacrée pour le tawaf et de ne s’occuper de rien d’autre.</li><li>Il entre dans la mosquée du pied droit et dit l’invocation d’entrée, puis l’invocation à la vue de la Kaaba.</li><li>Il accomplit sept circuits de tawaf, puis prie les deux rakahs du tawaf.</li><li>Après le tawaf, il accomplit sept circuits de sa’i entre Safa et Marwah, en commençant à Safa et en terminant à Marwah.</li><li>Dans le tamattu, lorsqu’il termine la Omra, il se rase ou raccourcit les cheveux, puis entre en ihram pour le Hajj la même année avant de rentrer chez lui.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 703,
+        "nameAr": "الخطوة 3: يوم التروية (8 ذي الحجة) – الذهاب إلى منى",
+        "nameEn": "Step 3: Day of Tarwiyah (8 Dhul Hijjah) – Going to Mina",
+        "nameFr": "Étape 3 : Jour de Tarwiyah (8 Dhul Hijjah) – Départ pour Mina",
+        "icon": "⛺",
+        "contentAr": "<h3>الخطوة 3: يوم التروية (8 ذي الحجة) – الذهاب إلى منى</h3><ul><li>في اليوم الثامن من ذي الحجة يحرم المتمتع بالحج من مكة أو منى.</li><li>يتوجه إلى منى ويبيت بها.</li><li>يبقى على التلبية والذكر حتى ينتقل إلى بقية المناسك.</li><li>الدليل يبين مراحل التمتع: الإحرام بالعمرة، ثم التحلل، ثم الإحرام بالحج في اليوم الثامن والتوجه إلى منى.</li></ul>",
+        "contentEn": "<h3>Step 3: Day of Tarwiyah</h3><ul><li>On the eighth of Dhul Hijjah, the pilgrim performing tamattu enters ihram for Hajj from Mecca or Mina.</li><li>He goes to Mina and spends the night there.</li><li>He remains upon talbiyah and remembrance until moving to the rest of the rites.</li><li>The guide’s tamattu sequence shows: ihram for Umrah, exiting ihram, then ihram for Hajj on the eighth and going to Mina.</li></ul>",
+        "contentFr": "<h3>Étape 3 : Jour de Tarwiyah</h3><ul><li>Le huitième jour de Dhul Hijjah, le pèlerin en tamattu entre en ihram pour le Hajj depuis La Mecque ou Mina.</li><li>Il se rend à Mina et y passe la nuit.</li><li>Il demeure dans la talbiyah et le rappel jusqu’au passage aux rites suivants.</li><li>Le schéma du tamattu dans le guide montre : ihram pour la Omra, sortie de l’ihram, puis ihram pour le Hajj le huitième et départ vers Mina.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 704,
+        "nameAr": "الخطوة 4: يوم عرفة (9 ذي الحجة)",
+        "nameEn": "Step 4: Day of Arafah (9 Dhul Hijjah)",
+        "nameFr": "Étape 4 : Jour d’Arafah (9 Dhul Hijjah)",
+        "icon": "⛰️",
+        "contentAr": "<h3>الخطوة 4: يوم عرفة (9 ذي الحجة)</h3><ul><li>الوقوف بعرفة يوم التاسع من ذي الحجة ركن من أركان الحج.</li><li>يجمع الحاج بين الظهر والعصر جمع تقديم، ويصليهما قصرا مع الإمام، ومن فاته الجمع مع الإمام جمعهما في رحله.</li><li>يقف داخل حدود عرفة مستقبلا القبلة، متطهرا، مفطرا غير صائم، داعيا الله تعالى.</li><li>لا يلزمه صعود جبل الرحمة.</li><li>لا يخرج من عرفة إلا بعد غروب الشمس ومضي جزء من الليل.</li></ul>",
+        "contentEn": "<h3>Step 4: Day of Arafah</h3><ul><li>Standing at Arafah on the ninth of Dhul Hijjah is a pillar of Hajj.</li><li>The pilgrim combines Dhuhr and Asr in advance, shortened, with the imam; whoever misses the imam combines them at his camp.</li><li>He stands inside the boundaries of Arafah facing the qiblah, purified, not fasting, and supplicating to Allah.</li><li>He is not required to climb Jabal al-Rahmah.</li><li>He does not leave Arafah until after sunset and after part of the night has passed.</li></ul>",
+        "contentFr": "<h3>Étape 4 : Jour de Arafah</h3><ul><li>La station à Arafah le neuvième jour de Dhul Hijjah est un pilier du Hajj.</li><li>Le pèlerin regroupe Dhuhr et Asr en avance, raccourcies, avec l’imam ; celui qui le manque les regroupe à son camp.</li><li>Il se tient dans les limites de Arafah, face à la qiblah, purifié, non jeûneur, en invoquant Allah.</li><li>Il n’est pas tenu de monter à Jabal al-Rahmah.</li><li>Il ne quitte pas Arafah avant le coucher du soleil et le passage d’une partie de la nuit.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 705,
+        "nameAr": "الخطوة 5: النزول بمزدلفة",
+        "nameEn": "Step 5: Stopping at Muzdalifah",
+        "nameFr": "Étape 5 : Arrêt à Muzdalifah",
+        "icon": "🌙",
+        "contentAr": "<h3>الخطوة 5: النزول بمزدلفة</h3><ul><li>بعد غروب الشمس ومضي جزء من الليل يرجع الحاج من عرفة إلى مزدلفة.</li><li>النزول بمزدلفة واجب، ويكفي بقدر حط الرحال.</li><li>يجمع بين المغرب والعشاء جمع تأخير، وقصر العشاء سنة.</li><li>المبيت بها سنة لا دم على تاركه.</li><li>يرتحل بعد صلاة الصبح قبل الإسفار، ويجوز للنساء والأطفال والعجزة الانصراف بعد تحقق النزول.</li></ul>",
+        "contentEn": "<h3>Step 5: Muzdalifah</h3><ul><li>After sunset and after part of the night has passed, the pilgrim returns from Arafah to Muzdalifah.</li><li>Stopping at Muzdalifah is obligatory, and unloading there briefly is enough.</li><li>He combines Maghrib and Isha with delay, and shortening Isha is sunnah.</li><li>Staying overnight there is sunnah with no sacrifice for leaving it.</li><li>He leaves after Fajr before daylight spreads; women, children, and the weak may leave after the stop is fulfilled.</li></ul>",
+        "contentFr": "<h3>Étape 5 : Muzdalifah</h3><ul><li>Après le coucher du soleil et le passage d’une partie de la nuit, le pèlerin revient de Arafah à Muzdalifah.</li><li>S’arrêter à Muzdalifah est obligatoire, et y déposer brièvement les bagages suffit.</li><li>Il regroupe Maghrib et Isha en retard, et raccourcir Isha est une sunna.</li><li>Y passer la nuit est une sunna, sans sacrifice pour son abandon.</li><li>Il part après Fajr avant la diffusion de la lumière ; les femmes, enfants et faibles peuvent partir après l’accomplissement de l’arrêt.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 706,
+        "nameAr": "الخطوة 6: يوم النحر (10 ذي الحجة) – رمي جمرة العقبة، الهدي، الحلق، طواف الإفاضة",
+        "nameEn": "Step 6: Day of Nahr (10 Dhul Hijjah) – Stoning Jamrat al-Aqabah, Sacrifice, Shaving, Tawaf al-Ifadah",
+        "nameFr": "Étape 6 : Jour du Nahr (10 Dhul Hijjah) – Lapidation de Jamrat al-Aqabah, sacrifice, rasage, Tawaf al-Ifadah",
+        "icon": "🎯",
+        "contentAr": "<h3>الخطوة 6: يوم النحر (10 ذي الحجة) – رمي جمرة العقبة، الهدي، الحلق، طواف الإفاضة</h3><ul><li>بعد الرجوع إلى منى يبدأ الحاج برمي جمرة العقبة، وهي الأخيرة مما يلي منى والأولى مما يلي مكة.</li><li>بعد الرمي ينحر هديه، ثم يحلق رأسه أو يقصره، والحلق أولى للرجل، وتأخذ المرأة من شعرها قدر أنملة.</li><li>ثم يدخل مكة ليطوف طواف الإفاضة على هذا الترتيب.</li><li>من قدم بعض هذه الأعمال على بعض فلا شيء عليه، إلا من قدم الحلق على رمي الجمرة فعليه الفدية، ومن قدم طواف الإفاضة على الرمي فعليه الهدي.</li><li>وقت رمي جمرة العقبة من طلوع فجر يوم العيد إلى غروب الشمس.</li></ul>",
+        "contentEn": "<h3>Step 6: Day of Nahr</h3><ul><li>After returning to Mina, the pilgrim starts by stoning Jamrat al-Aqabah, the last jamrah from the side of Mina and the first from the side of Mecca.</li><li>After stoning, he sacrifices his hady, then shaves or shortens his hair. Shaving is better for men, and a woman cuts a fingertip-length from her hair.</li><li>Then he enters Mecca to perform Tawaf al-Ifadah in this order.</li><li>If some acts are advanced over others, there is no penalty, except that shaving before stoning requires fidyah, and Tawaf al-Ifadah before stoning requires hady.</li><li>The time for stoning Jamrat al-Aqabah is from dawn of Eid day until sunset.</li></ul>",
+        "contentFr": "<h3>Étape 6 : Jour du Nahr</h3><ul><li>Après le retour à Mina, le pèlerin commence par lapider Jamrat al-Aqabah, dernière jamrah du côté de Mina et première du côté de La Mecque.</li><li>Après la lapidation, il sacrifie son hady, puis se rase ou raccourcit les cheveux. Le rasage est préférable pour l’homme, et la femme coupe la longueur d’un bout de doigt.</li><li>Puis il entre à La Mecque pour accomplir le Tawaf al-Ifadah dans cet ordre.</li><li>Si certains actes sont avancés sur d’autres, il n’y a rien, sauf se raser avant la lapidation qui impose une fidyah, et faire Tawaf al-Ifadah avant la lapidation qui impose un hady.</li><li>Le temps de la lapidation de Jamrat al-Aqabah va de l’aube du jour de l’Aïd au coucher du soleil.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 707,
+        "nameAr": "الخطوة 7: أيام التشريق (11-13 ذي الحجة) – المبيت بمنى ورمي الجمرات",
+        "nameEn": "Step 7: Days of Tashreeq (11-13 Dhul Hijjah) – Overnight in Mina and Stoning",
+        "nameFr": "Étape 7 : Jours de Tashreeq (11-13 Dhul Hijjah) – Nuitées à Mina et lapidation",
+        "icon": "⛺",
+        "contentAr": "<h3>الخطوة 7: أيام التشريق (11-13 ذي الحجة) – المبيت بمنى ورمي الجمرات</h3><ul><li>في اليوم الثاني والثالث والرابع بمنى يرمي الحاج الجمرات الثلاث.</li><li>يبدأ بالصغرى ثم الوسطى ثم الكبرى، فإن عكس لم يجزه ويعيد ما نكس.</li><li>يرمي كل جمرة بسبع حصيات، كل حصاة وحدها مع التكبير.</li><li>بعد رمي الجمرة الأولى الصغرى يقف مستقبل القبلة، فيدعو ويذكر الله تعالى، ويهلل ويسبح، وكذا بعد رمي الجمرة الثانية الوسطى. أما بعد رمي جمرة العقبة الكبرى فلا يقف للدعاء، بل ينصرف وهو يقول: اللهم اجعله حجًا مبرورًا، وسعيًا مشكورًا، وذنبًا مغفورًا.</li><li>المبيت بمنى ليالي التشريق واجب: ليلتان لمن تعجل، وثلاث لمن تأخر.</li><li>من ترك الرمي كله أو ترك جمرة أو حصاة فعليه دم واحد.</li></ul>",
+        "contentEn": "<h3>Step 7: Days of Tashreeq</h3><ul><li>On the second, third, and fourth days in Mina, the pilgrim stones the three jamarat.</li><li>He starts with the small, then the middle, then the large. If he reverses the order, it is not valid and he repeats what was reversed.</li><li>Each jamrah is stoned with seven pebbles, one pebble at a time with takbir.</li><li>After stoning the first, smaller jamrah, he stands facing the qiblah and supplicates, remembers Allah, proclaims His oneness, and glorifies Him. He does the same after the second, middle jamrah. After Jamrat al-Aqabah al-Kubra, he does not stop to supplicate, but leaves saying: O Allah, make it an accepted Hajj, a thanked-for effort, and a forgiven sin.</li><li>Staying overnight in Mina during Tashreeq is obligatory: two nights for those who hasten and three for those who delay.</li><li>Whoever leaves all stoning, a jamrah, or a pebble must offer one sacrifice.</li></ul>",
+        "contentFr": "<h3>Étape 7 : Jours de Tashreeq</h3><ul><li>Les deuxième, troisième et quatrième jours à Mina, le pèlerin lapide les trois jamarat.</li><li>Il commence par la petite, puis la moyenne, puis la grande. S’il inverse l’ordre, ce n’est pas valide et il recommence ce qui a été inversé.</li><li>Chaque jamrah est lapidée avec sept cailloux, un par un avec takbir.</li><li>Après avoir lapidé la première jamrah, la petite, il se tient face à la qiblah, invoque Allah, Le mentionne, proclame Son unicité et Le glorifie. Il fait de même après la deuxième, la jamrah moyenne. Après Jamrat al-Aqabah al-Kubra, il ne s’arrête pas pour invoquer, mais se retire en disant : Ô Allah, fais qu’il soit un Hajj accepté, un effort agréé et un péché pardonné.</li><li>Passer les nuits à Mina durant Tashreeq est obligatoire : deux nuits pour celui qui se hâte et trois pour celui qui tarde.</li><li>Celui qui abandonne toute la lapidation, une jamrah ou un caillou doit un sacrifice.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 708,
+        "nameAr": "الخطوة 8: طواف الوداع",
+        "nameEn": "Step 8: Tawaf al-Wada (Farewell Tawaf)",
+        "nameFr": "Étape 8 : Tawaf al-Wada (Tawaf d’adieu)",
+        "icon": "👋",
+        "contentAr": "<h3>الخطوة 8: طواف الوداع</h3><ul><li>عند انتهاء الحاج من حوائجه وعزمه على الرحيل يودع البيت بطواف الوداع.</li><li>طواف الوداع مستحب، ولا يجب بتركه شيء.</li><li>لا يسن للحائض والنفساء.</li><li>بعده يعجل بالخروج من مكة، ويبطل بإقامة بعض يوم له بال.</li><li>لا يبطل ببيع أو شراء خفيف أو قضاء دين ونحو ذلك.</li></ul>",
+        "contentEn": "<h3>Step 8: Tawaf al-Wada</h3><ul><li>When the pilgrim has finished his needs and intends to depart, he bids farewell to the House with Tawaf al-Wada.</li><li>Tawaf al-Wada is recommended, and nothing is due for leaving it.</li><li>It is not prescribed for menstruating or postpartum women.</li><li>After it, he hastens to leave Mecca; staying for a meaningful part of a day invalidates it.</li><li>It is not invalidated by light buying or selling, paying a debt, or similar matters.</li></ul>",
+        "contentFr": "<h3>Étape 8 : Tawaf al-Wada</h3><ul><li>Lorsque le pèlerin a terminé ses besoins et veut partir, il fait ses adieux à la Maison par le Tawaf al-Wada.</li><li>Le Tawaf al-Wada est recommandé, et rien n’est dû si on le délaisse.</li><li>Il n’est pas prescrit à la femme en règles ou en lochies.</li><li>Après lui, il se hâte de quitter La Mecque ; rester une partie significative d’une journée l’annule.</li><li>Il n’est pas annulé par un achat ou une vente légère, le paiement d’une dette ou ce qui y ressemble.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nameAr": "الآيات والأحاديث",
+    "nameEn": "Verses and Hadiths",
+    "nameFr": "Versets et hadiths",
+    "icon": "📖",
+    "color": "#8E44AD",
+    "subcategories": [
+      {
+        "id": 801,
+        "nameAr": "آيات وأحاديث في فضل الحج وشروطه",
+        "nameEn": "Verses and Hadiths on the Virtue and Conditions of Hajj",
+        "nameFr": "Versets et hadiths sur la vertu et les conditions du Hajj",
+        "icon": "🌟",
+        "contentAr": "<h3>آيات وأحاديث في فضل الحج وشروطه</h3><ul><li>قال الله تعالى: «ولله على الناس حج البيت من استطاع إليه سبيلا ومن كفر فإن الله غني عن العالمين» (آل عمران: 97).</li><li>قال النبي صلى الله عليه وسلم: «بني الإسلام على خمس: شهادة أن لا إله إلا الله وأن محمدا رسول الله، وإقام الصلاة، وإيتاء الزكاة، وحج البيت، وصوم رمضان».</li><li>قال النبي صلى الله عليه وسلم: «من حج لله فلم يرفث ولم يفسق رجع من ذنوبه كيوم ولدته أمه».</li><li>دل الدليل بهذه النصوص على ركنية الحج ووجوبه على كل مسلم ومسلمة توفرت فيه شروط البلوغ والعقل والحرية والاستطاعة.</li></ul>",
+        "contentEn": "<h3>Verses and hadiths on the virtue and conditions of Hajj</h3><ul><li>Allah says: “And Hajj to the House is a duty owed to Allah by people who are able to find a way to it; and whoever disbelieves, Allah is free of need from all worlds” (Aal Imran 3:97).</li><li>The Prophet said: “Islam is built upon five: testifying that there is no god but Allah and that Muhammad is the Messenger of Allah, establishing prayer, giving zakat, performing Hajj to the House, and fasting Ramadan.”</li><li>The Prophet said: “Whoever performs Hajj for Allah and does not commit obscenity or sin returns from his sins like the day his mother gave birth to him.”</li><li>The guide uses these texts to establish Hajj as a pillar and an obligation for every Muslim man and woman who meets the conditions of puberty, sanity, freedom, and capability.</li></ul>",
+        "contentFr": "<h3>Versets et hadiths sur le mérite et les conditions du Hajj</h3><ul><li>Allah dit : « Et c’est un devoir envers Allah pour les gens qui en ont la capacité d’accomplir le Hajj de la Maison ; et quiconque mécroit, Allah Se passe largement des mondes » (Al Imran 3:97).</li><li>Le Prophète a dit : « L’islam est bâti sur cinq : attester qu’il n’y a de divinité qu’Allah et que Muhammad est le Messager d’Allah, accomplir la prière, donner la zakat, faire le Hajj de la Maison et jeûner Ramadan. »</li><li>Le Prophète a dit : « Celui qui accomplit le Hajj pour Allah sans obscénité ni péché revient de ses péchés comme le jour où sa mère l’a enfanté. »</li><li>Le guide s’appuie sur ces textes pour établir que le Hajj est un pilier et une obligation pour tout musulman et toute musulmane remplissant les conditions de puberté, raison, liberté et capacité.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 802,
+        "nameAr": "آيات وأحاديث في الإحرام والميقات",
+        "nameEn": "Verses and Hadiths on Ihram and Miqat",
+        "nameFr": "Versets et hadiths sur l’ihram et le miqat",
+        "icon": "🕋",
+        "contentAr": "<h3>آيات وأحاديث في الإحرام والميقات</h3><ul><li>الإحرام دخول في الحج أو العمرة بنية مع تلبية أو تكبير أو فعل من أفعال النسك.</li><li>الميقات المكاني هو المكان الذي يجب الإحرام منه، ولا يجوز تجاوزه قبل الإحرام.</li><li>من جاوز الميقات ولم يحرم رجع إليه ولا دم عليه، ومن أحرم بعد تجاوزه فعليه الهدي.</li><li>الميقات الزمني للحج يبدأ من أول ليلة عيد الفطر ويمتد إلى فجر يوم النحر.</li><li>أشكال النسك في الدليل: الإفراد، والقران، والتمتع، والأفضل فيها الإفراد ثم القران ثم التمتع.</li></ul>",
+        "contentEn": "<h3>Texts and rulings on ihram and miqat</h3><ul><li>Ihram is entering Hajj or Umrah with intention along with talbiyah, takbir, or an action of the rite.</li><li>The spatial miqat is the place from which ihram must be entered, and it may not be passed before ihram.</li><li>Whoever passes the miqat without ihram returns to it with no sacrifice; whoever enters ihram after passing it must offer hady.</li><li>The time miqat for Hajj begins on the first night of Eid al-Fitr and extends to dawn of the Day of Nahr.</li><li>The guide’s forms of rite are ifrad, qiran, and tamattu; the preferred order is ifrad, then qiran, then tamattu.</li></ul>",
+        "contentFr": "<h3>Textes et règles sur l’ihram et le miqat</h3><ul><li>L’ihram est l’entrée dans le Hajj ou la Omra avec intention, accompagnée de talbiyah, takbir ou d’un acte du rite.</li><li>Le miqat spatial est le lieu depuis lequel l’ihram doit être pris, et il ne doit pas être dépassé avant l’ihram.</li><li>Celui qui dépasse le miqat sans ihram y retourne sans sacrifice ; celui qui entre en ihram après l’avoir dépassé doit offrir un hady.</li><li>Le miqat temporel du Hajj commence la première nuit de l’Aïd al-Fitr et s’étend jusqu’à l’aube du jour du Nahr.</li><li>Les formes du rite dans le guide sont ifrad, qiran et tamattu ; l’ordre de préférence est ifrad, puis qiran, puis tamattu.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 803,
+        "nameAr": "آيات وأحاديث في الطواف والسعي",
+        "nameEn": "Verses and Hadiths on Tawaf and Sa’i",
+        "nameFr": "Versets et hadiths sur le tawaf et le sa’i",
+        "icon": "🔄",
+        "contentAr": "<h3>آيات وأحاديث في الطواف والسعي</h3><ul><li>الطواف بالبيت مشروع في جميع الأوقات ليلا ونهارا، مع تأخير ركعتي الطواف إذا وقع الطواف في وقت نهي عن النافلة.</li><li>يشترط في الطواف ما يشترط في الصلاة من الطهارة وستر العورة، مع الموالاة والطواف داخل المسجد وخارج البيت والحجر.</li><li>أنواع الطواف في الدليل: طواف القدوم وهو واجب، وطواف الإفاضة وهو ركن، وطواف الوداع وهو سنة مستحبة، وطواف النفل.</li><li>السعي يبدأ بالصفا وينتهي بالمروة، ويكون بعد طواف صحيح، وسبعة أشواط مع الموالاة.</li><li>السعي ركن لا يجبر بالدم.</li></ul>",
+        "contentEn": "<h3>Texts and rulings on tawaf and sa’i</h3><ul><li>Tawaf around the House is prescribed at all times, night and day, while the two rakahs of tawaf are delayed if tawaf occurs during a time when voluntary prayer is prohibited.</li><li>Tawaf requires the conditions of prayer, including purity and covering the awrah, along with continuity and performing tawaf inside the mosque but outside the Kaaba and al-Hijr.</li><li>The guide lists Tawaf al-Qudum as obligatory, Tawaf al-Ifadah as a pillar, Tawaf al-Wada as a recommended sunnah, and voluntary tawaf.</li><li>Sa’i begins at Safa and ends at Marwah, comes after a valid tawaf, and consists of seven continuous circuits.</li><li>Sa’i is a pillar and is not repaired by sacrifice.</li></ul>",
+        "contentFr": "<h3>Textes et règles sur le tawaf et le sa’i</h3><ul><li>Le tawaf autour de la Maison est prescrit à tout moment, de nuit comme de jour, mais les deux rakahs du tawaf sont retardées si le tawaf a lieu dans un temps interdit aux prières surérogatoires.</li><li>Le tawaf exige les conditions de la prière, dont la pureté et la couverture de la awrah, ainsi que la continuité et le fait de tourner dans la mosquée mais hors de la Kaaba et d’al-Hijr.</li><li>Le guide mentionne Tawaf al-Qudum comme obligatoire, Tawaf al-Ifadah comme pilier, Tawaf al-Wada comme sunna recommandée et le tawaf surérogatoire.</li><li>Le sa’i commence à Safa et se termine à Marwah, vient après un tawaf valide et comprend sept circuits continus.</li><li>Le sa’i est un pilier qui n’est pas compensé par sacrifice.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      },
+      {
+        "id": 804,
+        "nameAr": "آيات وأحاديث في الوقوف بعرفة والمزدلفة ومنى",
+        "nameEn": "Verses and Hadiths on Standing at Arafah, Muzdalifah, and Mina",
+        "nameFr": "Versets et hadiths sur la station à Arafah, Muzdalifah et Mina",
+        "icon": "⛰️",
+        "contentAr": "<h3>آيات وأحاديث في الوقوف بعرفة والمزدلفة ومنى</h3><ul><li>الوقوف بعرفة ركن، ومن فاته حتى فجر يوم العيد فقد فاته الحج.</li><li>يخرج الحاج من عرفة بعد غروب الشمس ومضي جزء من الليل إلى مزدلفة.</li><li>النزول بمزدلفة واجب، والمبيت بها سنة، والوقوف بالمشعر الحرام مستحب.</li><li>يبدأ الحاج في منى يوم العيد برمي جمرة العقبة، ثم النحر، ثم الحلق أو التقصير، ثم طواف الإفاضة.</li><li>في أيام التشريق يرمي الجمرات الثلاث، ويبيت بمنى ليلتين لمن تعجل وثلاثا لمن تأخر.</li></ul>",
+        "contentEn": "<h3>Rulings of Arafah, Muzdalifah, and Mina</h3><ul><li>Standing at Arafah is a pillar; whoever misses it until dawn of Eid day has missed Hajj.</li><li>The pilgrim leaves Arafah after sunset and after part of the night has passed, heading to Muzdalifah.</li><li>Stopping at Muzdalifah is obligatory, staying overnight there is sunnah, and standing at al-Mash’ar al-Haram is recommended.</li><li>In Mina on Eid day, the pilgrim begins with Jamrat al-Aqabah, then sacrifice, then shaving or shortening, then Tawaf al-Ifadah.</li><li>During Tashreeq, he stones the three jamarat and stays in Mina two nights if hastening or three if delaying.</li></ul>",
+        "contentFr": "<h3>Règles de Arafah, Muzdalifah et Mina</h3><ul><li>La station à Arafah est un pilier ; celui qui la manque jusqu’à l’aube de l’Aïd a manqué le Hajj.</li><li>Le pèlerin quitte Arafah après le coucher du soleil et le passage d’une partie de la nuit pour Muzdalifah.</li><li>S’arrêter à Muzdalifah est obligatoire, y passer la nuit est une sunna, et se tenir à al-Mash’ar al-Haram est recommandé.</li><li>À Mina le jour de l’Aïd, le pèlerin commence par Jamrat al-Aqabah, puis le sacrifice, puis le rasage ou raccourcissement, puis Tawaf al-Ifadah.</li><li>Pendant Tashreeq, il lapide les trois jamarat et passe à Mina deux nuits s’il se hâte ou trois s’il tarde.</li></ul>",
+        "hasAudioAr": true,
+        "hasAudioEn": false,
+        "hasAudioFr": false
+      }
+    ]
+  }
+]
+
+
+
+
+

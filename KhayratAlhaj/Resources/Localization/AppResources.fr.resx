@@ -282,6 +282,9 @@
   <data name="Loading" xml:space="preserve">
     <value>Chargement...</value>
   </data>
+  <data name="QuranNoInternet" xml:space="preserve">
+    <value>Le chargement de la sourate nécessite une connexion Internet. Veuillez vérifier votre connexion et réessayer.</value>
+  </data>
   <data name="Content" xml:space="preserve">
     <value>Contenu:</value>
   </data>
@@ -366,11 +369,17 @@
   <data name="MyLocation" xml:space="preserve">
     <value>Ma position</value>
   </data>
+  <data name="SelectedPointTitle" xml:space="preserve">
+    <value>📌 Point sélectionné</value>
+  </data>
   <data name="ViewGuide" xml:space="preserve">
     <value>📖 Voir le guide</value>
   </data>
   <data name="GetDirections" xml:space="preserve">
     <value>🧭 Itinéraire</value>
+  </data>
+  <data name="ResetDirections" xml:space="preserve">
+    <value>Réinitialiser l'itinéraire</value>
   </data>
   <data name="GettingLocation" xml:space="preserve">
     <value>📍 Localisation en cours...</value>
