@@ -1,3 +1,4 @@
+using KhayratAlhaj.Resources.Localization;
 using KhayratAlhaj.Models;
 using KhayratAlhaj.Services;
 using System.Collections.ObjectModel;
@@ -29,6 +30,7 @@ namespace KhayratAlhaj.Pages
 
             Title = category.Name;
             SurahCollection.ItemsSource = visibleItems;
+            ApplyLocalizedTexts();
             UpdateHeaderTexts();
         }
 
@@ -41,10 +43,10 @@ namespace KhayratAlhaj.Pages
             if (!quranPackageInstallerService.HasInstalledPages())
             {
                 var shouldInstall = await DisplayAlertAsync(
-                    "مصحف غير مثبت",
-                    "لم يتم تنزيل صفحات المصحف بعد. قم بتنزيلها للمتابعة.",
-                    "تنزيل الآن",
-                    "رجوع");
+                    GetText("QuranSurahListPage_PackageMissingTitle"),
+                    GetText("QuranSurahListPage_PackageMissingMessage"),
+                    GetText("QuranSurahListPage_InstallNow"),
+                    GetText("QuranSurahListPage_Back"));
 
                 if (!shouldInstall)
                 {
@@ -213,7 +215,7 @@ namespace KhayratAlhaj.Pages
                 return;
             }
 
-            LoadingLabel.Text = "جاري فتح السورة...";
+            LoadingLabel.Text = GetText("QuranSurahListPage_LoadingOpenSurah");
             LoadingOverlay.IsVisible = true;
             try
             {
@@ -227,22 +229,74 @@ namespace KhayratAlhaj.Pages
             finally
             {
                 LoadingOverlay.IsVisible = false;
-                LoadingLabel.Text = "جاري تحميل السور...";
+                LoadingLabel.Text = GetText("QuranSurahListPage_LoadingMoreSurahs");
             }
+        }
+
+        private async void OnBookmarksClicked(object? sender, EventArgs e)
+        {
+            Page? bookmarksPage = null;
+            bookmarksPage = new QuranBookmarksPage(async (surahNumber, ayahNumber) =>
+            {
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    try
+                    {
+                        // Close the bookmarks page first while it is still the top page,
+                        // then push the reader so the reader is not popped by mistake.
+                        if (bookmarksPage is not null && Navigation.NavigationStack.Contains(bookmarksPage))
+                        {
+                            await Navigation.PopAsync();
+                        }
+
+                        var targetSub = category.Subcategories.FirstOrDefault(s => (s.SurahNumber ?? 0) == surahNumber);
+                        if (targetSub == null)
+                        {
+                            return;
+                        }
+
+                        Task<QuranSurahData?>? surahTask = surahNumber > 0
+                            ? dataService.GetQuranSurahAsync(surahNumber, editionIdentifier: QuranService.WarshEdition)
+                            : null;
+
+                        await Navigation.PushAsync(new QuranReaderPage(
+                            category,
+                            targetSub,
+                            dataService,
+                            preloadedSurahTask: surahTask,
+                            initialAyah: ayahNumber > 0 ? ayahNumber : null));
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[QuranSurahList] Bookmark navigation failed: {ex}");
+                    }
+                });
+            });
+
+            await Navigation.PushAsync(bookmarksPage);
         }
 
         private void UpdateHeaderTexts()
         {
-            var language = LocalizationService.GetCurrentLanguage();
-            if (language == "ar")
-            {
-                SurahNumberHeaderLabel.Text = "م";
-                SurahNameHeaderLabel.Text = "اسم السورة";
-                return;
-            }
+            SurahNumberHeaderLabel.Text = GetText("QuranSurahListPage_NumberHeader");
+            SurahNameHeaderLabel.Text = GetText("QuranSurahListPage_NameHeader");
+            SurahSearchBar.Placeholder = GetText("QuranSurahListPage_SearchPlaceholder");
+            LoadingLabel.Text = GetText("QuranSurahListPage_LoadingMoreSurahs");
+        }
 
-            SurahNumberHeaderLabel.Text = "No.";
-            SurahNameHeaderLabel.Text = "Surah Name";
+        private static string GetText(string key)
+        {
+            return GetText(key, string.Empty);
+        }
+
+        private static string GetText(string key, string fallback)
+        {
+            return AppResources.ResourceManager.GetString(key, AppResources.Culture) ?? fallback;
+        }
+
+        private void ApplyLocalizedTexts()
+        {
+            // Keep the title bound to the selected category while localizing the page chrome.
         }
     }
 

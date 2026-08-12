@@ -7,28 +7,35 @@
 
     <Grid RowDefinitions="Auto,Auto,*" Padding="14" RowSpacing="8">
         <Grid Grid.Row="0"
-              ColumnDefinitions="52,*"
+              ColumnDefinitions="52,*,Auto"
               ColumnSpacing="10"
               Padding="10,8"
               BackgroundColor="{AppThemeBinding Light=#E8E8EC, Dark=#2A2A30}">
-            <Label Text="م"
-                     x:Name="SurahNumberHeaderLabel"
+                        <Label x:Name="SurahNumberHeaderLabel"
                    Grid.Column="0"
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center" />
-            <Label Text="اسم السورة"
-                     x:Name="SurahNameHeaderLabel"
+                        <Label x:Name="SurahNameHeaderLabel"
                    Grid.Column="1"
                    FontAttributes="Bold"
                    FontSize="18"
                    HorizontalTextAlignment="Start"
                    VerticalTextAlignment="Center" />
+                        <Button x:Name="BookmarksButton"
+                   Grid.Column="2"
+                   Text="🔖"
+                   FontSize="18"
+                   WidthRequest="46"
+                   HeightRequest="38"
+                   Padding="0"
+                   BackgroundColor="Transparent"
+                   Clicked="OnBookmarksClicked" />
         </Grid>
 
         <SearchBar Grid.Row="1"
                    x:Name="SurahSearchBar"
-                   Placeholder="ابحث باسم السورة أو رقمها..."
+                   Placeholder=""
                    TextChanged="OnSearchTextChanged"
                    Margin="0,4,0,0" />
 
@@ -88,8 +95,8 @@
                                        HeightRequest="48"
                                        Color="{AppThemeBinding Light=#0F5132, Dark=#4CAF80}"
                                        HorizontalOptions="Center" />
-                    <Label x:Name="LoadingLabel"
-                           Text="جاري تحميل السور..."
+                          <Label x:Name="LoadingLabel"
+                                        Text=""
                            FontSize="15"
                            HorizontalTextAlignment="Center"
                            TextColor="{AppThemeBinding Light=#5B4210, Dark=#F1D98A}" />

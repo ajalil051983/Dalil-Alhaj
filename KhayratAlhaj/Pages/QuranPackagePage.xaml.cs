@@ -1,3 +1,4 @@
+using KhayratAlhaj.Resources.Localization;
 using KhayratAlhaj.Services;
 
 namespace KhayratAlhaj.Pages
@@ -14,14 +15,16 @@ namespace KhayratAlhaj.Pages
             InitializeComponent();
             installerService = new QuranPackageInstallerService();
             this.onInstalled = onInstalled;
-            PackageUrlEntry.Text = installerService.GetSavedPackageUrl();
+            FlowDirection = LocalizationService.GetFlowDirection();
+            ApplyLocalizedTexts();
         }
 
         protected override void OnDisappearing()
         {
-            installCancellation?.Cancel();
-            installCancellation?.Dispose();
+            var cancellation = installCancellation;
             installCancellation = null;
+            cancellation?.Cancel();
+            cancellation?.Dispose();
             base.OnDisappearing();
         }
 
@@ -32,8 +35,7 @@ namespace KhayratAlhaj.Pages
                 return;
             }
 
-            var packageUrl = PackageUrlEntry.Text?.Trim() ?? string.Empty;
-            installerService.SavePackageUrl(packageUrl);
+            var packageUrl = installerService.GetSavedPackageUrl();
 
             await RunInstallAsync(
                 cancellationToken => installerService.DownloadAndInstallAsync(
@@ -41,43 +43,6 @@ namespace KhayratAlhaj.Pages
                     new Progress<double>(UpdateProgress),
                     new Progress<string>(UpdateStatus),
                     cancellationToken));
-        }
-
-        private async void OnPickZipClicked(object? sender, EventArgs e)
-        {
-            if (isInstalling)
-            {
-                return;
-            }
-
-            try
-            {
-                var file = await FilePicker.Default.PickAsync(new PickOptions
-                {
-                    PickerTitle = "اختر ملف ZIP للمصحف"
-                });
-
-                if (file == null)
-                {
-                    return;
-                }
-
-                var isZip = string.Equals(Path.GetExtension(file.FileName), ".zip", StringComparison.OrdinalIgnoreCase);
-                if (!isZip)
-                {
-                    await DisplayAlertAsync("ملف غير صالح", "يجب اختيار ملف بصيغة ZIP.", "حسناً");
-                    return;
-                }
-
-                await RunInstallAsync(cancellationToken => installerService.InstallFromZipAsync(
-                    file.FullPath,
-                    new Progress<string>(UpdateStatus),
-                    cancellationToken));
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlertAsync("خطأ", $"تعذر اختيار الملف: {ex.Message}", "حسناً");
-            }
         }
 
         private async Task RunInstallAsync(Func<CancellationToken, Task<QuranPackageInstallResult>> installAction)
@@ -88,24 +53,25 @@ namespace KhayratAlhaj.Pages
             }
 
             isInstalling = true;
-            installCancellation = new CancellationTokenSource();
+            var cancellation = new CancellationTokenSource();
+            installCancellation = cancellation;
 
             InstallProgressBar.IsVisible = true;
             InstallProgressBar.Progress = 0;
-            StatusLabel.Text = "جاري التنفيذ...";
+            StatusLabel.Text = GetText("QuranPackagePage_InProgress");
 
             try
             {
-                var result = await installAction(installCancellation.Token);
+                var result = await installAction(cancellation.Token);
                 if (!result.IsSuccess)
                 {
-                    await DisplayAlertAsync("فشل التثبيت", result.Message, "حسناً");
+                    await DisplayAlertAsync(GetText("QuranPackagePage_InstallFailedTitle"), result.Message, GetText("Common_OK", "OK"));
                     return;
                 }
 
                 StatusLabel.Text = result.Message;
                 InstallProgressBar.Progress = 1;
-                await DisplayAlertAsync("تم", result.Message, "متابعة");
+                await DisplayAlertAsync(GetText("QuranPackagePage_SuccessTitle"), result.Message, GetText("QuranPackagePage_Continue"));
 
                 await Navigation.PopAsync();
 
@@ -116,8 +82,12 @@ namespace KhayratAlhaj.Pages
             }
             finally
             {
-                installCancellation.Dispose();
-                installCancellation = null;
+                if (ReferenceEquals(installCancellation, cancellation))
+                {
+                    installCancellation = null;
+                }
+
+                cancellation.Dispose();
                 isInstalling = false;
             }
         }
@@ -137,6 +107,24 @@ namespace KhayratAlhaj.Pages
             {
                 StatusLabel.Text = value;
             });
+        }
+
+        private void ApplyLocalizedTexts()
+        {
+            Title = GetText("QuranPackagePage_Title");
+            IntroLabel.Text = GetText("QuranPackagePage_Intro");
+            DescriptionLabel.Text = GetText("QuranPackagePage_Description");
+            DownloadInstallButton.Text = GetText("QuranPackagePage_DownloadInstall");
+        }
+
+        private static string GetText(string key)
+        {
+            return GetText(key, string.Empty);
+        }
+
+        private static string GetText(string key, string fallback)
+        {
+            return AppResources.ResourceManager.GetString(key, AppResources.Culture) ?? fallback;
         }
     }
 }

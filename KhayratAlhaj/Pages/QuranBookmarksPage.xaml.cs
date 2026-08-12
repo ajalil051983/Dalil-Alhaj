@@ -5,9 +5,9 @@ namespace KhayratAlhaj.Pages
     public partial class QuranBookmarksPage : ContentPage
     {
         private readonly QuranBookmarkService bookmarkService;
-        private readonly Action<int, int> onBookmarkSelected;
+        private readonly Func<int, int, Task> onBookmarkSelected;
 
-        public QuranBookmarksPage(Action<int, int> onBookmarkSelected)
+        public QuranBookmarksPage(Func<int, int, Task> onBookmarkSelected)
         {
             InitializeComponent();
             FlowDirection = LocalizationService.GetFlowDirection();
@@ -45,8 +45,9 @@ namespace KhayratAlhaj.Pages
                 return;
             }
 
-            onBookmarkSelected(item.SurahNumber, item.AyahNumber);
-            await Navigation.PopAsync();
+            // Let the caller decide whether to pop or push a new page.
+            // This avoids the bookmarks page popping the reader that was just opened.
+            await onBookmarkSelected(item.SurahNumber, item.AyahNumber);
         }
     }
 

@@ -285,6 +285,111 @@
   <data name="QuranNoInternet" xml:space="preserve">
     <value>Loading the surah requires an internet connection. Please check your connection and try again.</value>
   </data>
+  <data name="QuranInstallPromptTitle" xml:space="preserve">
+    <value>Mushaf not installed</value>
+  </data>
+  <data name="QuranInstallPromptMessage" xml:space="preserve">
+    <value>You need to download the Mushaf pages before opening the surahs.</value>
+  </data>
+  <data name="QuranInstallPromptPrimary" xml:space="preserve">
+    <value>Download now</value>
+  </data>
+  <data name="QuranInstallPromptSecondary" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="QuranReaderPage_SurahSubtitleFormat" xml:space="preserve">
+    <value>{0} verses • Mushaf pages</value>
+  </data>
+  <data name="QuranReaderPage_PageUnavailableTitle" xml:space="preserve">
+    <value>Page unavailable</value>
+  </data>
+  <data name="QuranReaderPage_PageUnavailableMessage" xml:space="preserve">
+    <value>Download the Mushaf page package to display this page.</value>
+  </data>
+  <data name="QuranReaderPage_PackageUnavailableTitle" xml:space="preserve">
+    <value>Mushaf package unavailable</value>
+  </data>
+  <data name="QuranReaderPage_PackageUnavailableMessage" xml:space="preserve">
+    <value>Place the page files in the local package folder and try again.</value>
+  </data>
+  <data name="QuranReaderPage_Retry" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="QuranReaderPage_LoadingSurahPages" xml:space="preserve">
+    <value>Preparing surah pages...</value>
+  </data>
+  <data name="QuranReaderPage_AyahPlaceholder" xml:space="preserve">
+    <value>Ayah number</value>
+  </data>
+  <data name="QuranReaderPage_AyahNotFoundTitle" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="QuranReaderPage_AyahNotFoundMessage" xml:space="preserve">
+    <value>That ayah number does not exist in this surah.</value>
+  </data>
+  <data name="QuranReaderPage_PageIndicatorFormat" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="QuranReaderPage_FooterPageFormat" xml:space="preserve">
+    <value>Page {0}</value>
+  </data>
+  <data name="QuranReaderPage_FooterAyahsFormat" xml:space="preserve">
+    <value>Ayahs {0}</value>
+  </data>
+  <data name="QuranReaderPage_FooterCombinedFormat" xml:space="preserve">
+    <value>{0} • {1}</value>
+  </data>
+  <data name="QuranPackagePage_Title" xml:space="preserve">
+    <value>Download Mushaf</value>
+  </data>
+  <data name="QuranPackagePage_Intro" xml:space="preserve">
+    <value>Before reading the surahs, you must download the Mushaf page package.</value>
+  </data>
+  <data name="QuranPackagePage_Description" xml:space="preserve">
+    <value>Tap the download button to automatically install the Mushaf pages.</value>
+  </data>
+  <data name="QuranPackagePage_DownloadInstall" xml:space="preserve">
+    <value>Download and Install</value>
+  </data>
+  <data name="QuranPackagePage_InProgress" xml:space="preserve">
+    <value>Working...</value>
+  </data>
+  <data name="QuranPackagePage_InstallFailedTitle" xml:space="preserve">
+    <value>Installation failed</value>
+  </data>
+  <data name="QuranPackagePage_SuccessTitle" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="QuranPackagePage_Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="QuranSurahListPage_NumberHeader" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="QuranSurahListPage_NameHeader" xml:space="preserve">
+    <value>Surah Name</value>
+  </data>
+  <data name="QuranSurahListPage_SearchPlaceholder" xml:space="preserve">
+    <value>Search by surah name or number...</value>
+  </data>
+  <data name="QuranSurahListPage_PackageMissingTitle" xml:space="preserve">
+    <value>Mushaf not installed</value>
+  </data>
+  <data name="QuranSurahListPage_PackageMissingMessage" xml:space="preserve">
+    <value>The Mushaf pages have not been downloaded yet. Download them to continue.</value>
+  </data>
+  <data name="QuranSurahListPage_InstallNow" xml:space="preserve">
+    <value>Download now</value>
+  </data>
+  <data name="QuranSurahListPage_Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="QuranSurahListPage_LoadingOpenSurah" xml:space="preserve">
+    <value>Opening surah...</value>
+  </data>
+  <data name="QuranSurahListPage_LoadingMoreSurahs" xml:space="preserve">
+    <value>Loading surahs...</value>
+  </data>
   <data name="Content" xml:space="preserve">
     <value>Content:</value>
   </data>

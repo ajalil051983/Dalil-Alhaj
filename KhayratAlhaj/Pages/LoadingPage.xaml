@@ -6,46 +6,48 @@
              BackgroundColor="{StaticResource HeaderBackgroundColor}">
 
     <Grid>
-        <VerticalStackLayout 
+        <VerticalStackLayout
             VerticalOptions="Center"
             HorizontalOptions="Center"
-            Spacing="20">
-            
+            Spacing="24"
+            Padding="30,0">
+
             <!-- Kaaba Icon -->
-            <Image Source="kaaba_icon.svg"
-                   WidthRequest="200"
-                   HeightRequest="200"
-                   HorizontalOptions="Center" />
-            
+            <Image Source="kaaba_icon"
+                   WidthRequest="180"
+                   HeightRequest="180"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFit" />
+
             <!-- Title -->
             <Label x:Name="TitleLabel"
                    Text="{x:Static res:AppResources.AppTitle}"
-                   FontSize="48"
+                   FontSize="42"
                    FontAttributes="Bold"
                    TextColor="#FFD700"
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center" />
-            
+
             <!-- Subtitle -->
             <Label x:Name="SubtitleLabel"
                    Text="{x:Static res:AppResources.AppSubtitle}"
-                   FontSize="28"
+                   FontSize="24"
                    TextColor="#ECF0F1"
                    HorizontalOptions="Center"
                    HorizontalTextAlignment="Center" />
-            
+
             <!-- Loading indicator -->
             <ActivityIndicator IsRunning="True"
-                             Color="#FFD700"
-                             WidthRequest="40"
-                             HeightRequest="40"
-                             Margin="0,20,0,0" />
-            
+                               Color="#FFD700"
+                               WidthRequest="44"
+                               HeightRequest="44"
+                               Margin="0,24,0,0" />
+
         </VerticalStackLayout>
-        
+
         <!-- Copyright Footer -->
         <Label Text="{x:Static res:AppResources.Copyright}"
-               FontSize="18"
+               FontSize="16"
                TextColor="#95A5A6"
                VerticalOptions="End"
                HorizontalOptions="Center"

@@ -5,7 +5,7 @@ namespace KhayratAlhaj.Services
     public class QuranPackageInstallerService
     {
         private const string QuranPackageUrlKey = "quran_package_url";
-        private const string DefaultQuranPackageUrl = "https://drive.google.com/file/d/1eYso3a1rnSJyFn_2lmx2IPBaRoJL-nf2/view?usp=sharing";
+        private const string DefaultQuranPackageUrl = "https://raw.githubusercontent.com/ajalil051983/Dalil-Alhaj/main/Generated/warsh-pages-604.zip";
         private static readonly HttpClient HttpClient = new()
         {
             Timeout = TimeSpan.FromMinutes(15)
@@ -16,8 +16,17 @@ namespace KhayratAlhaj.Services
         public string GetSavedPackageUrl()
         {
             var stored = Preferences.Get(QuranPackageUrlKey, string.Empty);
-            var effective = string.IsNullOrWhiteSpace(stored) ? DefaultQuranPackageUrl : stored;
-            return NormalizeDownloadUrl(effective);
+            var effective = string.IsNullOrWhiteSpace(stored)
+                ? DefaultQuranPackageUrl
+                : stored;
+
+            var normalized = NormalizeDownloadUrl(effective);
+            if (!UrlMatches(stored, normalized))
+            {
+                Preferences.Set(QuranPackageUrlKey, normalized);
+            }
+
+            return normalized;
         }
 
         public void SavePackageUrl(string packageUrl)
@@ -194,31 +203,27 @@ namespace KhayratAlhaj.Services
             }
 
             var host = uri.Host.ToLowerInvariant();
-            if (!host.Contains("drive.google.com"))
+            if (host.Contains("github.com"))
             {
+                var segments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                if (segments.Length >= 5 && segments[2].Equals("blob", StringComparison.OrdinalIgnoreCase))
+                {
+                    var owner = segments[0];
+                    var repo = segments[1];
+                    var branch = segments[3];
+                    var relativePath = string.Join('/', segments.Skip(4));
+                    return $"https://raw.githubusercontent.com/{owner}/{repo}/{branch}/{relativePath}";
+                }
+
                 return url;
             }
 
-            var pathSegments = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
-            var fileSegmentIndex = Array.FindIndex(pathSegments, segment => segment.Equals("d", StringComparison.OrdinalIgnoreCase));
-            if (fileSegmentIndex >= 0 && fileSegmentIndex + 1 < pathSegments.Length)
-            {
-                var fileId = pathSegments[fileSegmentIndex + 1];
-                return $"https://drive.google.com/uc?export=download&id={fileId}";
-            }
-
-            var query = uri.Query.TrimStart('?')
-                .Split('&', StringSplitOptions.RemoveEmptyEntries)
-                .Select(part => part.Split('=', 2))
-                .Where(parts => parts.Length == 2)
-                .ToDictionary(parts => parts[0], parts => parts[1], StringComparer.OrdinalIgnoreCase);
-
-            if (query.TryGetValue("id", out var queryId) && !string.IsNullOrWhiteSpace(queryId))
-            {
-                return $"https://drive.google.com/uc?export=download&id={queryId}";
-            }
-
             return url;
+        }
+
+        private static bool UrlMatches(string? left, string? right)
+        {
+            return string.Equals(NormalizeDownloadUrl(left ?? string.Empty), NormalizeDownloadUrl(right ?? string.Empty), StringComparison.OrdinalIgnoreCase);
         }
 
         private static string FindPagesDirectory(string extractedRoot)

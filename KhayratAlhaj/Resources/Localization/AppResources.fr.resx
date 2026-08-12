@@ -285,6 +285,111 @@
   <data name="QuranNoInternet" xml:space="preserve">
     <value>Le chargement de la sourate nécessite une connexion Internet. Veuillez vérifier votre connexion et réessayer.</value>
   </data>
+  <data name="QuranInstallPromptTitle" xml:space="preserve">
+    <value>Mushaf non installé</value>
+  </data>
+  <data name="QuranInstallPromptMessage" xml:space="preserve">
+    <value>Vous devez télécharger les pages du Mushaf avant d'ouvrir les sourates.</value>
+  </data>
+  <data name="QuranInstallPromptPrimary" xml:space="preserve">
+    <value>Télécharger maintenant</value>
+  </data>
+  <data name="QuranInstallPromptSecondary" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="QuranReaderPage_SurahSubtitleFormat" xml:space="preserve">
+    <value>{0} versets • pages du mushaf</value>
+  </data>
+  <data name="QuranReaderPage_PageUnavailableTitle" xml:space="preserve">
+    <value>Page indisponible</value>
+  </data>
+  <data name="QuranReaderPage_PageUnavailableMessage" xml:space="preserve">
+    <value>Téléchargez le pack des pages du mushaf pour afficher cette page.</value>
+  </data>
+  <data name="QuranReaderPage_PackageUnavailableTitle" xml:space="preserve">
+    <value>Pack du mushaf indisponible</value>
+  </data>
+  <data name="QuranReaderPage_PackageUnavailableMessage" xml:space="preserve">
+    <value>Placez les fichiers de pages dans le dossier local du pack, puis réessayez.</value>
+  </data>
+  <data name="QuranReaderPage_Retry" xml:space="preserve">
+    <value>Réessayer</value>
+  </data>
+  <data name="QuranReaderPage_LoadingSurahPages" xml:space="preserve">
+    <value>Préparation des pages de la sourate...</value>
+  </data>
+  <data name="QuranReaderPage_AyahPlaceholder" xml:space="preserve">
+    <value>Numéro d'ayah</value>
+  </data>
+  <data name="QuranReaderPage_AyahNotFoundTitle" xml:space="preserve">
+    <value>Introuvable</value>
+  </data>
+  <data name="QuranReaderPage_AyahNotFoundMessage" xml:space="preserve">
+    <value>Ce numéro d'ayah n'existe pas dans cette sourate.</value>
+  </data>
+  <data name="QuranReaderPage_PageIndicatorFormat" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="QuranReaderPage_FooterPageFormat" xml:space="preserve">
+    <value>Page {0}</value>
+  </data>
+  <data name="QuranReaderPage_FooterAyahsFormat" xml:space="preserve">
+    <value>Versets {0}</value>
+  </data>
+  <data name="QuranReaderPage_FooterCombinedFormat" xml:space="preserve">
+    <value>{0} • {1}</value>
+  </data>
+  <data name="QuranPackagePage_Title" xml:space="preserve">
+    <value>Télécharger le mushaf</value>
+  </data>
+  <data name="QuranPackagePage_Intro" xml:space="preserve">
+    <value>Avant de lire les sourates, vous devez télécharger le pack des pages du mushaf.</value>
+  </data>
+  <data name="QuranPackagePage_Description" xml:space="preserve">
+    <value>Appuyez sur le bouton de téléchargement pour installer automatiquement les pages du mushaf.</value>
+  </data>
+  <data name="QuranPackagePage_DownloadInstall" xml:space="preserve">
+    <value>Télécharger et installer</value>
+  </data>
+  <data name="QuranPackagePage_InProgress" xml:space="preserve">
+    <value>En cours...</value>
+  </data>
+  <data name="QuranPackagePage_InstallFailedTitle" xml:space="preserve">
+    <value>Échec de l'installation</value>
+  </data>
+  <data name="QuranPackagePage_SuccessTitle" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="QuranPackagePage_Continue" xml:space="preserve">
+    <value>Continuer</value>
+  </data>
+  <data name="QuranSurahListPage_NumberHeader" xml:space="preserve">
+    <value>N°</value>
+  </data>
+  <data name="QuranSurahListPage_NameHeader" xml:space="preserve">
+    <value>Nom de la sourate</value>
+  </data>
+  <data name="QuranSurahListPage_SearchPlaceholder" xml:space="preserve">
+    <value>Rechercher par nom ou numéro de sourate...</value>
+  </data>
+  <data name="QuranSurahListPage_PackageMissingTitle" xml:space="preserve">
+    <value>Mushaf non installé</value>
+  </data>
+  <data name="QuranSurahListPage_PackageMissingMessage" xml:space="preserve">
+    <value>Les pages du mushaf n'ont pas encore été téléchargées. Téléchargez-les pour continuer.</value>
+  </data>
+  <data name="QuranSurahListPage_InstallNow" xml:space="preserve">
+    <value>Télécharger maintenant</value>
+  </data>
+  <data name="QuranSurahListPage_Back" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="QuranSurahListPage_LoadingOpenSurah" xml:space="preserve">
+    <value>Ouverture de la sourate...</value>
+  </data>
+  <data name="QuranSurahListPage_LoadingMoreSurahs" xml:space="preserve">
+    <value>Chargement des sourates...</value>
+  </data>
   <data name="Content" xml:space="preserve">
     <value>Contenu:</value>
   </data>

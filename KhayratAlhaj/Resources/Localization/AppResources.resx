@@ -285,6 +285,117 @@
   <data name="QuranNoInternet" xml:space="preserve">
     <value>يتطلب تحميل السورة اتصالاً بالإنترنت. يرجى التحقق من الاتصال ثم المحاولة مرة أخرى.</value>
   </data>
+  <data name="QuranInstallPromptTitle" xml:space="preserve">
+    <value>مصحف غير مثبت</value>
+  </data>
+  <data name="QuranInstallPromptMessage" xml:space="preserve">
+    <value>يجب تنزيل صفحات المصحف أولاً قبل فتح السور.</value>
+  </data>
+  <data name="QuranInstallPromptPrimary" xml:space="preserve">
+    <value>تنزيل الآن</value>
+  </data>
+  <data name="QuranInstallPromptSecondary" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="QuranReaderPage_SurahSubtitleFormat" xml:space="preserve">
+    <value>{0} آية • مصحف الصفحات</value>
+  </data>
+  <data name="QuranReaderPage_PageUnavailableTitle" xml:space="preserve">
+    <value>الصفحة غير متوفرة</value>
+  </data>
+  <data name="QuranReaderPage_PageUnavailableMessage" xml:space="preserve">
+    <value>قم بتنزيل حزمة صفحات المصحف لإظهار هذه الصفحة.</value>
+  </data>
+  <data name="QuranReaderPage_PackageUnavailableTitle" xml:space="preserve">
+    <value>حزمة المصحف غير متوفرة</value>
+  </data>
+  <data name="QuranReaderPage_PackageUnavailableMessage" xml:space="preserve">
+    <value>ضع ملفات الصفحات في مجلد الحزمة المحلي ثم أعد المحاولة.</value>
+  </data>
+  <data name="QuranReaderPage_Retry" xml:space="preserve">
+    <value>إعادة التحقق</value>
+  </data>
+  <data name="QuranReaderPage_LoadingSurahPages" xml:space="preserve">
+    <value>جاري تجهيز صفحات السورة...</value>
+  </data>
+  <data name="QuranReaderPage_AyahPlaceholder" xml:space="preserve">
+    <value>رقم الآية</value>
+  </data>
+  <data name="QuranReaderPage_AyahNotFoundTitle" xml:space="preserve">
+    <value>غير موجود</value>
+  </data>
+  <data name="QuranReaderPage_AyahNotFoundMessage" xml:space="preserve">
+    <value>رقم الآية غير موجود في هذه السورة.</value>
+  </data>
+  <data name="QuranReaderPage_PageIndicatorFormat" xml:space="preserve">
+    <value>{0} / {1}</value>
+  </data>
+  <data name="QuranReaderPage_FooterPageFormat" xml:space="preserve">
+    <value>صفحة {0}</value>
+  </data>
+  <data name="QuranReaderPage_FooterAyahsFormat" xml:space="preserve">
+    <value>الآيات {0}</value>
+  </data>
+  <data name="QuranReaderPage_FooterCombinedFormat" xml:space="preserve">
+    <value>{0} • {1}</value>
+  </data>
+  <data name="QuranReaderPage_PreviousSurahSwipeHint" xml:space="preserve">
+    <value>انقر ◀ للانتقال إلى السورة السابقة</value>
+  </data>
+  <data name="QuranReaderPage_NextSurahSwipeHint" xml:space="preserve">
+    <value>انقر ▶ للانتقال إلى السورة التالية</value>
+  </data>
+  <data name="QuranPackagePage_Title" xml:space="preserve">
+    <value>تنزيل المصحف</value>
+  </data>
+  <data name="QuranPackagePage_Intro" xml:space="preserve">
+    <value>قبل قراءة السور، يجب تنزيل حزمة صفحات المصحف.</value>
+  </data>
+  <data name="QuranPackagePage_Description" xml:space="preserve">
+    <value>اضغط على زر التنزيل لبدء تثبيت صفحات المصحف تلقائياً.</value>
+  </data>
+  <data name="QuranPackagePage_DownloadInstall" xml:space="preserve">
+    <value>تنزيل وتثبيت</value>
+  </data>
+  <data name="QuranPackagePage_InProgress" xml:space="preserve">
+    <value>جاري التنفيذ...</value>
+  </data>
+  <data name="QuranPackagePage_InstallFailedTitle" xml:space="preserve">
+    <value>فشل التثبيت</value>
+  </data>
+  <data name="QuranPackagePage_SuccessTitle" xml:space="preserve">
+    <value>تم</value>
+  </data>
+  <data name="QuranPackagePage_Continue" xml:space="preserve">
+    <value>متابعة</value>
+  </data>
+  <data name="QuranSurahListPage_NumberHeader" xml:space="preserve">
+    <value>م</value>
+  </data>
+  <data name="QuranSurahListPage_NameHeader" xml:space="preserve">
+    <value>اسم السورة</value>
+  </data>
+  <data name="QuranSurahListPage_SearchPlaceholder" xml:space="preserve">
+    <value>ابحث باسم السورة أو رقمها...</value>
+  </data>
+  <data name="QuranSurahListPage_PackageMissingTitle" xml:space="preserve">
+    <value>مصحف غير مثبت</value>
+  </data>
+  <data name="QuranSurahListPage_PackageMissingMessage" xml:space="preserve">
+    <value>لم يتم تنزيل صفحات المصحف بعد. قم بتنزيلها للمتابعة.</value>
+  </data>
+  <data name="QuranSurahListPage_InstallNow" xml:space="preserve">
+    <value>تنزيل الآن</value>
+  </data>
+  <data name="QuranSurahListPage_Back" xml:space="preserve">
+    <value>رجوع</value>
+  </data>
+  <data name="QuranSurahListPage_LoadingOpenSurah" xml:space="preserve">
+    <value>جاري فتح السورة...</value>
+  </data>
+  <data name="QuranSurahListPage_LoadingMoreSurahs" xml:space="preserve">
+    <value>جاري تحميل السور...</value>
+  </data>
   <data name="Copyright" xml:space="preserve">
     <value>© IlafAlkhayr 2026</value>
   </data>

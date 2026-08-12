@@ -124,6 +124,13 @@ namespace KhayratAlhaj
             ChooseTopicLabel.Text = KhayratAlhaj.Resources.Localization.AppResources.ChooseTopic;
         }
 
+        private static string GetText(string key, string fallback)
+        {
+            return KhayratAlhaj.Resources.Localization.AppResources.ResourceManager.GetString(
+                key,
+                System.Globalization.CultureInfo.CurrentUICulture) ?? fallback;
+        }
+
         private void UpdateChecklistProgress()
         {
             try
@@ -252,10 +259,10 @@ namespace KhayratAlhaj
                     if (!quranPackageInstallerService.HasInstalledPages())
                     {
                         var shouldInstall = await DisplayAlertAsync(
-                            "مصحف غير مثبت",
-                            "يجب تنزيل صفحات المصحف أولاً قبل فتح السور.",
-                            "تنزيل الآن",
-                            "إلغاء");
+                            GetText("QuranInstallPromptTitle", "Mushaf not installed"),
+                            GetText("QuranInstallPromptMessage", "You need to download the Mushaf pages before opening the surahs."),
+                            GetText("QuranInstallPromptPrimary", "Download now"),
+                            GetText("QuranInstallPromptSecondary", "Cancel"));
 
                         if (!shouldInstall)
                         {
