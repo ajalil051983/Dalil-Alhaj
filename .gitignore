@@ -110,3 +110,7 @@ PublishProfiles/
 generate_keystore.ps1
 generate_keystore_jks.ps1
 Docs/w_320.pdf
+
+# Mushaf page package (hosted on GitHub Releases, not in git)
+Generated/warsh-pages-604.zip
+Generated/quran_package/
