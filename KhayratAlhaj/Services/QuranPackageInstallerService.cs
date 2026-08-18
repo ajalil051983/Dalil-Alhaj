@@ -5,7 +5,8 @@ namespace KhayratAlhaj.Services
     public class QuranPackageInstallerService
     {
         private const string QuranPackageUrlKey = "quran_package_url";
-        private const string DefaultQuranPackageUrl = "https://raw.githubusercontent.com/ajalil051983/Dalil-Alhaj/main/Generated/warsh-pages-604.zip";
+        // Hosted as a GitHub Release asset (the zip is too large to keep in git history).
+        private const string DefaultQuranPackageUrl = "https://github.com/ajalil051983/Dalil-Alhaj/releases/download/quran-pages-v1/warsh-pages-604.zip";
         private static readonly HttpClient HttpClient = new()
         {
             Timeout = TimeSpan.FromMinutes(15)
