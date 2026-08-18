@@ -113,3 +113,7 @@ Docs/w_320.pdf
 
 # Mushaf page package zip (hosted on GitHub Releases, not in git)
 Generated/warsh-pages-604.zip
+
+# Manifests must be versioned (permissions, services) — override the broad *.xml rule above.
+!**/Platforms/**/AndroidManifest.xml
+!**/Platforms/**/Info.plist
