@@ -250,9 +250,8 @@ namespace KhayratAlhaj.Pages
                     return;
                 }
 
-                if (IsDhikrCounterSubCategory(subCategory.Id))
+                if (GetDhikrType(subCategory.Id) is string dhikrType)
                 {
-                    var dhikrType = subCategory.Id == 301 ? "Morning" : "Evening";
                     await Navigation.PushAsync(new DhikrCounterPage(category, subCategory, dhikrType, dataService));
                     return;
                 }
@@ -265,9 +264,12 @@ namespace KhayratAlhaj.Pages
             }
         }
 
-        private static bool IsDhikrCounterSubCategory(int subCategoryId)
+        private static string? GetDhikrType(int subCategoryId) => subCategoryId switch
         {
-            return subCategoryId == 301 || subCategoryId == 302;
-        }
+            301 => "Morning",
+            302 => "Evening",
+            303 => "Sleeping",
+            _ => null
+        };
     }
 }

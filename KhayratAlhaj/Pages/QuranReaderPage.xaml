@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:KhayratAlhaj.Pages"
              x:Class="KhayratAlhaj.Pages.QuranReaderPage"
              Shell.NavBarIsVisible="False"
+             SizeChanged="OnPageSizeChanged"
              BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
 
     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
@@ -11,6 +12,7 @@
               IgnoreSafeArea="False">
         <CarouselView x:Name="PageCarousel"
                       IsSwipeEnabled="True"
+                      SizeChanged="OnCarouselSizeChanged"
                       PositionChanged="OnCarouselPositionChanged"
                       CurrentItemChanged="OnCarouselCurrentItemChanged"
                       Loop="False"
@@ -22,6 +24,7 @@
                           IsClippedToBounds="True">
                         <Image Source="{Binding PageImagePath}"
                                Aspect="AspectFit"
+                               SizeChanged="OnPageImageSizeChanged"
                                HorizontalOptions="Fill"
                                VerticalOptions="Fill"
                                AnchorX="0.5"
@@ -178,7 +181,7 @@
                 </Grid>
             </Border>
 
-                <Grid ColumnDefinitions="Auto,Auto,*,Auto"
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto"
                   ColumnSpacing="6">
                 <Button Grid.Column="0"
                         Text="🔖"
@@ -197,8 +200,17 @@
                         Padding="0"
                         Clicked="OnPageBookmarkClicked"
                         SemanticProperties.Description="Toggle page bookmark" />
+                <Button Grid.Column="2"
+                        x:Name="TafsirButton"
+                        Text="📖"
+                        FontSize="16"
+                        WidthRequest="46"
+                        HeightRequest="38"
+                        Padding="0"
+                        Clicked="OnTafsirClicked"
+                        SemanticProperties.Description="Tafsir of this page" />
 
-                <Label Grid.Column="2"
+                <Label Grid.Column="3"
                        x:Name="PageIndicatorLabel"
                        Text="0 / 0"
                        FontAttributes="Bold"
@@ -207,7 +219,7 @@
                        HorizontalTextAlignment="Center"
                        TextColor="White" />
 
-                <Entry Grid.Column="3"
+                <Entry Grid.Column="4"
                        x:Name="AyahJumpEntry"
                        WidthRequest="86"
                        HeightRequest="38"

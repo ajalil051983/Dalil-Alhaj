@@ -1,7 +1,7 @@
 import sqlite3
 from pathlib import Path
 
-root = Path(__file__).resolve().parents[1]
+root = Path(__file__).resolve().parents[2]
 db_path = root / "KhayratAlhaj" / "Resources" / "Data" / "appdata.bin"
 
 con = sqlite3.connect(db_path)

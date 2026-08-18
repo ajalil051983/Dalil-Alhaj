@@ -3,7 +3,7 @@ import sqlite3
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DB_PATH = ROOT / "KhayratAlhaj" / "Resources" / "Data" / "appdata.bin"
 OUT_DIR = ROOT / "Docs" / "generated"
 OUT_PATH = OUT_DIR / "hajj_categories_multilang_payload.json"

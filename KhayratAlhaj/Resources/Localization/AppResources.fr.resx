@@ -667,4 +667,19 @@ Appuyez sur ⭐ sur une page de contenu pour l'enregistrer ici</value>
   <data name="HijriDateAdjustmentHint" xml:space="preserve">
     <value>Ajuster (−2 à +2 jours) pour correspondre au calendrier local</value>
   </data>
+  <data name="QuranTafsirPage_Title" xml:space="preserve">
+    <value>Tafsir Al-Muyassar</value>
+  </data>
+  <data name="QuranTafsirPage_SubtitleFormat" xml:space="preserve">
+    <value>Page {0} • Versets {1}</value>
+  </data>
+  <data name="QuranTafsirPage_Loading" xml:space="preserve">
+    <value>Chargement du tafsir...</value>
+  </data>
+  <data name="QuranTafsirPage_Unavailable" xml:space="preserve">
+    <value>Le tafsir est actuellement indisponible. Vérifiez votre connexion internet et réessayez.</value>
+  </data>
+  <data name="QuranTafsirPage_TafsirMissing" xml:space="preserve">
+    <value>Aucun tafsir disponible pour ce verset.</value>
+  </data>
 </root>

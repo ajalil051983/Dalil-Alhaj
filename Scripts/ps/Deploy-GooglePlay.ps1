@@ -49,8 +49,8 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-# Get the parent directory (workspace root) since we're in Scripts folder
-$WorkspaceRoot = Split-Path $PSScriptRoot -Parent
+# Get the workspace root (two levels up: Scripts/ps -> Scripts -> root)
+$WorkspaceRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $ProjectPath = Join-Path $WorkspaceRoot "KhayratAlhaj\KhayratAlhaj.csproj"
 
 Write-Host ""

@@ -212,6 +212,21 @@
         "hasAudioAr": false,
         "hasAudioEn": false,
         "hasAudioFr": false
+      },
+      {
+        "id": 303,
+        "nameAr": "أذكار النوم",
+        "nameEn": "Bedtime Athkar",
+        "nameFr": "Adhkar du coucher",
+        "icon": "😴",
+        "contentAr": "<h3>أذكار النوم</h3>",
+        "contentEn": "<h3>Bedtime Athkar</h3>",
+        "contentFr": "<h3>Adhkar du coucher</h3>",
+        "surahNumber": null,
+        "apiLookupName": "",
+        "hasAudioAr": false,
+        "hasAudioEn": false,
+        "hasAudioFr": false
       }
     ]
   },

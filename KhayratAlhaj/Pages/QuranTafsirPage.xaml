@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:KhayratAlhaj.Pages"
+             x:Class="KhayratAlhaj.Pages.QuranTafsirPage"
+             BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Header: surah + ayah range -->
+        <Border Grid.Row="0"
+                Background="{StaticResource HeaderBackgroundColor}"
+                StrokeShape="Rectangle"
+                StrokeThickness="0"
+                Padding="15,10"
+                Margin="0">
+            <VerticalStackLayout Spacing="2">
+                <Label x:Name="TafsirTitleLabel"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       TextColor="White" />
+                <Label x:Name="TafsirSubtitleLabel"
+                       FontSize="13"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#F1D98A" />
+            </VerticalStackLayout>
+        </Border>
+
+        <CollectionView Grid.Row="1"
+                        x:Name="TafsirCollection"
+                        Margin="16,10,16,16"
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="local:QuranTafsirViewItem">
+                    <Border Stroke="#BDC3C7"
+                            StrokeThickness="1"
+                            Background="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
+                            Padding="14"
+                            Margin="0,0,0,10"
+                            StrokeShape="RoundRectangle 12">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTafsirItemTapped"
+                                                  CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+
+                        <VerticalStackLayout Spacing="8">
+                            <!-- Ayah chip + text (tappable: jumps to the mushaf page) -->
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Border Grid.Column="0"
+                                        Background="{StaticResource HeaderBackgroundColor}"
+                                        StrokeShape="RoundRectangle 8"
+                                        Padding="8,4"
+                                        VerticalOptions="Start">
+                                    <Label Text="{Binding AyahNumberText}"
+                                           FontSize="13"
+                                           FontAttributes="Bold"
+                                           TextColor="White" />
+                                </Border>
+                                <Label Grid.Column="1"
+                                       Text="{Binding AyahText}"
+                                       FontSize="17"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Start"
+                                       TextColor="{AppThemeBinding Light={StaticResource PrimaryTextColorLight}, Dark={StaticResource PrimaryTextColorDark}}" />
+                            </Grid>
+
+                            <BoxView HeightRequest="1"
+                                     Color="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}"
+                                     Opacity="0.6" />
+
+                            <!-- Tafsir Al-Muyassar commentary -->
+                            <Label Text="{Binding TafsirText}"
+                                   FontSize="15"
+                                   LineHeight="1.4"
+                                   HorizontalTextAlignment="Start"
+                                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Empty / error state -->
+        <VerticalStackLayout Grid.Row="1"
+                             x:Name="EmptyState"
+                             IsVisible="False"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             Padding="24"
+                             Spacing="12">
+            <Label Text="📖" FontSize="54" HorizontalOptions="Center" />
+            <Label x:Name="EmptyStateLabel"
+                   FontSize="16"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+        </VerticalStackLayout>
+
+        <!-- Loading overlay -->
+        <Grid Grid.RowSpan="2"
+              x:Name="LoadingOverlay"
+              IsVisible="False"
+              BackgroundColor="#88000000">
+            <Border VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="{AppThemeBinding Light=#FDF6E3, Dark=#25201A}"
+                    Stroke="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="32,24"
+                    MinimumWidthRequest="180">
+                <VerticalStackLayout Spacing="16" HorizontalOptions="Center">
+                    <ActivityIndicator IsRunning="True"
+                                       WidthRequest="48"
+                                       HeightRequest="48"
+                                       Color="{AppThemeBinding Light=#0F5132, Dark=#4CAF80}"
+                                       HorizontalOptions="Center" />
+                    <Label x:Name="LoadingMessageLabel"
+                           FontSize="15"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Light=#5B4210, Dark=#F1D98A}" />
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+
+</ContentPage>

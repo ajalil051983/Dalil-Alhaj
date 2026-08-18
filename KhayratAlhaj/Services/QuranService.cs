@@ -10,6 +10,7 @@ namespace KhayratAlhaj.Services
     {
         public const string WarshEdition = "quran-uthmani-quran-academy";
         public const string TajweedEdition = "quran-tajweed";
+        public const string TafsirMuyassarEdition = "ar.muyassar";
 
         private const string BaseUrl = "https://api.alquran.cloud/v1";
         private const string CachePrefix = "quran_surah_cache_";

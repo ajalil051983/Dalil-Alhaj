@@ -22,9 +22,12 @@ namespace KhayratAlhaj.Pages
 
         private const string LastPositionPageKey = "quran_last_page_position";
         private const string LastPositionLegacyAyahKey = "quran_last_position";
-        private const double ExpectedPageAspectRatio = 0.455;
+        // Default aspect for the packaged mushaf pages (960x1501) until each
+        // image's real dimensions are measured from its file header.
+        private const double ExpectedPageAspectRatio = 0.6396;
         private const double PortraitDoubleTapZoomScale = 2.2;
         private const double MaximumZoomScale = 6.0;
+        private const double ZoomSnapTolerance = 0.02;
 
         private readonly Category category;
         private readonly DataService dataService;
@@ -134,7 +137,22 @@ namespace KhayratAlhaj.Pages
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
+            // Orientation and zoom recalculation are driven by the carousel's own
+            // SizeChanged (OnCarouselSizeChanged): on rotation the carousel often
+            // still reports its pre-rotation size when this page-level callback
+            // fires, so computing zoom here would use stale viewport dimensions.
+        }
 
+        private void OnPageSizeChanged(object? sender, EventArgs e)
+        {
+            // Placeholder to keep the page-level hook harmless; real work happens
+            // when the carousel itself is resized.
+        }
+
+        private void OnCarouselSizeChanged(object? sender, EventArgs e)
+        {
+            var width = PageCarousel.Width;
+            var height = PageCarousel.Height;
             if (width <= 0 || height <= 0)
             {
                 return;
@@ -670,6 +688,50 @@ namespace KhayratAlhaj.Pages
             RefreshPageBookmarkIcon();
         }
 
+        private async void OnTafsirClicked(object? sender, EventArgs e)
+        {
+            if (allPages.Count == 0 || currentPageIndex < 0 || currentPageIndex >= allPages.Count)
+            {
+                return;
+            }
+
+            var page = allPages[currentPageIndex];
+            if (page.IsBoundaryTransition)
+            {
+                return;
+            }
+
+            CancelChromeTimers();
+            await Navigation.PushAsync(new QuranTafsirPage(
+                currentSurahNumber,
+                page.MushafPageNumber,
+                page.FirstAyahNumber,
+                page.LastAyahNumber,
+                subCategory.Name,
+                dataService,
+                NavigateToAyahFromTafsirAsync));
+        }
+
+        private async Task NavigateToAyahFromTafsirAsync(int surahNumber, int ayahNumber)
+        {
+            // The tafsir page has already popped itself; jump inside this reader,
+            // loading the target surah first when the tap crossed a surah boundary.
+            if (surahNumber != currentSurahNumber)
+            {
+                var targetSub = category.Subcategories.FirstOrDefault(s => (s.SurahNumber ?? 0) == surahNumber);
+                if (targetSub != null)
+                {
+                    subCategory = targetSub;
+                    Title = targetSub.Name;
+                }
+
+                await LoadSurahAsync(surahNumber, ayahNumber);
+                return;
+            }
+
+            MoveToPage(FindPageIndexForAyah(ayahNumber), true);
+        }
+
         private async void OnAyahJumpCompleted(object? sender, EventArgs e)
         {
             if (!int.TryParse(AyahJumpEntry.Text, out var ayahNumber))
@@ -882,17 +944,197 @@ namespace KhayratAlhaj.Pages
             var minimumScale = item.MinimumZoomScale;
             if (item.ZoomScale <= minimumScale + 0.05)
             {
-                item.ZoomScale = Math.Min(Math.Max(minimumScale * 1.8, PortraitDoubleTapZoomScale), MaximumZoomScale);
+                // Zoom in centered on the tapped point instead of the page center.
+                var tapPosition = sender is VisualElement visual
+                    ? e.GetPosition(visual)
+                    : null;
+
+                var targetScale = Math.Min(Math.Max(minimumScale * 1.8, PortraitDoubleTapZoomScale), MaximumZoomScale);
+                ZoomItemToScale(item, targetScale, tapPosition);
             }
             else
             {
                 item.ResetTransform();
-                item.ZoomScale = minimumScale;
+                if (isLandscapeMode)
+                {
+                    AlignPageToTop(item);
+                }
             }
 
             ClampPan(item);
             UpdateCarouselSwipeState();
             CancelChromeTimers();
+        }
+
+        private void ZoomItemToScale(QuranPageAssetItem item, double targetScale, Point? originInElement)
+        {
+            targetScale = Math.Clamp(targetScale, item.MinimumZoomScale, MaximumZoomScale);
+            var currentScale = Math.Max(0.001, item.ZoomScale);
+            var scaleDelta = targetScale / currentScale;
+
+            if (originInElement.HasValue)
+            {
+                // e.ScaleOrigin is element-relative (0..1), so convert the tap
+                // position the same way before applying the zoom-about-point math.
+                var viewportWidth = Math.Max(1, PageCarousel.Width);
+                var viewportHeight = Math.Max(1, PageCarousel.Height);
+                var originX = originInElement.Value.X / viewportWidth - 0.5;
+                var originY = originInElement.Value.Y / viewportHeight - 0.5;
+                item.PanX = (item.PanX - originX * viewportWidth) * scaleDelta + originX * viewportWidth;
+                item.PanY = (item.PanY - originY * viewportHeight) * scaleDelta + originY * viewportHeight;
+            }
+
+            item.ZoomScale = targetScale;
+            item.ZoomStartScale = targetScale;
+            ClampPan(item);
+        }
+
+        private void OnPageImageSizeChanged(object? sender, EventArgs e)
+        {
+            if (sender is not Image || !TryResolvePageItem(sender, out var item))
+            {
+                return;
+            }
+
+            // MAUI Image exposes no natural-size API, so read the pixel dimensions
+            // from the image file header (webp/png/jpg) once and cache per path.
+            if (string.IsNullOrWhiteSpace(item.PageImagePath))
+            {
+                return;
+            }
+
+            if (!PageAspectRatioCache.TryGetValue(item.PageImagePath, out var aspect))
+            {
+                if (!TryReadImagePixelSize(item.PageImagePath, out var pixelWidth, out var pixelHeight)
+                    || pixelWidth <= 0 || pixelHeight <= 0)
+                {
+                    return;
+                }
+
+                aspect = (double)pixelWidth / pixelHeight;
+                PageAspectRatioCache[item.PageImagePath] = aspect;
+            }
+
+            if (Math.Abs(item.PageAspectRatio - aspect) < 0.001)
+            {
+                return;
+            }
+
+            // Use the real image aspect ratio for all overflow/pan math instead of
+            // the hardcoded ExpectedPageAspectRatio.
+            item.PageAspectRatio = aspect;
+            ClampPan(item);
+
+            if (allPages.IndexOf(item) == currentPageIndex)
+            {
+                UpdateCarouselSwipeState();
+            }
+        }
+
+        private static readonly Dictionary<string, double> PageAspectRatioCache = new(StringComparer.OrdinalIgnoreCase);
+
+        private static bool TryReadImagePixelSize(string path, out int width, out int height)
+        {
+            width = 0;
+            height = 0;
+
+            try
+            {
+                using var stream = File.OpenRead(path);
+                Span<byte> header = stackalloc byte[64];
+                var read = stream.Read(header);
+                if (read < 24)
+                {
+                    return false;
+                }
+
+                // PNG: 8-byte signature, then IHDR length/type, width/height as big-endian int32.
+                if (header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4E && header[3] == 0x47)
+                {
+                    width = (header[16] << 24) | (header[17] << 16) | (header[18] << 8) | header[19];
+                    height = (header[20] << 24) | (header[21] << 16) | (header[22] << 8) | header[23];
+                    return true;
+                }
+
+                // WebP: RIFF....WEBP with VP8X / VP8  / VP8L chunk.
+                if (header[0] == 0x52 && header[1] == 0x49 && header[2] == 0x46 && header[3] == 0x46
+                    && header[8] == 0x57 && header[9] == 0x45 && header[10] == 0x42 && header[11] == 0x50)
+                {
+                    var chunk = header.Slice(12, 4);
+                    if (chunk.SequenceEqual("VP8X"u8))
+                    {
+                        width = 1 + header[24] + (header[25] << 8) + (header[26] << 16);
+                        height = 1 + header[27] + (header[28] << 8) + (header[29] << 16);
+                        return true;
+                    }
+
+                    if (chunk.SequenceEqual("VP8 "u8) && read >= 30)
+                    {
+                        width = header[26] | ((header[27] & 0x3F) << 8);
+                        height = header[28] | ((header[29] & 0x3F) << 8);
+                        return true;
+                    }
+
+                    if (chunk.SequenceEqual("VP8L"u8) && read >= 25)
+                    {
+                        var b0 = header[21];
+                        var b1 = header[22];
+                        var b2 = header[23];
+                        var b3 = header[24];
+                        width = 1 + (((b1 & 0x3F) << 8) | b0);
+                        height = 1 + (((b3 & 0x0F) << 10) | (b2 << 2) | ((b1 & 0xC0) >> 6));
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                // JPEG: scan markers for a Start-Of-Frame segment.
+                if (header[0] == 0xFF && header[1] == 0xD8)
+                {
+                    stream.Position = 2;
+                    Span<byte> marker = stackalloc byte[10];
+                    while (stream.Read(marker.Slice(0, 2)) == 2)
+                    {
+                        if (marker[0] != 0xFF)
+                        {
+                            return false;
+                        }
+
+                        var code = marker[1];
+                        if (code is >= 0xC0 and <= 0xCF and not 0xC4 and not 0xC8 and not 0xCC)
+                        {
+                            if (stream.Read(marker.Slice(0, 7)) < 7)
+                            {
+                                return false;
+                            }
+
+                            height = (marker[3] << 8) | marker[4];
+                            width = (marker[5] << 8) | marker[6];
+                            return true;
+                        }
+
+                        if (stream.Read(marker.Slice(0, 2)) < 2)
+                        {
+                            return false;
+                        }
+
+                        var segmentLength = (marker[0] << 8) | marker[1];
+                        if (segmentLength < 2)
+                        {
+                            return false;
+                        }
+
+                        stream.Position += segmentLength - 2;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogQuran($"TryReadImagePixelSize failed for {path}: {ex.Message}");
+            }
+
+            return false;
         }
 
         private void OnPagePinchUpdated(object? sender, PinchGestureUpdatedEventArgs e)
@@ -927,10 +1169,13 @@ namespace KhayratAlhaj.Pages
 
                     ClampPan(item);
 
-                    if (nextScale <= item.MinimumZoomScale + 0.02)
+                    if (nextScale <= item.MinimumZoomScale + ZoomSnapTolerance)
                     {
                         item.ResetTransform();
-                        item.ZoomScale = item.MinimumZoomScale;
+                        if (isLandscapeMode)
+                        {
+                            AlignPageToTop(item);
+                        }
                     }
 
                     UpdateCarouselSwipeState();
@@ -940,10 +1185,13 @@ namespace KhayratAlhaj.Pages
                 case GestureStatus.Completed:
                     isPinching = false;
                     item.ZoomStartScale = item.ZoomScale;
-                    if (item.ZoomScale <= item.MinimumZoomScale + 0.02)
+                    if (item.ZoomScale <= item.MinimumZoomScale + ZoomSnapTolerance)
                     {
                         item.ResetTransform();
-                        item.ZoomScale = item.MinimumZoomScale;
+                        if (isLandscapeMode)
+                        {
+                            AlignPageToTop(item);
+                        }
                     }
                     ClampPan(item);
 
@@ -969,17 +1217,16 @@ namespace KhayratAlhaj.Pages
                 return;
             }
 
-            var isZoomed = item.ZoomScale > item.MinimumZoomScale + 0.02;
-
+            // Disable carousel swiping whenever the page can be panned, not only
+            // when zoomed past the minimum. In landscape the resting zoom equals
+            // the minimum but the page still overflows vertically, so a vertical
+            // drag would otherwise fight the carousel's horizontal swipe.
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
                     item.PanStartX = item.PanX;
                     item.PanStartY = item.PanY;
-                    if (isZoomed)
-                    {
-                        PageCarousel.IsSwipeEnabled = false;
-                    }
+                    PageCarousel.IsSwipeEnabled = false;
                     CancelChromeTimers();
                     break;
 
@@ -999,7 +1246,7 @@ namespace KhayratAlhaj.Pages
 
         private bool HasPannableOverflow(QuranPageAssetItem item)
         {
-            var viewportSize = GetViewportRenderSize();
+            var viewportSize = GetViewportRenderSize(item);
             var scaledWidth = viewportSize.Width * item.ZoomScale;
             var scaledHeight = viewportSize.Height * item.ZoomScale;
             return (scaledWidth - viewportSize.ViewportWidth) > 1 || (scaledHeight - viewportSize.ViewportHeight) > 1;
@@ -1086,12 +1333,12 @@ namespace KhayratAlhaj.Pages
 
         private void UpdateCarouselSwipeState()
         {
-            var isZoomed = allPages.Count > 0
+            var hasOverflow = allPages.Count > 0
                 && currentPageIndex >= 0
                 && currentPageIndex < allPages.Count
-                && allPages[currentPageIndex].ZoomScale > allPages[currentPageIndex].MinimumZoomScale + 0.02;
+                && HasPannableOverflow(allPages[currentPageIndex]);
 
-            PageCarousel.IsSwipeEnabled = !isZoomed;
+            PageCarousel.IsSwipeEnabled = !hasOverflow;
         }
 
         private async Task NavigateToBoundarySurahAsync(int? surahNumber, QuranPageLoadTarget target)
@@ -1168,6 +1415,13 @@ namespace KhayratAlhaj.Pages
                 allPages[i].ZoomScale = allPages[i].MinimumZoomScale;
                 AlignPageToTop(allPages[i]);
             }
+
+            // Keep the active page aligned too, otherwise it snaps back to center
+            // when the carousel settles.
+            if (currentPageIndex >= 0 && currentPageIndex < allPages.Count)
+            {
+                AlignPageToTop(allPages[currentPageIndex]);
+            }
         }
 
         private void ApplyOrientationZoomMode(bool resetCurrentPage)
@@ -1200,7 +1454,7 @@ namespace KhayratAlhaj.Pages
                 return;
             }
 
-            var viewportSize = GetViewportRenderSize();
+            var viewportSize = GetViewportRenderSize(item);
             var scaledHeight = viewportSize.Height * item.ZoomScale;
             var maxPanY = Math.Max(0, (scaledHeight - viewportSize.ViewportHeight) / 2);
             item.PanY = maxPanY;
@@ -1209,17 +1463,37 @@ namespace KhayratAlhaj.Pages
 
         private double CalculateMinimumZoomScale()
         {
-            var viewportSize = GetViewportRenderSize();
+            // Use the first page's aspect ratio (or the expected default) so the
+            // landscape fill-width scale matches the real image, not a constant.
+            var aspect = allPages.Count > 0 && allPages[0].PageAspectRatio > 0
+                ? allPages[0].PageAspectRatio
+                : ExpectedPageAspectRatio;
+
+            var viewportWidth = Math.Max(1, PageCarousel.Width);
+            var viewportHeight = Math.Max(1, PageCarousel.Height);
 
             // Portrait keeps the whole page visible (AspectFit). In landscape the
             // page is scaled up so it fills the full width and can be scrolled
             // vertically to keep reading.
-            if (!isLandscapeMode || viewportSize.Width <= 0)
+            if (!isLandscapeMode || viewportWidth <= 0)
             {
                 return 1.0;
             }
 
-            var fillWidthScale = viewportSize.ViewportWidth / viewportSize.Width;
+            var renderedWidthAtScale1 = viewportWidth;
+            var renderedHeightAtScale1 = viewportWidth / aspect;
+            if (renderedHeightAtScale1 > viewportHeight)
+            {
+                renderedHeightAtScale1 = viewportHeight;
+                renderedWidthAtScale1 = viewportHeight * aspect;
+            }
+
+            if (renderedWidthAtScale1 <= 0)
+            {
+                return 1.0;
+            }
+
+            var fillWidthScale = viewportWidth / renderedWidthAtScale1;
             return Math.Clamp(fillWidthScale, 1.0, MaximumZoomScale);
         }
 
@@ -1239,9 +1513,26 @@ namespace KhayratAlhaj.Pages
             return (viewportWidth, viewportHeight, renderedWidth, renderedHeight);
         }
 
+        private (double ViewportWidth, double ViewportHeight, double Width, double Height) GetViewportRenderSize(QuranPageAssetItem item)
+        {
+            var viewportWidth = Math.Max(1, PageCarousel.Width);
+            var viewportHeight = Math.Max(1, PageCarousel.Height);
+            var aspect = item.PageAspectRatio > 0 ? item.PageAspectRatio : ExpectedPageAspectRatio;
+
+            var renderedWidth = viewportWidth;
+            var renderedHeight = viewportWidth / aspect;
+            if (renderedHeight > viewportHeight)
+            {
+                renderedHeight = viewportHeight;
+                renderedWidth = viewportHeight * aspect;
+            }
+
+            return (viewportWidth, viewportHeight, renderedWidth, renderedHeight);
+        }
+
         private void ClampPan(QuranPageAssetItem item)
         {
-            var viewportSize = GetViewportRenderSize();
+            var viewportSize = GetViewportRenderSize(item);
 
             var scaledWidth = viewportSize.Width * item.ZoomScale;
             var scaledHeight = viewportSize.Height * item.ZoomScale;
@@ -1389,6 +1680,10 @@ namespace KhayratAlhaj.Pages
         public int? TargetSurahNumber { get; set; }
         public string MissingTitle { get; set; } = string.Empty;
         public string MissingMessage { get; set; } = string.Empty;
+
+        // Measured from the loaded image (natural width / height). Falls back to
+        // the page-level ExpectedPageAspectRatio while the image is still decoding.
+        public double PageAspectRatio { get; set; }
 
         public double ZoomScale
         {
