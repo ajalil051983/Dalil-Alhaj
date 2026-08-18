@@ -21,10 +21,11 @@ namespace KhayratAlhaj.Pages
 
         protected override void OnDisappearing()
         {
-            var cancellation = installCancellation;
-            installCancellation = null;
-            cancellation?.Cancel();
-            cancellation?.Dispose();
+            // Do NOT cancel here. OnDisappearing fires on screen lock / app switch /
+            // transient navigation, which would abort a healthy 85MB download at a
+            // random point (surfacing as "download failed" near the end). The download
+            // continues in the background; if the page is truly gone, the result is
+            // simply discarded. Cancellation only happens via an explicit user action.
             base.OnDisappearing();
         }
 

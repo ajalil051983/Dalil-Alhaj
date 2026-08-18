@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Net;
 
 namespace KhayratAlhaj.Services
 {
@@ -7,10 +8,25 @@ namespace KhayratAlhaj.Services
         private const string QuranPackageUrlKey = "quran_package_url";
         // Hosted as a GitHub Release asset (the zip is too large to keep in git history).
         private const string DefaultQuranPackageUrl = "https://github.com/ajalil051983/Dalil-Alhaj/releases/download/quran-pages-v1/warsh-pages-604.zip";
-        private static readonly HttpClient HttpClient = new()
+        // GitHub release URLs 302-redirect to the CDN. Some platform handlers do not
+        // auto-follow redirects for streaming (ResponseHeadersRead) requests, which
+        // surfaces the 302 as the final response and fails the download at the end.
+        // This client explicitly follows redirects so that never happens.
+        private static readonly HttpClient HttpClient = CreateHttpClient();
+
+        private static HttpClient CreateHttpClient()
         {
-            Timeout = TimeSpan.FromMinutes(15)
-        };
+            var handler = new HttpClientHandler
+            {
+                AllowAutoRedirect = true,
+                MaxAutomaticRedirections = 10,
+                AutomaticDecompression = DecompressionMethods.None
+            };
+            return new HttpClient(handler, disposeHandler: true)
+            {
+                Timeout = TimeSpan.FromMinutes(15)
+            };
+        }
 
         private readonly QuranPageAssetService pageAssetService = new();
 
@@ -71,35 +87,98 @@ namespace KhayratAlhaj.Services
             IProgress<string>? status,
             CancellationToken cancellationToken)
         {
-            var tempZipPath = Path.Combine(FileSystem.CacheDirectory, $"quran-pages-{Guid.NewGuid():N}.zip");
+            // Stable path + .part suffix so a killed/backgrounded download resumes
+            // instead of restarting from zero on the next attempt.
+            var tempZipPath = Path.Combine(FileSystem.CacheDirectory, "quran-pages-download.zip");
+            var partPath = tempZipPath + ".part";
 
+            BeginBackgroundDownloadKeepAlive();
             try
             {
                 status?.Report("جاري تنزيل حزمة المصحف...");
-                using var response = await HttpClient.GetAsync(packageUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-                if (!response.IsSuccessStatusCode)
-                {
-                    return QuranPackageInstallResult.Failed($"فشل التنزيل: {(int)response.StatusCode}");
-                }
 
-                var totalBytes = response.Content.Headers.ContentLength;
-                await using (var input = await response.Content.ReadAsStreamAsync(cancellationToken))
-                await using (var output = File.Create(tempZipPath))
+                // Resolve the redirect chain up front so a platform handler that does not
+                // auto-follow (returning the 302 as the final response) cannot fail the
+                // download. This also gives us the real CDN URL and Content-Length.
+                var effectiveUrl = await ResolveFinalUrlAsync(packageUrl, cancellationToken);
+
+                const int maxAttempts = 4;
+                long totalBytes = 0;
+                long downloaded = 0;
+
+                for (var attempt = 1; attempt <= maxAttempts; attempt++)
                 {
-                    var buffer = new byte[81920];
-                    long downloaded = 0;
-                    int read;
-                    while ((read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), cancellationToken)) > 0)
+                    try
                     {
-                        await output.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
-                        downloaded += read;
-
-                        if (totalBytes.HasValue && totalBytes.Value > 0)
+                        // Resume from the existing partial file if the server supports Range.
+                        downloaded = File.Exists(partPath) ? new FileInfo(partPath).Length : 0;
+                        using var request = new HttpRequestMessage(HttpMethod.Get, effectiveUrl);
+                        if (downloaded > 0)
                         {
-                            progress?.Report(Math.Min(1.0, downloaded / (double)totalBytes.Value));
+                            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(downloaded, null);
                         }
+
+                        using var response = await HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+                        // 416 = requested range not satisfiable (partial file stale) -> restart clean.
+                        if (response.StatusCode == System.Net.HttpStatusCode.RequestedRangeNotSatisfiable)
+                        {
+                            TryDeleteFile(partPath);
+                            continue;
+                        }
+
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            return QuranPackageInstallResult.Failed($"فشل التنزيل: {(int)response.StatusCode}");
+                        }
+
+                        // If we asked to resume but the server ignored the Range header (200
+                        // instead of 206), restart from scratch to avoid a corrupt file.
+                        var resumed = downloaded > 0 && response.StatusCode == System.Net.HttpStatusCode.PartialContent;
+                        if (downloaded > 0 && !resumed)
+                        {
+                            downloaded = 0;
+                        }
+
+                        var contentLength = response.Content.Headers.ContentLength ?? 0;
+                        totalBytes = resumed ? downloaded + contentLength : contentLength;
+
+                        await using (var input = await response.Content.ReadAsStreamAsync(cancellationToken))
+                        await using (var output = new FileStream(partPath, resumed ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            var buffer = new byte[81920];
+                            int read;
+                            while ((read = await input.ReadAsync(buffer.AsMemory(0, buffer.Length), cancellationToken)) > 0)
+                            {
+                                await output.WriteAsync(buffer.AsMemory(0, read), cancellationToken);
+                                downloaded += read;
+
+                                if (totalBytes > 0)
+                                {
+                                    progress?.Report(Math.Min(1.0, downloaded / (double)totalBytes));
+                                }
+                            }
+                        }
+
+                        // Completed the stream without error.
+                        break;
+                    }
+                    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                    {
+                        throw; // Genuine user/app cancellation.
+                    }
+                    catch (Exception ex) when (attempt < maxAttempts)
+                    {
+                        // Transient network drop mid-stream (common when the OS throttles a
+                        // backgrounded app): wait briefly and resume from the partial file.
+                        System.Diagnostics.Debug.WriteLine($"[QuranPackage] Download attempt {attempt} interrupted, resuming: {ex.Message}");
+                        await Task.Delay(1200 * attempt, cancellationToken);
                     }
                 }
+
+                // Finalize the completed file.
+                TryDeleteFile(tempZipPath);
+                File.Move(partPath, tempZipPath, true);
 
                 progress?.Report(1.0);
                 return await InstallFromZipInternalAsync(tempZipPath, status, cancellationToken);
@@ -114,8 +193,38 @@ namespace KhayratAlhaj.Services
             }
             finally
             {
+                EndBackgroundDownloadKeepAlive();
                 TryDeleteFile(tempZipPath);
             }
+        }
+
+        // Keeps the process/network alive while backgrounded (Android foreground service).
+        // No-op on other platforms or if the service cannot start.
+        private static void BeginBackgroundDownloadKeepAlive()
+        {
+#if ANDROID
+            try
+            {
+                var context = global::Android.App.Application.Context;
+                Platforms.Android.Services.DownloadForegroundService.Start(context, "جاري تنزيل حزمة المصحف...");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[QuranPackage] Could not start download service: {ex.Message}");
+            }
+#endif
+        }
+
+        private static void EndBackgroundDownloadKeepAlive()
+        {
+#if ANDROID
+            try
+            {
+                var context = global::Android.App.Application.Context;
+                Platforms.Android.Services.DownloadForegroundService.Stop(context);
+            }
+            catch { /* ignore */ }
+#endif
         }
 
         private async Task<QuranPackageInstallResult> InstallFromZipInternalAsync(
@@ -188,6 +297,43 @@ namespace KhayratAlhaj.Services
             finally
             {
                 await Task.Run(() => TryDeleteDirectory(extractionFolder), CancellationToken.None);
+            }
+        }
+
+        // Follows 3xx redirects with a no-redirect HEAD-style probe and returns the final
+        // URL. Uses a separate handler with AllowAutoRedirect=false so we can read the
+        // Location header ourselves; if the URL does not redirect, it is returned as-is.
+        private static async Task<string> ResolveFinalUrlAsync(string url, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using var handler = new HttpClientHandler { AllowAutoRedirect = false };
+                using var probe = new HttpClient(handler, disposeHandler: true) { Timeout = TimeSpan.FromSeconds(30) };
+
+                var current = url;
+                for (var hop = 0; hop < 10; hop++)
+                {
+                    using var request = new HttpRequestMessage(HttpMethod.Get, current);
+                    using var response = await probe.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                    var code = (int)response.StatusCode;
+                    if (code is >= 300 and < 400 && response.Headers.Location is { } location)
+                    {
+                        current = location.IsAbsoluteUri
+                            ? location.ToString()
+                            : new Uri(new Uri(current), location).ToString();
+                        continue;
+                    }
+
+                    return current;
+                }
+
+                return current;
+            }
+            catch
+            {
+                // If probing fails (offline, etc.), fall back to the original URL and let
+                // the main download surface the real error.
+                return url;
             }
         }
 
