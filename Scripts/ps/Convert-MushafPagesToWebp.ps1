@@ -48,17 +48,25 @@ try {
 
     if ($failed.Count -gt 0) { throw "Conversion failed for $($failed.Count) pages: $($failed -join ', ')" }
 
-    # Zip with the warsh/pages/ prefix the app's installer expects, no extra compression.
+    # Zip with the warsh/pages/ prefix the app's installer expects. Entry names MUST use
+    # forward slashes: ZipFile.CreateFromDirectory on Windows writes backslashes, which
+    # Android's extractor does not treat as directory separators (breaks FindPagesDirectory).
     if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-    $stagingRoot = Join-Path $env:TEMP ("warsh-zip-" + [guid]::NewGuid().ToString('N'))
-    $stagedPages = Join-Path $stagingRoot 'warsh\pages'
-    New-Item -ItemType Directory -Path $stagedPages -Force | Out-Null
-    Copy-Item (Join-Path $tempPages '*.webp') $stagedPages
+    Add-Type -AssemblyName System.IO.Compression
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $fs = [System.IO.File]::Open($zipPath, [System.IO.FileMode]::Create)
     try {
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        [System.IO.Compression.ZipFile]::CreateFromDirectory($stagingRoot, $zipPath, [System.IO.Compression.CompressionLevel]::NoCompression, $false)
+        $archive = New-Object System.IO.Compression.ZipArchive($fs, [System.IO.Compression.ZipArchiveMode]::Create)
+        try {
+            foreach ($webp in (Get-ChildItem (Join-Path $tempPages '*.webp') | Sort-Object Name)) {
+                $entryName = "warsh/pages/$($webp.Name)"   # forward slash, required
+                [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $webp.FullName, $entryName, [System.IO.Compression.CompressionLevel]::NoCompression) | Out-Null
+            }
+        } finally {
+            $archive.Dispose()
+        }
     } finally {
-        Remove-Item $stagingRoot -Recurse -Force -ErrorAction SilentlyContinue
+        $fs.Dispose()
     }
 
     $zipMB = [math]::Round((Get-Item $zipPath).Length / 1MB, 1)

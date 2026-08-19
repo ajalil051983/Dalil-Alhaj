@@ -368,8 +368,7 @@ namespace KhayratAlhaj.Pages
 
             // Add a "go to previous surah" boundary whenever a previous surah exists so the
             // user can always swipe back into it. The boundary shows the previous surah's
-            // last page image (which may be the same physical page when short surahs share
-            // a page) and navigates into that surah when the user settles on it.
+            // last page image and navigates into that surah when the user settles on it.
             if (TryGetPreviousSurahNumber(surah.Number, out var previousSurahNumber))
             {
                 var (_, previousEndPage) = GetSurahPageRange(previousSurahNumber);
@@ -378,18 +377,25 @@ namespace KhayratAlhaj.Pages
                     previousEndPage = currentStartPage;
                 }
 
-                var previousPageImage = pageAssetService.GetPageImagePath(previousEndPage);
-                allPages.Add(new QuranPageAssetItem
+                // Skip the boundary when the previous surah ends on the same physical page
+                // this surah starts on (e.g. the short surahs sharing page 604): the boundary
+                // would duplicate the first real page and force phantom swipes through the
+                // same image.
+                if (previousEndPage != currentStartPage)
                 {
-                    SequenceNumber = 0,
-                    MushafPageNumber = previousEndPage,
-                    SurahNumber = surah.Number,
-                    TargetSurahNumber = previousSurahNumber,
-                    PageImagePath = previousPageImage ?? string.Empty,
-                    IsBoundaryTransition = true,
-                    IsPreviousSurahBoundary = true,
-                    IsImageMissing = string.IsNullOrWhiteSpace(previousPageImage)
-                });
+                    var previousPageImage = pageAssetService.GetPageImagePath(previousEndPage);
+                    allPages.Add(new QuranPageAssetItem
+                    {
+                        SequenceNumber = 0,
+                        MushafPageNumber = previousEndPage,
+                        SurahNumber = surah.Number,
+                        TargetSurahNumber = previousSurahNumber,
+                        PageImagePath = previousPageImage ?? string.Empty,
+                        IsBoundaryTransition = true,
+                        IsPreviousSurahBoundary = true,
+                        IsImageMissing = string.IsNullOrWhiteSpace(previousPageImage)
+                    });
+                }
             }
 
             var groups = surah.Ayahs
@@ -421,8 +427,7 @@ namespace KhayratAlhaj.Pages
 
             // Add a "go to next surah" boundary whenever a next surah exists so the user can
             // always swipe forward into it. The boundary shows the next surah's first page
-            // image (which may be the same physical page when short surahs share a page) and
-            // navigates into that surah when the user settles on it.
+            // image and navigates into that surah when the user settles on it.
             if (TryGetNextSurahNumber(surah.Number, out var nextSurahNumber))
             {
                 var (nextStartPage, _) = GetSurahPageRange(nextSurahNumber);
@@ -431,17 +436,23 @@ namespace KhayratAlhaj.Pages
                     nextStartPage = currentEndPage;
                 }
 
-                var nextPageImage = pageAssetService.GetPageImagePath(nextStartPage);
-                allPages.Add(new QuranPageAssetItem
+                // Skip the boundary when the next surah starts on the same physical page this
+                // surah ends on (e.g. Ikhlas/Falaq/Nas all on page 604): the boundary would
+                // duplicate the last real page and force phantom swipes through the same image.
+                if (nextStartPage != currentEndPage)
                 {
-                    SequenceNumber = groups.Count + 1,
-                    MushafPageNumber = nextStartPage,
-                    SurahNumber = surah.Number,
-                    TargetSurahNumber = nextSurahNumber,
-                    PageImagePath = nextPageImage ?? string.Empty,
-                    IsBoundaryTransition = true,
-                    IsImageMissing = string.IsNullOrWhiteSpace(nextPageImage)
-                });
+                    var nextPageImage = pageAssetService.GetPageImagePath(nextStartPage);
+                    allPages.Add(new QuranPageAssetItem
+                    {
+                        SequenceNumber = groups.Count + 1,
+                        MushafPageNumber = nextStartPage,
+                        SurahNumber = surah.Number,
+                        TargetSurahNumber = nextSurahNumber,
+                        PageImagePath = nextPageImage ?? string.Empty,
+                        IsBoundaryTransition = true,
+                        IsImageMissing = string.IsNullOrWhiteSpace(nextPageImage)
+                    });
+                }
             }
         }
 

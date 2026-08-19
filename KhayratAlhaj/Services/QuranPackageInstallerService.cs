@@ -30,6 +30,26 @@ namespace KhayratAlhaj.Services
 
         private readonly QuranPageAssetService pageAssetService = new();
 
+        // On-device diagnostic log (readable via run-as) so download failures can be
+        // diagnosed even though Debug.WriteLine is not forwarded to logcat in Debug builds.
+        private static readonly string DiagLogPath = Path.Combine(FileSystem.AppDataDirectory, "quran_download_log.txt");
+
+        public static string ReadDiagnosticsLog()
+        {
+            try { return File.Exists(DiagLogPath) ? File.ReadAllText(DiagLogPath) : "(empty)"; }
+            catch (Exception ex) { return $"(unreadable: {ex.Message})"; }
+        }
+
+        private static void Diag(string message)
+        {
+            try
+            {
+                File.AppendAllText(DiagLogPath, $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}");
+            }
+            catch { /* never let logging break the download */ }
+            System.Diagnostics.Debug.WriteLine($"[QuranPackage] {message}");
+        }
+
         public string GetSavedPackageUrl()
         {
             var stored = Preferences.Get(QuranPackageUrlKey, string.Empty);
@@ -70,7 +90,11 @@ namespace KhayratAlhaj.Services
                 return Task.FromResult(QuranPackageInstallResult.Failed("أدخل رابط ملف المصحف أولاً."));
             }
 
-            return DownloadAndInstallInternalAsync(NormalizeDownloadUrl(packageUrl.Trim()), progress, status, cancellationToken);
+            // Run the whole network+IO pipeline on a background thread. The MAUI page
+            // invokes this on the UI thread, and doing synchronous network/zip work there
+            // triggers Android's NetworkOnMainThreadException and freezes the UI.
+            var url = NormalizeDownloadUrl(packageUrl.Trim());
+            return Task.Run(() => DownloadAndInstallInternalAsync(url, progress, status, cancellationToken), cancellationToken);
         }
 
         public Task<QuranPackageInstallResult> InstallFromZipAsync(
@@ -78,7 +102,7 @@ namespace KhayratAlhaj.Services
             IProgress<string>? status,
             CancellationToken cancellationToken)
         {
-            return InstallFromZipInternalAsync(zipPath, status, cancellationToken);
+            return Task.Run(() => InstallFromZipInternalAsync(zipPath, status, cancellationToken), cancellationToken);
         }
 
         private async Task<QuranPackageInstallResult> DownloadAndInstallInternalAsync(
@@ -96,11 +120,13 @@ namespace KhayratAlhaj.Services
             try
             {
                 status?.Report("جاري تنزيل حزمة المصحف...");
+                Diag($"START url={packageUrl} freeBytes={GetFreeBytes(FileSystem.CacheDirectory)}");
 
                 // Resolve the redirect chain up front so a platform handler that does not
                 // auto-follow (returning the 302 as the final response) cannot fail the
                 // download. This also gives us the real CDN URL and Content-Length.
                 var effectiveUrl = await ResolveFinalUrlAsync(packageUrl, cancellationToken);
+                Diag($"RESOLVED effectiveUrl={effectiveUrl}");
 
                 const int maxAttempts = 4;
                 long totalBytes = 0;
@@ -119,6 +145,7 @@ namespace KhayratAlhaj.Services
                         }
 
                         using var response = await HttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+                        Diag($"ATTEMPT {attempt} resumedFrom={downloaded} status={(int)response.StatusCode} len={response.Content.Headers.ContentLength}");
 
                         // 416 = requested range not satisfiable (partial file stale) -> restart clean.
                         if (response.StatusCode == System.Net.HttpStatusCode.RequestedRangeNotSatisfiable)
@@ -129,6 +156,7 @@ namespace KhayratAlhaj.Services
 
                         if (!response.IsSuccessStatusCode)
                         {
+                            Diag($"FAIL status={(int)response.StatusCode} {response.StatusCode}");
                             return QuranPackageInstallResult.Failed($"فشل التنزيل: {(int)response.StatusCode}");
                         }
 
@@ -161,16 +189,19 @@ namespace KhayratAlhaj.Services
                         }
 
                         // Completed the stream without error.
+                        Diag($"STREAM DONE downloaded={downloaded} total={totalBytes}");
                         break;
                     }
                     catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                     {
+                        Diag("CANCELLED by token");
                         throw; // Genuine user/app cancellation.
                     }
                     catch (Exception ex) when (attempt < maxAttempts)
                     {
                         // Transient network drop mid-stream (common when the OS throttles a
                         // backgrounded app): wait briefly and resume from the partial file.
+                        Diag($"ATTEMPT {attempt} interrupted: {ex.GetType().Name}: {ex.Message} | downloaded={downloaded} total={totalBytes}");
                         System.Diagnostics.Debug.WriteLine($"[QuranPackage] Download attempt {attempt} interrupted, resuming: {ex.Message}");
                         await Task.Delay(1200 * attempt, cancellationToken);
                     }
@@ -179,16 +210,19 @@ namespace KhayratAlhaj.Services
                 // Finalize the completed file.
                 TryDeleteFile(tempZipPath);
                 File.Move(partPath, tempZipPath, true);
+                Diag($"FINALIZED zip={new FileInfo(tempZipPath).Length} bytes");
 
                 progress?.Report(1.0);
                 return await InstallFromZipInternalAsync(tempZipPath, status, cancellationToken);
             }
             catch (OperationCanceledException)
             {
+                Diag("RESULT cancelled");
                 return QuranPackageInstallResult.Failed("تم إلغاء عملية التنزيل.");
             }
             catch (Exception ex)
             {
+                Diag($"RESULT error: {ex.GetType().Name}: {ex.Message}");
                 return QuranPackageInstallResult.Failed($"تعذر تنزيل الحزمة: {ex.Message}");
             }
             finally
@@ -196,6 +230,12 @@ namespace KhayratAlhaj.Services
                 EndBackgroundDownloadKeepAlive();
                 TryDeleteFile(tempZipPath);
             }
+        }
+
+        private static long GetFreeBytes(string path)
+        {
+            try { return new DriveInfo(Path.GetPathRoot(Path.GetFullPath(path)) ?? "/").AvailableFreeSpace; }
+            catch { return -1; }
         }
 
         // Keeps the process/network alive while backgrounded (Android foreground service).
@@ -242,15 +282,19 @@ namespace KhayratAlhaj.Services
             try
             {
                 status?.Report("جاري فك ضغط الحزمة...");
+                Diag($"EXTRACT start zip={new FileInfo(zipPath).Length} bytes -> {extractionFolder}");
                 Directory.CreateDirectory(extractionFolder);
                 ZipFile.ExtractToDirectory(zipPath, extractionFolder, true);
                 cancellationToken.ThrowIfCancellationRequested();
+                Diag($"EXTRACT done");
 
                 var sourcePagesFolder = FindPagesDirectory(extractionFolder);
                 if (string.IsNullOrWhiteSpace(sourcePagesFolder) || !Directory.Exists(sourcePagesFolder))
                 {
+                    Diag($"EXTRACT FAIL: pages folder not found under {extractionFolder}");
                     return QuranPackageInstallResult.Failed("صيغة ملف الحزمة غير صحيحة (مجلد pages غير موجود).");
                 }
+                Diag($"EXTRACT sourcePages={sourcePagesFolder}");
 
                 status?.Report("جاري تثبيت صفحات المصحف...");
                 var destinationFolder = pageAssetService.GetPagesDirectoryPath();
@@ -278,20 +322,25 @@ namespace KhayratAlhaj.Services
                 }
 
                 pageAssetService.InvalidateCache();
+                Diag($"COPY done count={copiedCount}");
 
                 if (!pageAssetService.HasInstalledPages())
                 {
+                    Diag($"INSTALL FAIL: HasInstalledPages=false after copying {copiedCount}");
                     return QuranPackageInstallResult.Failed("تم نسخ الملفات لكن عدد صفحات المصحف غير كافٍ.");
                 }
 
+                Diag($"INSTALL OK count={copiedCount}");
                 return QuranPackageInstallResult.Success(copiedCount);
             }
             catch (OperationCanceledException)
             {
+                Diag("INSTALL cancelled");
                 return QuranPackageInstallResult.Failed("تم إلغاء تثبيت الحزمة.");
             }
             catch (Exception ex)
             {
+                Diag($"INSTALL error: {ex.GetType().Name}: {ex.Message}");
                 return QuranPackageInstallResult.Failed($"تعذر تثبيت الحزمة: {ex.Message}");
             }
             finally
