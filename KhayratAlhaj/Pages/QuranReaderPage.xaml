@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:KhayratAlhaj.Pages"
@@ -8,249 +8,81 @@
              BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
 
     <Grid BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
-        <Grid Padding="{OnPlatform iOS='0,44,0,0'}"
-              IgnoreSafeArea="False">
-        <CarouselView x:Name="PageCarousel"
-                      IsSwipeEnabled="True"
-                      SizeChanged="OnCarouselSizeChanged"
-                      PositionChanged="OnCarouselPositionChanged"
-                      CurrentItemChanged="OnCarouselCurrentItemChanged"
-                      Loop="False"
-                      PeekAreaInsets="0"
-                      BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}">
-            <CarouselView.ItemTemplate>
-                <DataTemplate x:DataType="local:QuranPageAssetItem">
-                    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}"
-                          IsClippedToBounds="True">
-                        <Image Source="{Binding PageImagePath}"
-                               Aspect="AspectFit"
-                               SizeChanged="OnPageImageSizeChanged"
-                               HorizontalOptions="Fill"
-                               VerticalOptions="Fill"
-                               AnchorX="0.5"
-                               AnchorY="0.5"
-                               Scale="{Binding ZoomScale}"
-                               TranslationX="{Binding PanX}"
-                               TranslationY="{Binding PanY}">
-                            <Image.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                      Tapped="OnPageSingleTapped" />
-                                <TapGestureRecognizer NumberOfTapsRequired="2"
-                                                      Tapped="OnPageDoubleTapped" />
-                                <PinchGestureRecognizer PinchUpdated="OnPagePinchUpdated" />
-                                <PanGestureRecognizer PanUpdated="OnPagePanUpdated" />
-                                <PointerGestureRecognizer PointerPressed="OnPagePointerPressed"
-                                                          PointerReleased="OnPagePointerReleased"
-                                                          PointerExited="OnPagePointerReleased" />
-                            </Image.GestureRecognizers>
-                        </Image>
+        <!-- Reading surface fills the whole page; the top/bottom chrome bars overlay
+             it so toggling them never resizes the mushaf page image. -->
+        <Grid x:Name="ReaderLayout">
 
-                        <VerticalStackLayout IsVisible="{Binding IsImageMissing}"
-                                             HorizontalOptions="Center"
-                                             VerticalOptions="Center"
-                                             Padding="20"
-                                             Spacing="10">
-                            <Label Text="{Binding MissingTitle}"
-                                   FontAttributes="Bold"
-                                   FontSize="16"
-                                   HorizontalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Light=#F5E7B5, Dark=#F1D98A}" />
-                            <Label Text="{Binding MissingMessage}"
-                                   FontSize="13"
-                                   HorizontalTextAlignment="Center"
-                                   TextColor="{AppThemeBinding Light=#E2D49E, Dark=#C8B77D}" />
-                        </VerticalStackLayout>
+            <Grid Padding="{OnPlatform iOS='0,44,0,0'}" IgnoreSafeArea="False">
+                <CarouselView x:Name="PageCarousel" IsSwipeEnabled="True" SizeChanged="OnCarouselSizeChanged" PositionChanged="OnCarouselPositionChanged" CurrentItemChanged="OnCarouselCurrentItemChanged" Loop="False" PeekAreaInsets="0" BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}">
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate x:DataType="local:QuranPageAssetItem">
+                            <Grid BackgroundColor="{AppThemeBinding Light={StaticResource CardBackgroundColorLight}, Dark={StaticResource CardBackgroundColorDark}}" IsClippedToBounds="True">
+                                <Image Source="{Binding PageImagePath}" Aspect="AspectFit" SizeChanged="OnPageImageSizeChanged" HorizontalOptions="Fill" VerticalOptions="Fill" AnchorX="0.5" AnchorY="0.5" Scale="{Binding ZoomScale}" TranslationX="{Binding PanX}" TranslationY="{Binding PanY}">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnPageSingleTapped" />
+                                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="OnPageDoubleTapped" />
+                                        <PinchGestureRecognizer PinchUpdated="OnPagePinchUpdated" />
+                                        <PanGestureRecognizer PanUpdated="OnPagePanUpdated" />
+                                        <PointerGestureRecognizer PointerPressed="OnPagePointerPressed" PointerReleased="OnPagePointerReleased" PointerExited="OnPagePointerReleased" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <VerticalStackLayout IsVisible="{Binding IsImageMissing}" HorizontalOptions="Center" VerticalOptions="Center" Padding="20" Spacing="10">
+                                    <Label Text="{Binding MissingTitle}" FontAttributes="Bold" FontSize="16" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light=#F5E7B5, Dark=#F1D98A}" />
+                                    <Label Text="{Binding MissingMessage}" FontSize="13" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light=#E2D49E, Dark=#C8B77D}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+            </Grid>
+
+            <Grid x:Name="TopChrome"
+                  IsVisible="False"
+                  VerticalOptions="Start"
+                  ColumnDefinitions="Auto,Auto,*,Auto,Auto"
+                  Background="#A6334350"
+                  Padding="6,6,6,6">
+                <Button Grid.Column="0" x:Name="BackToListButton" Text="←" Clicked="OnBackToListClicked" WidthRequest="44" HeightRequest="38" FontSize="22" Padding="0" BackgroundColor="Transparent" TextColor="White" SemanticProperties.Description="Back to surah list" />
+                <Button Grid.Column="1" x:Name="PrevSurahButton" Clicked="OnPrevSurahClicked" WidthRequest="44" HeightRequest="38" FontSize="22" Padding="0" BackgroundColor="Transparent" TextColor="White" SemanticProperties.Description="Previous surah" />
+                <VerticalStackLayout Grid.Column="2" Spacing="1" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label x:Name="SurahTitleLabel" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="White" />
+                    <Label x:Name="SurahSubtitleLabel" FontSize="12" HorizontalTextAlignment="Center" TextColor="#F1D98A" />
+                </VerticalStackLayout>
+                <Button Grid.Column="3" x:Name="NextSurahButton" Clicked="OnNextSurahClicked" WidthRequest="44" HeightRequest="38" FontSize="22" Padding="0" BackgroundColor="Transparent" TextColor="White" SemanticProperties.Description="Next surah" />
+                <Label x:Name="MushafSurahNameLabel" Grid.Column="4" IsVisible="False" HeightRequest="0" Opacity="0" />
+            </Grid>
+
+            <VerticalStackLayout x:Name="BottomChrome" IsVisible="False" VerticalOptions="End" Padding="10,4,10,10" Spacing="6">
+                <Border Background="#A6F2E7C6" Stroke="#B48A2E" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12,6">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="4">
+                        <Label Grid.Column="0" Text="◆" FontSize="11" TextColor="#5B4210" />
+                        <Label Grid.Column="1" x:Name="MushafFooterLabel" FontSize="12" HorizontalTextAlignment="Center" TextColor="#5B4210" />
+                        <Label Grid.Column="2" Text="◆" FontSize="11" TextColor="#5B4210" />
                     </Grid>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>
-
+                </Border>
+                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" ColumnSpacing="6">
+                    <Button Grid.Column="0" Text="🔖" Clicked="OnBookmarksClicked" WidthRequest="46" HeightRequest="38" FontSize="16" Padding="0" SemanticProperties.Description="Bookmarks" />
+                    <Button Grid.Column="1" x:Name="PageBookmarkButton" Text="☆" FontSize="16" WidthRequest="46" HeightRequest="38" Padding="0" Clicked="OnPageBookmarkClicked" SemanticProperties.Description="Toggle page bookmark" />
+                    <Button Grid.Column="2" x:Name="TafsirButton" Text="📖" FontSize="16" WidthRequest="46" HeightRequest="38" Padding="0" Clicked="OnTafsirClicked" SemanticProperties.Description="Tafsir of this page" />
+                    <Label Grid.Column="3" x:Name="PageIndicatorLabel" Text="0 / 0" FontAttributes="Bold" FontSize="13" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" TextColor="White" />
+                    <Entry Grid.Column="4" x:Name="AyahJumpEntry" WidthRequest="86" HeightRequest="38" HorizontalTextAlignment="Center" Keyboard="Numeric" ReturnType="Go" Completed="OnAyahJumpCompleted" />
+                </Grid>
+            </VerticalStackLayout>
         </Grid>
 
-        <Border x:Name="MissingPackageBorder"
-                IsVisible="False"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Background="{AppThemeBinding Light=#FFF7E2, Dark=#302715}"
-                Stroke="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}"
-                StrokeThickness="1"
-                StrokeShape="RoundRectangle 14"
-                Padding="18,14"
-                Margin="20">
+        <Border x:Name="MissingPackageBorder" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Center" Background="{AppThemeBinding Light=#FFF7E2, Dark=#302715}" Stroke="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}" StrokeThickness="1" StrokeShape="RoundRectangle 14" Padding="18,14" Margin="20">
             <VerticalStackLayout Spacing="10">
-                  <Label x:Name="MissingPackageTitleLabel"
-                       FontAttributes="Bold"
-                       HorizontalTextAlignment="Center"
-                       TextColor="{AppThemeBinding Light=#5B4210, Dark=#F1D98A}" />
-                  <Label x:Name="MissingPackageMessageLabel"
-                       FontSize="13"
-                       HorizontalTextAlignment="Center"
-                       TextColor="{AppThemeBinding Light=#7A6E3F, Dark=#C8B77D}" />
-                  <Button x:Name="RetryPackageButton"
-                        Clicked="OnRetryPackageClicked"
-                        HorizontalOptions="Center" />
+                <Label x:Name="MissingPackageTitleLabel" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light=#5B4210, Dark=#F1D98A}" />
+                <Label x:Name="MissingPackageMessageLabel" FontSize="13" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light=#7A6E3F, Dark=#C8B77D}" />
+                <Button x:Name="RetryPackageButton" Clicked="OnRetryPackageClicked" HorizontalOptions="Center" />
             </VerticalStackLayout>
         </Border>
 
-        <Grid x:Name="TopChrome"
-              IsVisible="False"
-              VerticalOptions="Start"
-              ColumnDefinitions="Auto,Auto,*,Auto,Auto"
-              Background="#A6334350"
-              Padding="8,48,8,8">
-            <Button Grid.Column="0"
-                    x:Name="BackToListButton"
-                    Text="←"
-                    Clicked="OnBackToListClicked"
-                    WidthRequest="44"
-                    HeightRequest="38"
-                    FontSize="22"
-                    Padding="0"
-                    BackgroundColor="Transparent"
-                    TextColor="White"
-                    SemanticProperties.Description="Back to surah list" />
-
-            <Button Grid.Column="1"
-                    x:Name="PrevSurahButton"
-                    Clicked="OnPrevSurahClicked"
-                    WidthRequest="44"
-                    HeightRequest="38"
-                    FontSize="22"
-                    Padding="0"
-                    BackgroundColor="Transparent"
-                    TextColor="White"
-                    SemanticProperties.Description="Previous surah" />
-
-            <VerticalStackLayout Grid.Column="2"
-                                 Spacing="2"
-                                 HorizontalOptions="Center"
-                                 VerticalOptions="Center">
-                <Label x:Name="SurahTitleLabel"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       HorizontalTextAlignment="Center"
-                       TextColor="White" />
-                <Label x:Name="SurahSubtitleLabel"
-                       FontSize="13"
-                       HorizontalTextAlignment="Center"
-                       TextColor="#F1D98A" />
-            </VerticalStackLayout>
-
-            <Button Grid.Column="3"
-                    x:Name="NextSurahButton"
-                    Clicked="OnNextSurahClicked"
-                    WidthRequest="44"
-                    HeightRequest="38"
-                    FontSize="22"
-                    Padding="0"
-                    BackgroundColor="Transparent"
-                    TextColor="White"
-                    SemanticProperties.Description="Next surah" />
-
-            <Label x:Name="MushafSurahNameLabel"
-                   Grid.Column="4"
-                   IsVisible="False"
-                   HeightRequest="0"
-                   Opacity="0" />
-        </Grid>
-
-        <VerticalStackLayout x:Name="BottomChrome"
-                             IsVisible="False"
-                             VerticalOptions="End"
-                             Padding="10,8,10,20"
-                             Spacing="8">
-            <Border Background="#A6F2E7C6"
-                    Stroke="#B48A2E"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 8"
-                    Padding="12,6">
-                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="4">
-                    <Label Grid.Column="0"
-                           Text="◆"
-                           FontSize="11"
-                           TextColor="#5B4210" />
-                    <Label Grid.Column="1"
-                           x:Name="MushafFooterLabel"
-                           FontSize="12"
-                           HorizontalTextAlignment="Center"
-                           TextColor="#5B4210" />
-                    <Label Grid.Column="2"
-                           Text="◆"
-                           FontSize="11"
-                           TextColor="#5B4210" />
-                </Grid>
-            </Border>
-
-                <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto"
-                  ColumnSpacing="6">
-                <Button Grid.Column="0"
-                        Text="🔖"
-                        Clicked="OnBookmarksClicked"
-                        WidthRequest="46"
-                        HeightRequest="38"
-                        FontSize="16"
-                        Padding="0"
-                        SemanticProperties.Description="Bookmarks" />
-                <Button Grid.Column="1"
-                        x:Name="PageBookmarkButton"
-                        Text="☆"
-                        FontSize="16"
-                        WidthRequest="46"
-                        HeightRequest="38"
-                        Padding="0"
-                        Clicked="OnPageBookmarkClicked"
-                        SemanticProperties.Description="Toggle page bookmark" />
-                <Button Grid.Column="2"
-                        x:Name="TafsirButton"
-                        Text="📖"
-                        FontSize="16"
-                        WidthRequest="46"
-                        HeightRequest="38"
-                        Padding="0"
-                        Clicked="OnTafsirClicked"
-                        SemanticProperties.Description="Tafsir of this page" />
-
-                <Label Grid.Column="3"
-                       x:Name="PageIndicatorLabel"
-                       Text="0 / 0"
-                       FontAttributes="Bold"
-                       FontSize="13"
-                       VerticalTextAlignment="Center"
-                       HorizontalTextAlignment="Center"
-                       TextColor="White" />
-
-                <Entry Grid.Column="4"
-                       x:Name="AyahJumpEntry"
-                       WidthRequest="86"
-                       HeightRequest="38"
-                       HorizontalTextAlignment="Center"
-                       Keyboard="Numeric"
-                       ReturnType="Go"
-                       Completed="OnAyahJumpCompleted" />
-            </Grid>
-        </VerticalStackLayout>
-
-        <Grid x:Name="LoadingOverlay"
-              IsVisible="False"
-              BackgroundColor="#88000000">
-            <Border VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    BackgroundColor="{AppThemeBinding Light=#FDF6E3, Dark=#25201A}"
-                    Stroke="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 16"
-                    Padding="32,24"
-                    MinimumWidthRequest="180">
+        <Grid x:Name="LoadingOverlay" IsVisible="False" BackgroundColor="#88000000">
+            <Border VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="{AppThemeBinding Light=#FDF6E3, Dark=#25201A}" Stroke="{AppThemeBinding Light=#D4C48A, Dark=#7A6E3F}" StrokeThickness="1" StrokeShape="RoundRectangle 16" Padding="32,24" MinimumWidthRequest="180">
                 <VerticalStackLayout Spacing="16" HorizontalOptions="Center">
-                    <ActivityIndicator IsRunning="True"
-                                       WidthRequest="48"
-                                       HeightRequest="48"
-                                       Color="{AppThemeBinding Light=#0F5132, Dark=#4CAF80}"
-                                       HorizontalOptions="Center" />
-                    <Label x:Name="LoadingMessageLabel"
-                           FontSize="15"
-                           HorizontalTextAlignment="Center"
-                           TextColor="{AppThemeBinding Light=#5B4210, Dark=#F1D98A}" />
+                    <ActivityIndicator IsRunning="True" WidthRequest="48" HeightRequest="48" Color="{AppThemeBinding Light=#0F5132, Dark=#4CAF80}" HorizontalOptions="Center" />
+                    <Label x:Name="LoadingMessageLabel" FontSize="15" HorizontalTextAlignment="Center" TextColor="{AppThemeBinding Light=#5B4210, Dark=#F1D98A}" />
                 </VerticalStackLayout>
             </Border>
         </Grid>

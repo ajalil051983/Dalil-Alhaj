@@ -166,7 +166,10 @@ namespace KhayratAlhaj.Pages
                     var map = new Mapsui.Map();
 
                     // Add OpenStreetMap tile layer (no API key required!)
-                    map.Layers.Add(OpenStreetMap.CreateTileLayer());
+                    // OSM tile usage policy requires a unique, identifying User-Agent
+                    // or requests are blocked with 403 (osm.wiki/blocked).
+                    map.Layers.Add(OpenStreetMap.CreateTileLayer(
+                        userAgent: "KhayratAlhaj/1.0 (+https://github.com/khayrat-alhaj; hajj-guide-app)"));
 
                     // Add Hajj route line layer (will be replaced by OSRM route)
                     _routeLayer = CreateFallbackRouteLayer();

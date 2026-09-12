@@ -12,6 +12,12 @@ namespace KhayratAlhaj.Models
         public string Color { get; set; } = "#3498DB";
         public List<SubCategory> Subcategories { get; set; } = new();
 
+        // The icon can be an emoji or an image file (e.g. "quran_icon.svg" packaged as a MauiImage).
+        public bool IconIsImage
+            => Icon.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+            || Icon.EndsWith(".svg", StringComparison.OrdinalIgnoreCase);
+        public ImageSource? IconImageSource => IconIsImage ? ImageSource.FromFile(Icon) : null;
+
         public string Name
         {
             get
@@ -47,6 +53,12 @@ namespace KhayratAlhaj.Models
         public bool HasAudioAr { get; set; } = false;
         public bool HasAudioEn { get; set; } = false;
         public bool HasAudioFr { get; set; } = false;
+
+        // The icon can be an emoji or an image file (e.g. "quran_icon.svg" packaged as a MauiImage).
+        public bool IconIsImage
+            => Icon.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+            || Icon.EndsWith(".svg", StringComparison.OrdinalIgnoreCase);
+        public ImageSource? IconImageSource => IconIsImage ? ImageSource.FromFile(Icon) : null;
 
         public bool HasAudioForCurrentLanguage
         {

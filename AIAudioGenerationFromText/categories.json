@@ -235,7 +235,7 @@
     "nameAr": "القرآن برواية ورش",
     "nameEn": "Quran Warsh",
     "nameFr": "Coran Warsh",
-    "icon": "📚",
+    "icon": "quran_icon.svg",
     "color": "#2C3E50",
     "subcategories": [
       {

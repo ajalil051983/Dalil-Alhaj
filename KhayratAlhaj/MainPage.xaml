@@ -3,9 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:KhayratAlhaj.Resources.Localization"
              xmlns:models="clr-namespace:KhayratAlhaj.Models"
+             xmlns:conv="clr-namespace:KhayratAlhaj.Converters"
              x:Class="KhayratAlhaj.MainPage"
              x:Name="MainContentPage"
              Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
 
     <Grid RowDefinitions="Auto,*"
           x:Name="MainGrid"
@@ -163,7 +167,16 @@
                                            AutomationId="CategoryIcon"
                                            FontSize="48"
                                            HorizontalOptions="Center"
-                                           VerticalOptions="Center" />
+                                           VerticalOptions="Center"
+                                           IsVisible="{Binding IconIsImage, Converter={StaticResource InvertedBoolConverter}}" />
+                                    <Image Source="{Binding IconImageSource}"
+                                           AutomationId="CategoryIcon"
+                                           WidthRequest="72"
+                                           HeightRequest="72"
+                                           Aspect="AspectFit"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           IsVisible="{Binding IconIsImage}" />
 
                                     <Label Text="{Binding Name}"
                                            AutomationId="CategoryNameLabel"

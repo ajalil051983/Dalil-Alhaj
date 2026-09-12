@@ -12,7 +12,12 @@ namespace KhayratAlhaj.Services
     {
         private static readonly HttpClient _httpClient = new()
         {
-            Timeout = TimeSpan.FromSeconds(15)
+            Timeout = TimeSpan.FromSeconds(15),
+            DefaultRequestHeaders =
+            {
+                // OSM/OSRM usage policy requires an identifying User-Agent
+                { "User-Agent", "KhayratAlhaj/1.0 (+https://github.com/khayrat-alhaj; hajj-guide-app)" }
+            }
         };
 
         // The official OSRM demo server (router.project-osrm.org) only serves the "car"

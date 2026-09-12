@@ -28,6 +28,10 @@ dotnet test KhayratAlhaj.UnitTests/KhayratAlhaj.UnitTests.csproj
 Full UI-test workflow (emulator, Appium, APK install): [Docs/BUILD_AND_TEST_INSTRUCTIONS.md](../Docs/BUILD_AND_TEST_INSTRUCTIONS.md).
 Never use `dotnet run` for this MAUI app — build + deploy to emulator/device instead.
 
+## Git — never commit or push
+
+**Never run `git commit`, `git push`, `git add`, or any command that commits or publishes changes.** The user does all version control themselves. Make the code/file changes only, build and test them, then stop and let the user review and commit. (History rewrite / force-push is likewise off-limits unless the user explicitly asks for it in that moment.)
+
 ## Content Pipeline (important — follow exactly)
 
 1. Edit content **only** in `AIAudioGenerationFromText/categories.json` (never edit `appdata.bin` directly).

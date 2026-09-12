@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:res="clr-namespace:KhayratAlhaj.Resources.Localization"
              xmlns:models="clr-namespace:KhayratAlhaj.Models"
+             xmlns:conv="clr-namespace:KhayratAlhaj.Converters"
              x:Class="KhayratAlhaj.Pages.SubCategoryPage"
              BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundColorLight}, Dark={StaticResource PageBackgroundColorDark}}">
+    <ContentPage.Resources>
+        <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
@@ -59,11 +63,21 @@
                                                       CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
                             
-                            <VerticalStackLayout Spacing="10"
-                                        MinimumHeightRequest="150">
+                            <VerticalStackLayout Spacing="15"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center">
                                 <Label Text="{Binding Icon}" 
                                        FontSize="32"
-                                       HorizontalOptions="Center" />
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       IsVisible="{Binding IconIsImage, Converter={StaticResource InvertedBoolConverter}}" />
+                                <Image Source="{Binding IconImageSource}"
+                                       WidthRequest="56"
+                                       HeightRequest="56"
+                                       Aspect="AspectFit"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       IsVisible="{Binding IconIsImage}" />
                                 
                                 <Label Text="{Binding Name}" 
                                        FontSize="15"
@@ -72,36 +86,6 @@
                                        HorizontalOptions="Center"
                                        HorizontalTextAlignment="Center"
                                        LineBreakMode="WordWrap" />
-
-                                <Border HorizontalOptions="Center"
-                                        VerticalOptions="EndAndExpand"
-                                        WidthRequest="56"
-                                        HeightRequest="56"
-                                        StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 28"
-                                        IsVisible="False">
-                                    <Border.Shadow>
-                                        <Shadow Radius="14"
-                                                Opacity="0.30"
-                                                Offset="0,6"
-                                                Brush="#220B132B" />
-                                    </Border.Shadow>
-                                    <Border.Triggers>
-                                        <DataTrigger TargetType="Border" Binding="{Binding Id}" Value="301">
-                                            <Setter Property="IsVisible" Value="True" />
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Border" Binding="{Binding Id}" Value="302">
-                                            <Setter Property="IsVisible" Value="True" />
-                                        </DataTrigger>
-                                    </Border.Triggers>
-
-                                    <Button Text="▶"
-                                            Style="{StaticResource DhikrLaunchCardButtonStyle}"
-                                            HorizontalOptions="Fill"
-                                            VerticalOptions="Fill"
-                                            CommandParameter="{Binding .}"
-                                            Clicked="OnDhikrButtonClicked" />
-                                </Border>
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>

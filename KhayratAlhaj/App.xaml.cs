@@ -18,19 +18,6 @@ namespace KhayratAlhaj
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
             
-#if DEBUG && ANDROID
-            try
-            {
-                var src = Path.Combine(FileSystem.AppDataDirectory, "appdata.bin");
-                var downloads = Android.OS.Environment.GetExternalStoragePublicDirectory(
-                    Android.OS.Environment.DirectoryDownloads)!.AbsolutePath;
-                var dst = Path.Combine(downloads, "appdata.bin");
-                if (File.Exists(src)) File.Copy(src, dst, overwrite: true);
-                System.Diagnostics.Debug.WriteLine($"[DB EXPORTED] {dst}");
-            }
-            catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"[DB EXPORT FAILED] {ex.Message}"); }
-#endif
-
             // Initialize language
             Services.LocalizationService.InitializeLanguage();
             

@@ -682,4 +682,10 @@ Appuyez sur ⭐ sur une page de contenu pour l'enregistrer ici</value>
   <data name="QuranTafsirPage_TafsirMissing" xml:space="preserve">
     <value>Aucun tafsir disponible pour ce verset.</value>
   </data>
+  <data name="QuranTafsirPage_PageOnlyFormat" xml:space="preserve">
+    <value>Page {0}</value>
+  </data>
+  <data name="QuranReaderPage_MultipleSurahsLabel" xml:space="preserve">
+    <value>Plusieurs sourates sur cette page</value>
+  </data>
 </root>

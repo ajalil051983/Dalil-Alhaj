@@ -11,10 +11,8 @@ namespace KhayratAlhaj.Pages
     /// </summary>
     public partial class QuranTafsirPage : ContentPage
     {
-        private readonly int surahNumber;
+        private readonly List<int> surahNumbers;
         private readonly int pageNumber;
-        private readonly int firstAyah;
-        private readonly int lastAyah;
         private readonly string surahName;
         private readonly DataService dataService;
         private readonly Func<int, int, Task> navigateToAyah;
@@ -22,20 +20,16 @@ namespace KhayratAlhaj.Pages
         private bool isLoading;
 
         public QuranTafsirPage(
-            int surahNumber,
+            List<int> surahNumbers,
             int pageNumber,
-            int firstAyah,
-            int lastAyah,
             string surahName,
             DataService dataService,
             Func<int, int, Task> navigateToAyah)
         {
             InitializeComponent();
 
-            this.surahNumber = surahNumber;
+            this.surahNumbers = surahNumbers is { Count: > 0 } ? surahNumbers : new List<int> { 1 };
             this.pageNumber = pageNumber;
-            this.firstAyah = firstAyah;
-            this.lastAyah = lastAyah;
             this.surahName = surahName;
             this.dataService = dataService;
             this.navigateToAyah = navigateToAyah;
@@ -61,10 +55,7 @@ namespace KhayratAlhaj.Pages
         {
             Title = GetText("QuranTafsirPage_Title");
             TafsirTitleLabel.Text = $"{GetText("QuranTafsirPage_Title")} — {surahName}";
-            var range = firstAyah == lastAyah
-                ? firstAyah.ToString()
-                : $"{firstAyah} - {lastAyah}";
-            TafsirSubtitleLabel.Text = string.Format(GetText("QuranTafsirPage_SubtitleFormat"), pageNumber, range);
+            TafsirSubtitleLabel.Text = string.Format(GetText("QuranTafsirPage_PageOnlyFormat"), pageNumber);
             LoadingMessageLabel.Text = GetText("QuranTafsirPage_Loading");
             EmptyStateLabel.Text = GetText("QuranTafsirPage_Unavailable");
         }
@@ -82,48 +73,50 @@ namespace KhayratAlhaj.Pages
 
             try
             {
-                // Ayah text comes from the Warsh edition (already cached by the reader);
-                // the commentary comes from the ar.muyassar edition. Both flow through
-                // QuranService's memory + Preferences cache, so repeat visits are offline.
-                var ayahTask = dataService.GetQuranSurahAsync(surahNumber, editionIdentifier: QuranService.WarshEdition);
-                var tafsirTask = dataService.GetQuranSurahAsync(surahNumber, editionIdentifier: QuranService.TafsirMuyassarEdition);
-
-                await Task.WhenAll(ayahTask, tafsirTask);
-
-                var ayahs = ayahTask.Result?.Ayahs ?? new List<QuranAyahData>();
-                var tafsirAyahs = tafsirTask.Result?.Ayahs ?? new List<QuranAyahData>();
-
-                // Same lookup as the reference app: SELECT * FROM ayat WHERE page = {page}.
-                var pageAyahs = ayahs
-                    .Where(a => a.Page == pageNumber)
-                    .OrderBy(a => a.NumberInSurah)
-                    .ToList();
-
-                // Fall back to the requested ayah range if page numbers are missing.
-                if (pageAyahs.Count == 0)
+                // Fetch ayah text (Warsh) + tafsir (Muyassar) for EVERY surah on the page,
+                // then keep only the ayahs that fall on this mushaf page. This makes shared
+                // pages (e.g. 604: Ikhlas/Falaq/Nas) show all their surahs' commentary.
+                var fetchTasks = surahNumbers.SelectMany(n => new[]
                 {
-                    pageAyahs = ayahs
-                        .Where(a => a.NumberInSurah >= firstAyah && a.NumberInSurah <= lastAyah)
-                        .OrderBy(a => a.NumberInSurah)
-                        .ToList();
+                    dataService.GetQuranSurahAsync(n, editionIdentifier: QuranService.WarshEdition),
+                    dataService.GetQuranSurahAsync(n, editionIdentifier: QuranService.TafsirMuyassarEdition)
+                }).ToArray();
+                await Task.WhenAll(fetchTasks);
+
+                var warshBySurah = new Dictionary<int, List<QuranAyahData>>();
+                var tafsirBySurah = new Dictionary<int, List<QuranAyahData>>();
+                for (var i = 0; i < surahNumbers.Count; i++)
+                {
+                    warshBySurah[surahNumbers[i]] = fetchTasks[i * 2].Result?.Ayahs ?? new List<QuranAyahData>();
+                    tafsirBySurah[surahNumbers[i]] = fetchTasks[i * 2 + 1].Result?.Ayahs ?? new List<QuranAyahData>();
+                    warshSurahCache[surahNumbers[i]] = fetchTasks[i * 2].Result;
                 }
 
-                var tafsirByAyah = tafsirAyahs.ToDictionary(a => a.NumberInSurah, a => a.Text);
-
                 items.Clear();
-                foreach (var ayah in pageAyahs)
+                foreach (var surahNum in surahNumbers)
                 {
-                    tafsirByAyah.TryGetValue(ayah.NumberInSurah, out var tafsirText);
-                    items.Add(new QuranTafsirViewItem
+                    var pageAyahs = warshBySurah[surahNum]
+                        .Where(a => a.Page == pageNumber)
+                        .OrderBy(a => a.NumberInSurah)
+                        .ToList();
+
+                    var tafsirByAyah = tafsirBySurah[surahNum].ToDictionary(a => a.NumberInSurah, a => a.Text);
+                    var surahDisplay = GetSurahName(surahNum);
+
+                    foreach (var ayah in pageAyahs)
                     {
-                        SurahNumber = surahNumber,
-                        AyahNumber = ayah.NumberInSurah,
-                        AyahNumberText = $"﴿{ayah.NumberInSurah}﴾",
-                        AyahText = ayah.Text,
-                        TafsirText = string.IsNullOrWhiteSpace(tafsirText)
-                            ? GetText("QuranTafsirPage_TafsirMissing")
-                            : tafsirText
-                    });
+                        tafsirByAyah.TryGetValue(ayah.NumberInSurah, out var tafsirText);
+                        items.Add(new QuranTafsirViewItem
+                        {
+                            SurahNumber = surahNum,
+                            AyahNumber = ayah.NumberInSurah,
+                            AyahNumberText = $"﴿{surahDisplay} {ayah.NumberInSurah}﴾",
+                            AyahText = ayah.Text,
+                            TafsirText = string.IsNullOrWhiteSpace(tafsirText)
+                                ? GetText("QuranTafsirPage_TafsirMissing")
+                                : tafsirText
+                        });
+                    }
                 }
 
                 EmptyState.IsVisible = items.Count == 0;
@@ -139,6 +132,15 @@ namespace KhayratAlhaj.Pages
                 isLoading = false;
             }
         }
+
+        private string GetSurahName(int surahNumber)
+        {
+            // Use the Arabic name from the cached surah data when available.
+            var data = warshSurahCache.TryGetValue(surahNumber, out var d) ? d : null;
+            return data?.Name ?? surahNumber.ToString();
+        }
+
+        private readonly Dictionary<int, QuranSurahData?> warshSurahCache = new();
 
         private async void OnTafsirItemTapped(object? sender, TappedEventArgs e)
         {

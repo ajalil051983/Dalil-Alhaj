@@ -60,6 +60,7 @@ namespace KhayratAlhaj.Pages
         private IDispatcherTimer? chromeAutoHideTimer;
         private double lastAllocatedWidth;
         private double lastAllocatedHeight;
+        private bool chromeVisible;
 
         public QuranReaderPage(
             Category category,
@@ -91,6 +92,9 @@ namespace KhayratAlhaj.Pages
             base.OnAppearing();
             UpdateLocalizedHeaderTexts();
             ApplyLocalizedTexts();
+
+            // Keep the screen on while reading the Quran.
+            DeviceDisplay.Current.KeepScreenOn = true;
 
             if (!isMessengerRegistered)
             {
@@ -126,6 +130,9 @@ namespace KhayratAlhaj.Pages
             isPinching = false;
             ignoreCurrentItemChanges = false;
             initialTargetPage = null;
+
+            // Restore normal screen timeout when leaving the reader.
+            DeviceDisplay.Current.KeepScreenOn = false;
 
             if (isMessengerRegistered)
             {
@@ -372,15 +379,25 @@ namespace KhayratAlhaj.Pages
             if (TryGetPreviousSurahNumber(surah.Number, out var previousSurahNumber))
             {
                 var (_, previousEndPage) = GetSurahPageRange(previousSurahNumber);
+
+                // Walk further back over any surahs that also share this same physical page
+                // (e.g. Masad/Ikhlas/Falaq/Nas all on page 604) so swiping back always reaches
+                // the real previous page instead of getting stuck because the immediate
+                // previous surah happens to be on the same page.
+                var guard = 0;
+                while (previousEndPage == currentStartPage && guard++ < 114 && TryGetPreviousSurahNumber(previousSurahNumber, out var earlierSurah))
+                {
+                    previousSurahNumber = earlierSurah;
+                    (_, previousEndPage) = GetSurahPageRange(previousSurahNumber);
+                }
+
                 if (previousEndPage <= 0)
                 {
                     previousEndPage = currentStartPage;
                 }
 
-                // Skip the boundary when the previous surah ends on the same physical page
-                // this surah starts on (e.g. the short surahs sharing page 604): the boundary
-                // would duplicate the first real page and force phantom swipes through the
-                // same image.
+                // Skip the boundary only if there truly is no earlier page (the whole chain
+                // above shares the current start page).
                 if (previousEndPage != currentStartPage)
                 {
                     var previousPageImage = pageAssetService.GetPageImagePath(previousEndPage);
@@ -416,6 +433,7 @@ namespace KhayratAlhaj.Pages
                     SequenceNumber = i + 1,
                     MushafPageNumber = mushafPage,
                     SurahNumber = surah.Number,
+                    SurahNumbersOnPage = GetSurahNumbersOnPage(mushafPage),
                     FirstAyahNumber = firstAyah,
                     LastAyahNumber = lastAyah,
                     PageImagePath = imagePath ?? string.Empty,
@@ -431,14 +449,24 @@ namespace KhayratAlhaj.Pages
             if (TryGetNextSurahNumber(surah.Number, out var nextSurahNumber))
             {
                 var (nextStartPage, _) = GetSurahPageRange(nextSurahNumber);
+
+                // Walk further forward over any surahs that also share this same physical page
+                // so swiping forward always reaches the real next page instead of getting stuck
+                // partway through a run of surahs sharing one page.
+                var guard = 0;
+                while (nextStartPage == currentEndPage && guard++ < 114 && TryGetNextSurahNumber(nextSurahNumber, out var laterSurah))
+                {
+                    nextSurahNumber = laterSurah;
+                    (nextStartPage, _) = GetSurahPageRange(nextSurahNumber);
+                }
+
                 if (nextStartPage <= 0)
                 {
                     nextStartPage = currentEndPage;
                 }
 
-                // Skip the boundary when the next surah starts on the same physical page this
-                // surah ends on (e.g. Ikhlas/Falaq/Nas all on page 604): the boundary would
-                // duplicate the last real page and force phantom swipes through the same image.
+                // Skip the boundary only if there truly is no later page (the whole chain
+                // above shares the current end page).
                 if (nextStartPage != currentEndPage)
                 {
                     var nextPageImage = pageAssetService.GetPageImagePath(nextStartPage);
@@ -454,6 +482,40 @@ namespace KhayratAlhaj.Pages
                     });
                 }
             }
+        }
+
+        // All surah numbers that have ayahs on the given mushaf page (may be several
+        // for short surahs sharing a page, e.g. Ikhlas/Falaq/Nas on page 604).
+        private List<int> GetSurahNumbersOnPage(int mushafPage)
+        {
+            var result = new List<int>();
+            foreach (var sub in category.Subcategories)
+            {
+                var num = sub.SurahNumber ?? 0;
+                if (num < 1 || num > 114)
+                {
+                    continue;
+                }
+
+                var (start, end) = GetSurahPageRange(num);
+                if (start > 0 && mushafPage >= start && mushafPage <= end)
+                {
+                    result.Add(num);
+                }
+            }
+
+            if (result.Count == 0)
+            {
+                result.Add(currentSurahNumber);
+            }
+
+            return result;
+        }
+
+        private string GetSurahDisplayName(int surahNumber)
+        {
+            var sub = category.Subcategories.FirstOrDefault(s => (s.SurahNumber ?? 0) == surahNumber);
+            return sub?.Name ?? string.Empty;
         }
 
         private (int StartPage, int EndPage) GetSurahPageRange(QuranSurahData surah)
@@ -713,12 +775,16 @@ namespace KhayratAlhaj.Pages
             }
 
             CancelChromeTimers();
+            // Pass every surah present on the physical page so the tafsir lists all of
+            // their ayahs, not just the current surah's (fixes single-surah tafsir on
+            // shared pages like 604).
+            var surahNumbers = page.SurahNumbersOnPage.Count > 0
+                ? page.SurahNumbersOnPage
+                : new List<int> { page.SurahNumber };
             await Navigation.PushAsync(new QuranTafsirPage(
-                currentSurahNumber,
+                surahNumbers,
                 page.MushafPageNumber,
-                page.FirstAyahNumber,
-                page.LastAyahNumber,
-                subCategory.Name,
+                GetSurahDisplayName(page.SurahNumber),
                 dataService,
                 NavigateToAyahFromTafsirAsync));
         }
@@ -1579,14 +1645,28 @@ namespace KhayratAlhaj.Pages
             var readingPages = allPages.Where(p => !p.IsBoundaryTransition).ToList();
             var readingIndex = readingPages.FindIndex(p => p.SequenceNumber == page.SequenceNumber);
             PageIndicatorLabel.Text = string.Format(GetReaderText("QuranReaderPage_PageIndicatorFormat"), ToLatinDigits(readingIndex + 1), ToLatinDigits(readingPages.Count));
+
+            // On a shared physical page (e.g. Ikhlas/Falaq/Nas on 604) show every surah
+            // present, not just the current one.
+            var names = (page.SurahNumbersOnPage.Count > 0 ? page.SurahNumbersOnPage : new List<int> { page.SurahNumber })
+                .Select(GetSurahDisplayName)
+                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .ToList();
+            if (names.Count > 1)
+            {
+                SurahTitleLabel.Text = string.Join("، ", names);
+                SurahSubtitleLabel.Text = GetReaderText("QuranReaderPage_MultipleSurahsLabel");
+            }
+
             var range = page.FirstAyahNumber == page.LastAyahNumber
                 ? ToLatinDigits(page.FirstAyahNumber)
                 : ToLatinDigits(page.FirstAyahNumber) + " - " + ToLatinDigits(page.LastAyahNumber);
+            var surahSuffix = names.Count > 1 ? " • " + string.Join("، ", names) : string.Empty;
             MushafFooterLabel.Text = page.MushafPageNumber > 0
                 ? string.Format(GetReaderText("QuranReaderPage_FooterCombinedFormat"),
                     string.Format(GetReaderText("QuranReaderPage_FooterPageFormat"), ToLatinDigits(page.MushafPageNumber)),
-                    string.Format(GetReaderText("QuranReaderPage_FooterAyahsFormat"), range))
-                : string.Format(GetReaderText("QuranReaderPage_FooterAyahsFormat"), range);
+                    string.Format(GetReaderText("QuranReaderPage_FooterAyahsFormat"), range)) + surahSuffix
+                : string.Format(GetReaderText("QuranReaderPage_FooterAyahsFormat"), range) + surahSuffix;
         }
 
         private void UpdateLocalizedHeaderTexts()
@@ -1682,6 +1762,8 @@ namespace KhayratAlhaj.Pages
         public int SequenceNumber { get; set; }
         public int MushafPageNumber { get; set; }
         public int SurahNumber { get; set; }
+        // All surah numbers present on this physical page (several when short surahs share one).
+        public List<int> SurahNumbersOnPage { get; set; } = new();
         public int FirstAyahNumber { get; set; }
         public int LastAyahNumber { get; set; }
         public string PageImagePath { get; set; } = string.Empty;
